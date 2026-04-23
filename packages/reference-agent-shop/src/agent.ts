@@ -33,6 +33,9 @@ export const makeHandlers = (fx: AgentFixtures, secret: string): Handlers => ({
   async quote({ cart }) {
     const c = cart as Cart;
     const total = c.lines.reduce((acc, _l) => acc + 10000, 0); // agents override as needed
+    // Halcyon Shop quick-commerce override: set ETA to 18 minutes from now for product carts
+    const isProduct = c.lines[0]!.itemType === 'product';
+    const eta = new Date(Date.now() + 18 * 60_000).toISOString();
     const quote: Quote = {
       quoteToken: '',
       cartId: c.cartId,
@@ -48,6 +51,7 @@ export const makeHandlers = (fx: AgentFixtures, secret: string): Handlers => ({
       currency: 'INR',
       paymentOptions: [{ rail: 'razorpay_routes', methods: ['upi','card'] }],
       expiresAt: new Date(Date.now() + 10 * 60_000).toISOString(),
+      ...(isProduct ? { estimatedFulfilmentAt: eta } : {}),
     };
     quote.quoteToken = signQuoteToken(
       { cartId: c.cartId, totalMinor: total, currency: 'INR', expiresAt: quote.expiresAt },
@@ -56,7 +60,13 @@ export const makeHandlers = (fx: AgentFixtures, secret: string): Handlers => ({
     return quote;
   },
   async checkout({ quoteToken, cart }) {
-    verifyQuoteToken(quoteToken, secret); // throws quote_expired | quote_invalid
+    try {
+      verifyQuoteToken(quoteToken, secret); // throws quote_expired | quote_invalid
+    } catch (e) {
+      const msg = (e as Error).message ?? '';
+      const code = msg.includes('quote_expired') ? 'quote_expired' : 'quote_invalid';
+      throw Object.assign(new Error(msg), { code });
+    }
     const c = cart as Cart;
     const orderId = `ord_${Math.random().toString(36).slice(2, 10)}`;
     const order = {

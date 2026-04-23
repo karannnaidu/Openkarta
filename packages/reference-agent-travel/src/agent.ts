@@ -56,7 +56,13 @@ export const makeHandlers = (fx: AgentFixtures, secret: string): Handlers => ({
     return quote;
   },
   async checkout({ quoteToken, cart }) {
-    verifyQuoteToken(quoteToken, secret); // throws quote_expired | quote_invalid
+    try {
+      verifyQuoteToken(quoteToken, secret); // throws quote_expired | quote_invalid
+    } catch (e) {
+      const msg = (e as Error).message ?? '';
+      const code = msg.includes('quote_expired') ? 'quote_expired' : 'quote_invalid';
+      throw Object.assign(new Error(msg), { code });
+    }
     const c = cart as Cart;
     const orderId = `ord_${Math.random().toString(36).slice(2, 10)}`;
     const order = {

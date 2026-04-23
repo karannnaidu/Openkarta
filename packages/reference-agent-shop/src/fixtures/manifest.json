@@ -1,0 +1,21 @@
+{
+  "agentId": "halcyon-shop",
+  "displayName": "Halcyon Shop",
+  "protocolVersion": "0.1",
+  "tier": "http",
+  "baseUrl": "http://localhost:4001",
+  "actions": ["discover","search","get","quote","checkout","status","cancel","return"],
+  "supportedItemTypes": ["product"],
+  "paymentRails": ["razorpay_routes","stripe_connect","cod"],
+  "languages": ["en","hi"],
+  "regions": [{ "country": "IN", "pincodes": ["560001","560002","560003"] }],
+  "inventoryVolatility": "realtime",
+  "catalogSize": "small",
+  "priceRange": { "minMinor": 10000, "maxMinor": 500000, "currency": "INR" },
+  "productCapabilities": {
+    "categories": ["coffee","tea","snacks","groceries"],
+    "serviceAreas": [{ "country": "IN", "city": "Bengaluru", "radiusKm": 8 }],
+    "deliveryModes": ["instant","same_day","scheduled","standard"],
+    "returnWindow": 7
+  }
+}
