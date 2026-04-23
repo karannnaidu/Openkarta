@@ -13,5 +13,8 @@ export const toErrorResponse = (
   requestId?: string,
 ): { status: number; body: ErrorBody } => ({
   status: errorStatusFor(code),
-  body:   { error: { code, message, retryable, details }, requestId },
+  body:   {
+    error: { code, message, retryable, ...(details !== undefined ? { details } : {}) },
+    ...(requestId !== undefined ? { requestId } : {}),
+  },
 });
