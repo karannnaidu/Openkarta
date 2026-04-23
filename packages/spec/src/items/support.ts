@@ -12,7 +12,7 @@ export const BoardingPoint = z.object({
   id:      z.string().min(1),
   name:    z.string().min(1),
   address: z.string().optional(),
-  time:    z.string().datetime(),
+  time:    z.string().datetime({ offset: true }),
   lat:     z.number().min(-90).max(90).optional(),
   lng:     z.number().min(-180).max(180).optional(),
 });

@@ -35,7 +35,7 @@ describe('Address', () => {
     expect(a.pincode).toBe('560001');
   });
 
-  it('rejects 2-char country code', () => {
+  it('rejects non-2-char country code', () => {
     expect(() => Address.parse({ line1: 'x', city: 'x', country: 'IND' })).toThrow();
   });
 });

@@ -39,4 +39,13 @@ describe('BoardingPoint', () => {
     });
     expect(bp.name).toBe('Majestic');
   });
+
+  it('accepts IST offset times', () => {
+    const bp = BoardingPoint.parse({
+      id: 'bp1', name: 'Majestic',
+      time: '2026-05-01T20:00:00+05:30',
+      lat: 12.97, lng: 77.57,
+    });
+    expect(bp.time).toBe('2026-05-01T20:00:00+05:30');
+  });
 });
