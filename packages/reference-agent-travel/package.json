@@ -1,0 +1,21 @@
+{
+  "name": "@openkarta/reference-agent-travel",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "openkarta-ref-travel": "./dist/bin.js" },
+  "scripts": {
+    "build": "tsup",
+    "start": "node dist/bin.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@openkarta/sdk-node": "workspace:*",
+    "@openkarta/spec":     "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0", "typescript": "^5.4.5", "vitest": "^2.1.0"
+  }
+}

@@ -18,6 +18,63 @@ importers:
         specifier: ^5.4.5
         version: 5.9.3
 
+  packages/reference-agent-shop:
+    dependencies:
+      '@openkarta/sdk-node':
+        specifier: workspace:*
+        version: link:../sdk-node
+      '@openkarta/spec':
+        specifier: workspace:*
+        version: link:../spec
+    devDependencies:
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.10)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@25.6.0)
+
+  packages/reference-agent-stays:
+    dependencies:
+      '@openkarta/sdk-node':
+        specifier: workspace:*
+        version: link:../sdk-node
+      '@openkarta/spec':
+        specifier: workspace:*
+        version: link:../spec
+    devDependencies:
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.10)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@25.6.0)
+
+  packages/reference-agent-travel:
+    dependencies:
+      '@openkarta/sdk-node':
+        specifier: workspace:*
+        version: link:../sdk-node
+      '@openkarta/spec':
+        specifier: workspace:*
+        version: link:../spec
+    devDependencies:
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.10)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@25.6.0)
+
   packages/sdk-node:
     dependencies:
       '@openkarta/spec':
