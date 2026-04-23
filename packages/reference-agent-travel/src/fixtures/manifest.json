@@ -1,0 +1,25 @@
+{
+  "agentId": "halcyon-travel",
+  "displayName": "Halcyon Travel",
+  "protocolVersion": "0.1",
+  "tier": "http",
+  "baseUrl": "http://localhost:4003",
+  "actions": ["discover","search","get","quote","checkout","status","cancel","return"],
+  "supportedItemTypes": ["flight","bus"],
+  "paymentRails": ["razorpay_routes","stripe_connect"],
+  "languages": ["en","hi"],
+  "regions": [{ "country": "IN" }],
+  "inventoryVolatility": "realtime",
+  "catalogSize": "small",
+  "priceRange": { "minMinor": 100000, "maxMinor": 1500000, "currency": "INR" },
+  "flightCapabilities": {
+    "carriers": ["6E","AI","UK"],
+    "routes": "global",
+    "fareClasses": ["economy","business"]
+  },
+  "busCapabilities": {
+    "operators": ["VRL Travels","SRS Travels","Orange Tours"],
+    "regions": [{ "country": "IN" }],
+    "seatClasses": ["ac-sleeper","ac-seater","volvo"]
+  }
+}
