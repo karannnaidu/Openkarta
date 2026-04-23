@@ -1,0 +1,25 @@
+{
+  "agentId": "halcyon-stays",
+  "displayName": "Halcyon Stays & Spa",
+  "protocolVersion": "0.1",
+  "tier": "http",
+  "baseUrl": "http://localhost:4002",
+  "actions": ["discover","search","get","quote","checkout","status","cancel","return"],
+  "supportedItemTypes": ["stay","service"],
+  "paymentRails": ["razorpay_routes","stripe_connect"],
+  "languages": ["en"],
+  "regions": [{ "country": "IN", "state": "GA" }],
+  "inventoryVolatility": "hourly",
+  "catalogSize": "small",
+  "priceRange": { "minMinor": 500000, "maxMinor": 5000000, "currency": "INR" },
+  "stayCapabilities": {
+    "locations": [{ "country": "IN", "city": "Anjuna" }],
+    "propertyTypes": ["villa","homestay"],
+    "priceTierPerNight": { "minMinor": 500000, "maxMinor": 5000000, "currency": "INR" }
+  },
+  "serviceCapabilities": {
+    "serviceCategories": ["wellness.massage","wellness.yoga","spa.facial"],
+    "serviceAreas": [{ "country": "IN", "city": "Anjuna" }],
+    "locationModes": ["at_provider","at_customer"]
+  }
+}
