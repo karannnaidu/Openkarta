@@ -18,6 +18,40 @@ importers:
         specifier: ^5.4.5
         version: 5.9.3
 
+  packages/conformance-tests:
+    dependencies:
+      '@openkarta/sdk-node':
+        specifier: workspace:*
+        version: link:../sdk-node
+      '@openkarta/spec':
+        specifier: workspace:*
+        version: link:../spec
+      arg:
+        specifier: ^5.0.2
+        version: 5.0.2
+      chalk:
+        specifier: ^5.3.0
+        version: 5.6.2
+    devDependencies:
+      '@openkarta/reference-agent-shop':
+        specifier: workspace:*
+        version: link:../reference-agent-shop
+      '@openkarta/reference-agent-stays':
+        specifier: workspace:*
+        version: link:../reference-agent-stays
+      '@openkarta/reference-agent-travel':
+        specifier: workspace:*
+        version: link:../reference-agent-travel
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.10)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@25.6.0)
+
   packages/reference-agent-shop:
     dependencies:
       '@openkarta/sdk-node':
@@ -711,6 +745,9 @@ packages:
   any-promise@1.3.0:
     resolution: {integrity: sha512-7UvmKalWRt1wgjL1RrGxoSJW/0QZFIegpeGvZG9kjp8vrRu55XTHbwnqq2GpXm9uLbcuhxm3IqX9OB4MZR1b2A==}
 
+  arg@5.0.2:
+    resolution: {integrity: sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==}
+
   assertion-error@2.0.1:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
     engines: {node: '>=12'}
@@ -735,6 +772,10 @@ packages:
   chai@5.3.3:
     resolution: {integrity: sha512-4zNhdJD/iOjSH0A05ea+Ke6MU5mmpQcbQsSOkgdaUMJ9zTlDTD/GYlwohmIE2u0gaxHYiVHEn1Fw9mZ/ktJWgw==}
     engines: {node: '>=18'}
+
+  chalk@5.6.2:
+    resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   check-error@2.1.3:
     resolution: {integrity: sha512-PAJdDJusoxnwm1VwW07VWwUN1sl7smmC3OKggvndJFadxxDRyFJBX/ggnu/KE4kQAB7a3Dp8f/YXC1FlUprWmA==}
@@ -1565,6 +1606,8 @@ snapshots:
 
   any-promise@1.3.0: {}
 
+  arg@5.0.2: {}
+
   assertion-error@2.0.1: {}
 
   atomic-sleep@1.0.0: {}
@@ -1588,6 +1631,8 @@ snapshots:
       deep-eql: 5.0.2
       loupe: 3.2.1
       pathval: 2.0.1
+
+  chalk@5.6.2: {}
 
   check-error@2.1.3: {}
 
