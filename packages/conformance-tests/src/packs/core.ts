@@ -20,6 +20,17 @@ const buildCartForType = (type: string, itemId: string): unknown => {
   }
 };
 
+const buildSearchQueryForType = (type: string): unknown => {
+  switch (type) {
+    case 'product': return { type: 'product' };
+    case 'stay':    return { type: 'stay', location: { country: 'IN' }, checkIn: '2026-12-01', checkOut: '2026-12-02', guests: 2 };
+    case 'flight':  return { type: 'flight', origin: 'BLR', destination: 'BOM', departure: '2026-12-01', pax: 1 };
+    case 'bus':     return { type: 'bus', origin: 'Bengaluru', destination: 'Pune', departure: '2026-12-01', pax: 1 };
+    case 'service': return { type: 'service', category: 'wellness.massage', location: { country: 'IN' } };
+    default: throw new Error(`unsupported search type ${type}`);
+  }
+};
+
 export const runCorePack = async (ctx: RunCtx): Promise<PackReport> => {
   const results: TestResult[] = [];
 
@@ -47,7 +58,7 @@ export const runCorePack = async (ctx: RunCtx): Promise<PackReport> => {
     const type = manifest.supportedItemTypes[0]!;
     const search = await (await fetch(`${ctx.baseUrl}/v0/search`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ query: { type } }),
+      body: JSON.stringify({ query: buildSearchQueryForType(type) }),
     })).json() as { items?: Array<{ id: string }> };
     const itemId = search.items?.[0]?.id;
     if (!itemId) throw new Error('no item to quote');
