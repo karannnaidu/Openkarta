@@ -13,7 +13,7 @@ Most merchants will start with HTTP from day one. Lite is for tiny merchants wit
 
 ## Path A — 1-hour Lite
 
-> *Status:* the Lite registry is operated by OpenKarta and is currently in private beta. Reach out to `partnerships@openkarta.ai` for an invite.
+> *Status:* the Lite registry is operated by OpenKarta and is currently in private beta. Reach out to `partnerships@openkarta.org` for an invite.
 
 The Lite tier expects a markdown table of items at a public URL. OpenKarta's registry crawls it on a schedule and proxies search/get calls. Quotes and checkout aren't supported in this tier — orchestrators will route users to your fulfilment channel of choice (a phone number, a wholesale catalogue, etc.).
 

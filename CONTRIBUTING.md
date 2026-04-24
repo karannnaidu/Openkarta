@@ -113,4 +113,4 @@ Releases are cut by the maintainers using the `chore: changelog` PR pattern:
 
 - Spec discussion: GitHub issues with the `spec` label.
 - Security: see [`SECURITY.md`](SECURITY.md).
-- Anything else: GitHub Discussions, or `hello@openkarta.ai`.
+- Anything else: GitHub Discussions, or `hello@openkarta.org`.

@@ -11,7 +11,7 @@ Security fixes are published as patch releases against the most recent minor.
 
 ## Reporting a vulnerability
 
-Please report security issues privately to **security@openkarta.ai**.
+Please report security issues privately to **security@openkarta.org**.
 
 Include, where possible:
 
