@@ -55,6 +55,43 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@25.6.0)
 
+  packages/demo-cli:
+    dependencies:
+      '@openkarta/sdk-node':
+        specifier: workspace:*
+        version: link:../sdk-node
+      '@openkarta/spec':
+        specifier: workspace:*
+        version: link:../spec
+      arg:
+        specifier: ^5.0.2
+        version: 5.0.2
+      chalk:
+        specifier: ^5.3.0
+        version: 5.6.2
+    devDependencies:
+      '@openkarta/reference-agent-shop':
+        specifier: workspace:*
+        version: link:../reference-agent-shop
+      '@openkarta/reference-agent-stays':
+        specifier: workspace:*
+        version: link:../reference-agent-stays
+      '@openkarta/reference-agent-travel':
+        specifier: workspace:*
+        version: link:../reference-agent-travel
+      '@types/node':
+        specifier: ^25.6.0
+        version: 25.6.0
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.10)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@25.6.0)
+
   packages/reference-agent-shop:
     dependencies:
       '@openkarta/sdk-node':
