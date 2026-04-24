@@ -35,6 +35,7 @@ export const createServer = (opts: CreateServerOpts): FastifyInstance => {
     try {
       const m = await opts.handlers.discover();
       CapabilitiesManifest.parse(m);
+      reply.header('cache-control', 'public, max-age=300');
       return reply.code(200).send(m);
     } catch (e) { const r = handleThrown(e); return reply.code(r.status).send(r.body); }
   });
