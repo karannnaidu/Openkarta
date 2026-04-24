@@ -4,6 +4,7 @@
   "license": "MIT",
   "type": "module",
   "bin": { "openkarta-ref-travel": "./dist/bin.js" },
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "start": "node dist/bin.js",

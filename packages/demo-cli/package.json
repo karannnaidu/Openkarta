@@ -4,6 +4,7 @@
   "license": "MIT",
   "type": "module",
   "bin": { "openkarta-demo": "./dist/cli.js" },
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "start": "node dist/cli.js",
