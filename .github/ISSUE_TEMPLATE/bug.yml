@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a defect in the protocol, SDK, reference agents, or conformance harness.
+labels: [bug]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: One-line summary of the bug.
+      placeholder: e.g. "Quote token verification rejects valid signature when expiresAt has trailing zeros"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal sequence of commands or API calls that triggers the bug.
+      placeholder: |
+        1. Boot the shop reference agent: `node packages/reference-agent-shop/dist/bin.js`
+        2. POST /v0/quote with body { ... }
+        3. POST /v0/checkout with the returned quoteToken
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include the exact error code/message and any logs.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version, pnpm version, OS, package version(s).
+      placeholder: |
+        Node 22.3.0
+        pnpm 9.12.0
+        macOS 14.5
+        @openkarta/sdk-node 0.1.0
+    validations:
+      required: true
