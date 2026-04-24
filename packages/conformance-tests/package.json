@@ -21,6 +21,7 @@
     "@openkarta/reference-agent-shop":   "workspace:*",
     "@openkarta/reference-agent-stays":  "workspace:*",
     "@openkarta/reference-agent-travel": "workspace:*",
+    "@types/node": "^25.6.0",
     "tsup":       "^8.3.0",
     "typescript": "^5.4.5",
     "vitest":     "^2.1.0"
