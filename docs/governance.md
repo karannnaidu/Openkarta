@@ -17,6 +17,8 @@ The critical separation: whoever writes the spec must not also be the sole regis
 
 OpenKarta Foundation is the neutral steward of the spec and reference implementations.
 
+> **Milestone note:** foundation **incorporation** (or transfer to a neutral host) is a **v2.0** target, not v0.1. For v0.1, OpenKarta's core maintainers run the project under the written neutrality covenant below; the foundation entity is described here so the succession path is committed in writing from day one.
+
 - **Form:** starts as a lightweight entity (Linux Foundation sub-project, or a dedicated 501(c)(6)-equivalent). Does not need to be large to be credible — it needs to be *separate* from any single commercial operator.
 - **Membership:** open. Three tiers — Contributor (individuals), Member (orgs shipping on the protocol), Steering (funding + governance vote).
 - **Decisions:** spec changes via RFC + rough-consensus on a public tracker. Breaking changes require a supermajority of Steering.
@@ -83,11 +85,23 @@ OpenKarta the company should not:
 - Charge brands for registry listing.
 - Withhold protocol features from competing implementations.
 
-## v0.1 launch checklist (governance)
+## Milestones
 
-- [ ] Incorporate foundation entity (or file for LF sub-project).
-- [ ] Publish neutrality covenant as `docs/registry-covenant.md`.
+The work splits cleanly into what's publishable now (v0.1) and what requires standing up the foundation entity itself (v2.0). Don't conflate them — v0.1 must ship without waiting on v2.0.
+
+### v0.1 launch checklist (publish now, no foundation entity required)
+
+- [ ] Publish the neutrality covenant — either inline in this file or as a standalone `docs/registry-covenant.md`. The covenant binds OpenKarta-the-company while it operates the registry.
 - [ ] Publish IP policy (DCO + license summary) as `docs/ip-policy.md`.
+- [ ] State publicly that OpenKarta-the-company runs the registry under the covenant, **with the v2.0 succession path committed in writing**.
+- [ ] Reserve `foundation@openkarta.org` and route it to the maintainers; reserve the `openkartafoundation.*` namespaces.
+- [ ] Publish the first transparency report template (empty is fine — establishes the cadence).
+- [ ] Add the v2.0 milestone block below to `ROADMAP.md` so the public timeline is unambiguous.
+
+### v2.0 — actual foundation handover
+
+- [ ] Incorporate foundation entity (or file for LF sub-project / transfer to ONDC / OpenJS).
 - [ ] Transfer `@openkarta/*` npm scope + GitHub org to foundation control.
 - [ ] Name an initial Steering group (≥3 orgs, no single-org majority).
-- [ ] Publish the first transparency report template (empty is fine — establishes the cadence).
+- [ ] Move registry operation from OpenKarta-the-company to a foundation-governed operator (the company can still operate it, but under a foundation charter rather than self-binding).
+- [ ] First Steering-approved spec RFC (proves the governance process works end-to-end).
