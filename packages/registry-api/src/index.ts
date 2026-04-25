@@ -10,7 +10,7 @@ import { agentsUpdateRouter } from './routes/agents-update.js';
 import { agentsDeleteRouter } from './routes/agents-delete.js';
 import { agentsReverifyRouter } from './routes/agents-reverify.js';
 import { agentsTransferRouter } from './routes/agents-transfer.js';
-import { makeResendClient, type EmailClient } from './email/resend.js';
+import { makeResendClient, type EmailClient } from '@openkarta/registry-shared';
 
 export type Bindings = {
   DB: D1Database;

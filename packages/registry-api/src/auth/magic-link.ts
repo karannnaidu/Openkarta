@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
-import { ulid, RegistryError } from '@openkarta/registry-shared';
-import type { EmailClient } from '../email/resend.js';
+import { ulid, RegistryError, type EmailClient } from '@openkarta/registry-shared';
 import { createSession, sessionCookieValue } from './session.js';
 import type { Bindings } from '../index.js';
 

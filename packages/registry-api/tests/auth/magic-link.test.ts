@@ -1,7 +1,7 @@
 import { env, applyD1Migrations } from 'cloudflare:test';
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import app, { setEmailClientFactory } from '../../src/index.js';
-import type { EmailClient } from '../../src/email/resend.js';
+import type { EmailClient } from '@openkarta/registry-shared';
 
 declare module 'cloudflare:test' {
   interface ProvidedEnv {

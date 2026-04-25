@@ -1,8 +1,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
-import { RegistryError, ulid } from '@openkarta/registry-shared';
+import { RegistryError, ulid, type EmailClient } from '@openkarta/registry-shared';
 import { requireSession } from '../auth/middleware.js';
-import type { EmailClient } from '../email/resend.js';
 import type { Bindings, Variables } from '../index.js';
 
 const RequestSchema = z.object({ to_email: z.string().email().toLowerCase() });
