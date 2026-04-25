@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { homedir } from 'node:os';
 import type { OrderRecord } from './types.js';
-import { createClient } from '@openkarta/sdk-node';
+import { createClient, type OpenKartaClient } from '@openkarta/sdk-node';
 import type { Order, Refund } from '@openkarta/spec';
 
 export interface OrderStoreOptions { ordersFile?: string; }
@@ -21,7 +21,7 @@ export interface OrderOpOptions {
   timeoutMs?: number;
 }
 
-async function clientForOrder(orderId: string, opts: OrderOpOptions) {
+async function clientForOrder(orderId: string, opts: OrderOpOptions): Promise<OpenKartaClient> {
   const rec = await opts.store.find(orderId);
   if (!rec) throw new Error(`order not found locally: ${orderId}`);
   return createClient({

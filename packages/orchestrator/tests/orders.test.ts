@@ -51,4 +51,9 @@ describe('order operations', () => {
     expect(refund.orderId).toBe(order.orderId);
     expect(refund.refundId).toBeTruthy();
   });
+
+  it('throws when orderId is unknown to the store', async () => {
+    const store = createOrderStore({ ordersFile: join(tmp, `orders-${Math.random().toString(36).slice(2, 8)}.json`) });
+    await expect(getOrderStatus('nonexistent_order', { store })).rejects.toThrow(/order not found/);
+  });
 });
