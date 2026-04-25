@@ -1,12 +1,12 @@
 import type { CapabilitiesManifest, ItemBase, ItemType } from '@openkarta/spec';
 
 export interface OrchestratorOptions {
-  registryUrl?: string;
-  registry?: RegistrySnapshot;
-  cacheTtlMs?: number;
-  perAgentTimeoutMs?: number;
-  searchConcurrency?: number;
-  ordersFile?: string;
+  registryUrl?: string;            // default: bundled fallback
+  registry?: RegistrySnapshot;     // pre-loaded; bypasses fetch
+  cacheTtlMs?: number;             // manifest cache TTL, default 5 min
+  perAgentTimeoutMs?: number;      // default 8s
+  searchConcurrency?: number;      // default 5
+  ordersFile?: string;             // default ~/.openkarta/orders.json
   fetchImpl?: typeof fetch;
 }
 
