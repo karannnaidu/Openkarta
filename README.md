@@ -15,6 +15,107 @@ This repository contains the reference protocol, a Node.js SDK, three reference 
 
 ---
 
+## How it fits together
+
+### The flow — what actually happens when a user says "buy me coffee"
+
+```text
+                         ┌────────────────────────────────────────┐
+                         │  User: "buy me 250g of single-origin   │
+                         │  coffee, ship to Bangalore, under ₹800"│
+                         └────────────────────┬───────────────────┘
+                                              │
+                                              ▼
+                  ┌──────────────────────────────────────────────────┐
+                  │  Consumer agent  (ChatGPT / Claude / Gemini /    │
+                  │  any developer app / WhatsApp bot / your CLI)    │
+                  │  — uses the @openkarta/orchestrator library      │
+                  └────────────────────┬─────────────────────────────┘
+                                       │  1. lookup
+                                       ▼
+                  ┌──────────────────────────────────────────────────┐
+                  │  Registry  (registry.openkarta.org)              │
+                  │  "who serves itemType=product, category=coffee,  │
+                  │   ships to IN-KA?"                               │
+                  └────────────────────┬─────────────────────────────┘
+                                       │  2. returns N candidate agents
+                                       ▼
+        ┌──────────────────────────────┼──────────────────────────────┐
+        │                              │                              │
+        ▼                              ▼                              ▼
+┌────────────────┐           ┌────────────────┐           ┌────────────────┐
+│ Blue Tokai     │           │ Third Wave     │           │ Halcyon Shop   │
+│ brand agent    │           │ brand agent    │           │ brand agent    │
+│ /v0/search     │           │ /v0/search     │           │ /v0/search     │
+└───────┬────────┘           └───────┬────────┘           └───────┬────────┘
+        │                            │                            │
+        └──────────── 3. fan-out in parallel, each ───────────────┘
+                       returns catalogue + price + stock
+                                       │
+                                       ▼
+                       ┌──────────────────────────────────┐
+                       │  Orchestrator ranks → user picks │
+                       │  Halcyon's "Ethiopia Yirgacheffe" │
+                       └────────────────┬─────────────────┘
+                                        │  4. /v0/quote
+                                        ▼
+                       ┌──────────────────────────────────┐
+                       │  Halcyon returns HMAC-signed     │
+                       │  quote token (price locked 5 min)│
+                       └────────────────┬─────────────────┘
+                                        │  5. /v0/checkout (token + payment)
+                                        ▼
+                       ┌──────────────────────────────────┐
+                       │  Order placed → orderId returned │
+                       │  → /v0/orders/:id/status polled  │
+                       └──────────────────────────────────┘
+```
+
+The user never sees the registry, the agents, or the verbs — they just say "buy me coffee" and the orchestrator does the dance. Every brand exposes the **same 8 verbs**, so the consumer agent doesn't need per-brand integration code.
+
+### Why this shape — brand agents on one side, consumer agents on the other
+
+```text
+        BRAND SIDE                                          CONSUMER SIDE
+
+    ┌─────────────────┐                                ┌─────────────────────┐
+    │     Brand       │                                │        User         │
+    └────────┬────────┘                                └──────────┬──────────┘
+             │ owns                                               │ talks to
+             ▼                                                    ▼
+    ┌─────────────────┐                                ┌─────────────────────┐
+    │   Brand agent   │                                │   Consumer agent    │
+    │ (their server)  │       ◀── open protocol ──▶    │ (any dev app /      │
+    │                 │                                │  ChatGPT / Claude / │
+    │ uses OpenKarta  │                                │  Gemini)            │
+    │      SDK        │                                │ uses OpenKarta SDK  │
+    └────────┬────────┘                                └──────────┬──────────┘
+             │ publishes                                          │ looks up
+             │                                                    │
+             └──────────────────┐                  ┌──────────────┘
+                                ▼                  ▼
+                       ┌──────────────────────────────────┐
+                       │            Registry              │
+                       │  (run by neutral entity —        │
+                       │   foundation / another co)       │
+                       └──────────────────────────────────┘
+```
+
+**The DNS analogy is exact:**
+
+- **Registry** = DNS root (says *"nike.karta lives at this endpoint, here's its public key"*)
+- **Brand agent** = web server (serves actual product / inventory / checkout calls)
+- **SDK** = HTTP — the shared language both ends speak
+- **Your app OR any GPT** = browser — anyone can use it, no permission needed
+
+So:
+
+- Anyone (you, OpenAI, a random dev) can build a consumer app on top.
+- Any brand can stand up a brand agent using the SDK.
+- The registry is the only "shared infra" — and keeping it under a neutral entity (foundation, consortium) is what makes big brands and big AI labs willing to adopt it. If one company *owns* the registry, that company is a competitor to them, not infrastructure.
+
+---
+
 ## The 8 actions
 
 | Verb       | Method | Path                                  | Purpose                                       |
