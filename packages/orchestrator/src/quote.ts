@@ -15,6 +15,7 @@ export async function quoteCart(
   const protocolCart: Cart = {
     cartId: `oc_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
     lines: cart.lines.map((l) => ({
+      ...l.extra,
       itemType: l.itemType,
       itemId: l.itemId,
       quantity: l.quantity,

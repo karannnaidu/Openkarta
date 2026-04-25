@@ -37,6 +37,8 @@ export interface SearchPlan {
   q?: string;
   region?: { country: string; city?: string; pincode?: string };
   agentIds?: string[];
+  /** Vertical-specific query fields merged directly into the wire SearchQuery (e.g. checkIn/checkOut for stays, origin/destination for flights). */
+  extra?: Record<string, unknown>;
 }
 
 export interface RankedResult {

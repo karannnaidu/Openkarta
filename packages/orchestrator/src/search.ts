@@ -50,9 +50,12 @@ export async function searchAcrossAgents(input: SearchInput): Promise<RankedResu
   return results;
 }
 
-// SearchQuery is a discriminated union on `type`; cast lets each agent handle unknown sub-fields
+// SearchQuery is a discriminated union on `type`; cast lets each agent handle unknown sub-fields.
+// `plan.extra` carries vertical-specific required fields (e.g. checkIn/checkOut for stays,
+// origin/destination for flights) that are merged in before the wire call.
 function buildQuery(plan: SearchPlan): SearchQuery {
   return {
+    ...plan.extra,
     type: plan.itemType,
     q: plan.q,
     region: plan.region,
