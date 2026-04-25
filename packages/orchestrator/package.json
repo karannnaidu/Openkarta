@@ -1,6 +1,6 @@
 {
   "name": "@openkarta/orchestrator",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -13,7 +13,6 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.65.0",
     "@openkarta/spec":     "workspace:*",
     "@openkarta/sdk-node": "workspace:*",
     "zod": "^3.23.0",

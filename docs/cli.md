@@ -15,7 +15,7 @@ openkarta --help
 | `openkarta cart show` / `cart clear` | Inspect / discard the local cart |
 | `openkarta checkout --payment <method> [--yes]` | Quote and place |
 | `openkarta orders list / status / cancel / return` | Order lifecycle |
-| `openkarta chat` | Natural-language REPL (needs `ANTHROPIC_API_KEY`) |
+| `openkarta chat [--base-url …] [--model …] [--api-key …]` | Natural-language REPL. Point at any chat endpoint. |
 
 State is stored at `~/.openkarta/` (override with the `OPENKARTA_HOME` env var).
 
@@ -40,3 +40,25 @@ openkarta checkout --payment cod --yes  # places it
 openkarta orders list
 openkarta orders status ord_xxx
 ```
+
+## Chat — using your own LLM
+
+`openkarta chat` defaults to OpenRouter but works against any chat-completions endpoint:
+
+```bash
+# OpenRouter (default)
+export OPENROUTER_API_KEY=sk-or-…
+openkarta chat
+openkarta chat --model openai/gpt-4o
+
+# OpenAI directly
+export OPENAI_API_KEY=sk-…
+openkarta chat --base-url https://api.openai.com/v1 --model gpt-4o
+
+# Local Ollama (no key needed)
+openkarta chat --base-url http://localhost:11434/v1 --model llama3.1:70b
+```
+
+Env-var fallback order for the API key: `--api-key` → `OPENKARTA_LLM_API_KEY` → `OPENROUTER_API_KEY` → `OPENAI_API_KEY`.
+
+The model has to support tool calling. Reliable local choices: Llama 3.1+, Qwen 2.5+, Hermes 3, Mistral function-calling variants.

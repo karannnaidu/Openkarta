@@ -7,9 +7,9 @@ describe('buildToolDefs', () => {
     expect(defs.map((d) => d.name).sort()).toEqual([...TOOL_NAMES].sort());
   });
 
-  it('every def has an input_schema with type:object', () => {
+  it('every def has parameters with type:object', () => {
     for (const d of buildToolDefs()) {
-      expect(d.input_schema.type).toBe('object');
+      expect(d.parameters.type).toBe('object');
     }
   });
 
@@ -17,7 +17,7 @@ describe('buildToolDefs', () => {
     const defs = buildToolDefs();
     const viewCart = defs.find((d) => d.name === 'view_cart');
     const quote = defs.find((d) => d.name === 'quote');
-    expect(viewCart?.input_schema.required).toBeUndefined();
-    expect(quote?.input_schema.required).toBeUndefined();
+    expect(viewCart?.parameters.required).toBeUndefined();
+    expect(quote?.parameters.required).toBeUndefined();
   });
 });

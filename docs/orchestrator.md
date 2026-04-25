@@ -51,6 +51,6 @@ console.log('placed', order.orderId);
 - `quoteCart(cart)` — returns a `Quote` with a signed `quoteToken`. Pass it to `checkoutCart` unchanged.
 - `checkoutCart({ cart, quote, payment, store })` — places the order. The store records it locally.
 - `getOrderStatus`, `cancelOrder`, `returnOrder` — order lifecycle, all keyed by `orderId`.
-- `chatOnce(history, dispatch, { apiKey })` — Anthropic-bridged tool-calling loop. Combine with `createDispatcher` and `newState` for a multi-turn REPL.
+- `chatOnce(history, dispatch, { baseURL, model, apiKey? })` — generic chat-completions tool loop. Point `baseURL` at any endpoint that speaks the standard `chat/completions` wire format: hosted (OpenRouter, OpenAI, Together, Groq, …) or local (Ollama, llama.cpp, vLLM, …). `apiKey` is optional for local servers. Combine with `createDispatcher` and `newState` for a multi-turn REPL.
 
 See [`docs/protocol/v0.1.md`](protocol/v0.1.md) for the wire contract this composes.

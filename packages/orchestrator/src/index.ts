@@ -13,7 +13,7 @@ export type { CheckoutInput } from './checkout.js';
 export { createOrderStore, getOrderStatus, cancelOrder, returnOrder } from './orders.js';
 export type { OrderStore, OrderStoreOptions, OrderOpOptions } from './orders.js';
 export { buildToolDefs, TOOL_NAMES } from './llm/tool-defs.js';
-export type { AnthropicToolDef } from './llm/tool-defs.js';
+export type { ToolDef } from './llm/tool-defs.js';
 export { createDispatcher } from './llm/dispatcher.js';
 export type { DispatchFn } from './llm/dispatcher.js';
 export { newState } from './llm/memory.js';

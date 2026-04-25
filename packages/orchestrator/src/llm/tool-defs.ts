@@ -6,10 +6,10 @@ export const TOOL_NAMES = [
   'order_status', 'cancel_order', 'return_order',
 ] as const;
 
-export interface AnthropicToolDef {
+export interface ToolDef {
   name: string;
-  description?: string;
-  input_schema: { type: 'object'; properties?: unknown | null; required?: string[] | null; [k: string]: unknown };
+  description: string;
+  parameters: { type: 'object'; properties?: unknown; required?: string[]; [k: string]: unknown };
 }
 
 const itemTypeEnum = z.enum(['product', 'stay', 'flight', 'bus', 'service']);
@@ -49,10 +49,10 @@ const Descriptions: Record<typeof TOOL_NAMES[number], string> = {
   return_order: 'Initiate a return for a delivered order.',
 };
 
-export function buildToolDefs(): AnthropicToolDef[] {
+export function buildToolDefs(): ToolDef[] {
   return TOOL_NAMES.map((name) => ({
     name,
     description: Descriptions[name],
-    input_schema: zodToJsonSchema(Schemas[name], { target: 'openApi3' }) as AnthropicToolDef['input_schema'],
+    parameters: zodToJsonSchema(Schemas[name], { target: 'openApi3' }) as ToolDef['parameters'],
   }));
 }

@@ -1,14 +1,19 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { buildToolDefs } from './tool-defs.js';
 import type { DispatchFn } from './dispatcher.js';
+import { buildToolDefs } from './tool-defs.js';
 
 export interface ChatTurn { role: 'user' | 'assistant'; text: string; }
 
 export interface ChatLoopOptions {
-  apiKey: string;
-  model?: string;             // default: 'claude-opus-4-7'
+  /** Base URL of the chat-completions endpoint, e.g. 'https://openrouter.ai/api/v1' or 'http://localhost:11434/v1'. */
+  baseURL: string;
+  /** Model identifier as the endpoint expects it, e.g. 'anthropic/claude-opus-4' or 'llama3.1:70b'. */
+  model: string;
+  /** Optional — local servers (Ollama, llama.cpp) often don't need a key. */
+  apiKey?: string;
   systemPrompt?: string;
-  maxIterations?: number;     // safety guard, default 10
+  maxIterations?: number;
+  maxTokens?: number;
+  fetchImpl?: typeof fetch;
   onToolUse?: (name: string, input: unknown) => void;
 }
 
@@ -19,70 +24,122 @@ Guidelines:
 - Quote before checkout. Show the price to the user before charging.
 - Prefer explicit confirmation before checkout.`;
 
-const DEFAULT_MODEL = 'claude-opus-4-7';
+interface ToolCallShape {
+  id: string;
+  type: 'function';
+  function: { name: string; arguments: string };
+}
+
+interface ChatMessage {
+  role: 'system' | 'user' | 'assistant' | 'tool';
+  content?: string | null;
+  tool_calls?: ToolCallShape[];
+  tool_call_id?: string;
+}
+
+interface ChatCompletionResponse {
+  choices?: {
+    message?: {
+      role?: string;
+      content?: string | null;
+      tool_calls?: ToolCallShape[];
+    };
+    finish_reason?: string;
+  }[];
+}
 
 export async function chatOnce(
   history: ChatTurn[],
   dispatch: DispatchFn,
   opts: ChatLoopOptions,
 ): Promise<{ history: ChatTurn[]; finalText: string }> {
-  const anthropic = new Anthropic({ apiKey: opts.apiKey });
-  // buildToolDefs() returns AnthropicToolDef[] whose shape is aligned to Anthropic.Tool
-  const tools = buildToolDefs() as Anthropic.Tool[];
-  const messages: Anthropic.MessageParam[] = history.map((t) => ({ role: t.role, content: t.text }));
+  const fetchImpl = opts.fetchImpl ?? fetch;
+  const tools = buildToolDefs().map((t) => ({
+    type: 'function' as const,
+    function: { name: t.name, description: t.description, parameters: t.parameters },
+  }));
+
+  const messages: ChatMessage[] = [
+    { role: 'system', content: opts.systemPrompt ?? DEFAULT_SYSTEM },
+    ...history.map<ChatMessage>((t) => ({ role: t.role, content: t.text })),
+  ];
+
+  const url = `${opts.baseURL.replace(/\/$/, '')}/chat/completions`;
   const maxIter = opts.maxIterations ?? 10;
+  const maxTokens = opts.maxTokens ?? 1024;
 
   let finalText = '';
   for (let i = 0; i < maxIter; i++) {
-    const resp = await anthropic.messages.create({
-      model: opts.model ?? DEFAULT_MODEL,
-      max_tokens: 1024,
-      system: opts.systemPrompt ?? DEFAULT_SYSTEM,
-      tools,
-      messages,
+    const headers: Record<string, string> = { 'content-type': 'application/json' };
+    if (opts.apiKey) headers['authorization'] = `Bearer ${opts.apiKey}`;
+
+    const res = await fetchImpl(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: opts.model,
+        messages,
+        tools,
+        max_tokens: maxTokens,
+      }),
     });
 
-    const textBlocks = resp.content.filter((b): b is Anthropic.TextBlock => b.type === 'text');
-    const toolUses   = resp.content.filter((b): b is Anthropic.ToolUseBlock => b.type === 'tool_use');
+    if (!res.ok) {
+      const bodyText = await res.text().catch(() => '');
+      throw new Error(`chat endpoint ${res.status}: ${bodyText.slice(0, 500)}`);
+    }
 
-    if (toolUses.length === 0) {
-      finalText = textBlocks.map((b) => b.text).join('\n').trim();
-      messages.push({ role: 'assistant', content: resp.content });
+    const json = (await res.json()) as ChatCompletionResponse;
+    const choice = json.choices?.[0];
+    if (!choice?.message) throw new Error('chat response had no choices[0].message');
+    const msg = choice.message;
+    const toolCalls = msg.tool_calls ?? [];
+
+    if (toolCalls.length === 0) {
+      finalText = (msg.content ?? '').trim();
+      messages.push({ role: 'assistant', content: msg.content ?? '' });
       break;
     }
 
-    messages.push({ role: 'assistant', content: resp.content });
-    const toolResults: Anthropic.ToolResultBlockParam[] = [];
-    for (const tu of toolUses) {
-      opts.onToolUse?.(tu.name, tu.input);
-      // tu.input is typed as unknown in the SDK; guard before casting
-      if (typeof tu.input !== 'object' || tu.input === null) {
-        toolResults.push({
-          type: 'tool_result',
-          tool_use_id: tu.id,
-          is_error: true,
-          content: `tool input for ${tu.name} is not an object`,
+    messages.push({
+      role: 'assistant',
+      content: msg.content ?? null,
+      tool_calls: toolCalls,
+    });
+
+    for (const tc of toolCalls) {
+      let parsedInput: Record<string, unknown>;
+      try {
+        parsedInput = JSON.parse(tc.function.arguments) as Record<string, unknown>;
+      } catch {
+        messages.push({
+          role: 'tool',
+          tool_call_id: tc.id,
+          content: `error: tool input for ${tc.function.name} was not valid JSON`,
         });
         continue;
       }
+      opts.onToolUse?.(tc.function.name, parsedInput);
       try {
-        const result = await dispatch(tu.name, tu.input as Record<string, unknown>);
-        toolResults.push({ type: 'tool_result', tool_use_id: tu.id, content: JSON.stringify(result) });
+        const result = await dispatch(tc.function.name, parsedInput);
+        messages.push({
+          role: 'tool',
+          tool_call_id: tc.id,
+          content: JSON.stringify(result),
+        });
       } catch (err) {
-        toolResults.push({
-          type: 'tool_result',
-          tool_use_id: tu.id,
-          is_error: true,
-          content: err instanceof Error ? err.message : String(err),
+        messages.push({
+          role: 'tool',
+          tool_call_id: tc.id,
+          content: `error: ${err instanceof Error ? err.message : String(err)}`,
         });
       }
     }
-    messages.push({ role: 'user', content: toolResults });
   }
 
   if (finalText === '') {
     throw new Error(
-      `chat loop exhausted: model did not produce a final text response within ${maxIter} iterations`,
+      `chat loop exhausted: no final text response within ${maxIter} iterations`,
     );
   }
 

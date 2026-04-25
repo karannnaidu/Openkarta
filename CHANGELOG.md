@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-04-25
+
+### Changed (BREAKING)
+- `@openkarta/orchestrator`: `chatOnce` now uses the standard `chat/completions` wire format. Options changed from `{ apiKey, model? }` to `{ baseURL, model, apiKey? }`. Dropped the `@anthropic-ai/sdk` dependency.
+- `@openkarta/orchestrator`: tool definitions renamed `AnthropicToolDef` → `ToolDef`, field `input_schema` → `parameters`.
+- `@openkarta/cli`: `openkarta chat` now takes `--base-url`, `--model`, `--api-key`. Defaults point at OpenRouter. Reads `OPENKARTA_LLM_API_KEY`, `OPENROUTER_API_KEY`, or `OPENAI_API_KEY` from env.
+
+### Why
+The library is now LLM-vendor-neutral. Point it at any chat-completions endpoint — hosted or local (Ollama, llama.cpp, vLLM). Users can bring their own provider/key/model without us in the loop.
+
 ## 0.2.0 — 2026-04-25
 
 ### Added
