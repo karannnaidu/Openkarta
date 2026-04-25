@@ -1,0 +1,29 @@
+---
+interface Props { title: string }
+const { title } = Astro.props;
+const apiBase = import.meta.env.PUBLIC_API_BASE ?? 'https://registry.openkarta.org';
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script is:inline define:vars={{ apiBase }}>
+      window.__OPENKARTA_API__ = apiBase;
+    </script>
+  </head>
+  <body>
+    <header class="site">
+      <a href="/" class="brand">OpenKarta Registry</a>
+      <nav>
+        <a href="/">Browse</a>
+        <a href="/submit">Submit</a>
+        <a href="/me">My agents</a>
+        <a href="/sign-in">Sign in</a>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="site">Open standard for transactable AI agents.</footer>
+  </body>
+</html>

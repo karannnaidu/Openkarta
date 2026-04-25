@@ -1,14 +1,90 @@
 ---
-const title = 'OpenKarta Registry';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <h1>OpenKarta Registry — coming soon</h1>
-    <p>Self-serve agent registry for the OpenKarta protocol.</p>
-  </body>
-</html>
+<BaseLayout title="OpenKarta Registry">
+  <h1>OpenKarta Registry</h1>
+  <p>Discover OpenKarta-conformant agents. <a href="/submit">List your own agent →</a></p>
+
+  <form class="filters" id="filters">
+    <select name="itemType">
+      <option value="">Any item type</option>
+      <option value="product">Product</option>
+      <option value="stay">Stay</option>
+      <option value="flight">Flight</option>
+      <option value="bus">Bus</option>
+      <option value="service">Service</option>
+    </select>
+    <input name="country" placeholder="Country (IN, US…)" maxlength="2" />
+    <input name="city" placeholder="City" />
+    <select name="tier">
+      <option value="">Any tier</option>
+      <option value="lite">Lite</option>
+      <option value="http">HTTP</option>
+      <option value="agentic">Agentic</option>
+    </select>
+    <label>
+      <input type="checkbox" name="includeDelisted" /> Show delisted
+    </label>
+    <button type="submit">Apply</button>
+  </form>
+
+  <div id="error" class="error" style="display:none"></div>
+  <div id="empty" style="display:none">No agents match these filters.</div>
+  <div id="loading">Loading…</div>
+  <div id="results"></div>
+
+  <script>
+    import { listAgents } from '../lib/api.ts';
+
+    const $ = (id) => document.getElementById(id);
+    const fmt = (date) => date ? new Date(date).toLocaleDateString() : '—';
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    function render(items) {
+      if (items.length === 0) {
+        $('empty').style.display = '';
+        $('results').innerHTML = '';
+        return;
+      }
+      $('empty').style.display = 'none';
+      const rows = items.map((a) => `
+        <tr>
+          <td><a href="/agent?id=${encodeURIComponent(a.agentId)}">${escapeHtml(a.displayName)}</a><div class="tier">${escapeHtml(a.agentId)} • ${escapeHtml(a.tier)}</div></td>
+          <td>${a.supportedItemTypes.map(escapeHtml).join(', ')}</td>
+          <td>${(a.regions ?? []).map((r) => escapeHtml(r.country) + (r.city ? ' / ' + escapeHtml(r.city) : '')).join(', ') || '—'}</td>
+          <td><span class="badge badge--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></td>
+          <td>${fmt(a.lastVerifiedAt)}</td>
+        </tr>`).join('');
+      $('results').innerHTML = `<table><thead><tr><th>Agent</th><th>Item types</th><th>Region</th><th>Health</th><th>Last verified</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    async function load(query) {
+      $('error').style.display = 'none';
+      $('loading').style.display = '';
+      try {
+        const page = await listAgents(query);
+        render(page.items);
+      } catch (err) {
+        $('error').textContent = err.message ?? 'Request failed';
+        $('error').style.display = '';
+        $('results').innerHTML = '';
+      } finally {
+        $('loading').style.display = 'none';
+      }
+    }
+
+    function readForm() {
+      const f = $('filters');
+      const data = new FormData(f);
+      const q = {};
+      for (const [k, v] of data.entries()) {
+        if (k === 'includeDelisted') { if (v) q.include = 'delisted'; continue; }
+        if (typeof v === 'string' && v.length > 0) q[k] = v;
+      }
+      return q;
+    }
+
+    $('filters').addEventListener('submit', (e) => { e.preventDefault(); load(readForm()); });
+    load({});
+  </script>
+</BaseLayout>
