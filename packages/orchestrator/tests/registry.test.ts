@@ -47,8 +47,74 @@ describe('filterAgents', () => {
 });
 
 describe('DEFAULT_REGISTRY_URL', () => {
-  it('points to the canonical Stage-1 registry', () => {
+  it('points to the hosted registry', () => {
     expect(DEFAULT_REGISTRY_URL).toMatch(/^https:\/\//);
-    expect(DEFAULT_REGISTRY_URL).toContain('/registry/agents.json');
+    expect(DEFAULT_REGISTRY_URL).toContain('registry.openkarta.org');
+    expect(DEFAULT_REGISTRY_URL).toMatch(/\/v1\/agents$/);
+  });
+});
+
+describe('loadRegistry — hosted shape', () => {
+  function makeFetch(pages: Array<{ items: unknown[]; nextCursor?: string | null }>): typeof fetch {
+    let call = 0;
+    return (async (input: RequestInfo | URL) => {
+      const url = new URL(typeof input === 'string' ? input : (input as URL).toString());
+      const cursor = url.searchParams.get('cursor');
+      const expected = call === 0 ? null : pages[call - 1]?.nextCursor ?? null;
+      if (cursor !== expected) {
+        throw new Error(`unexpected cursor at call ${call}: got ${cursor}, expected ${expected}`);
+      }
+      const body = pages[call] ?? { items: [], nextCursor: null };
+      call += 1;
+      return new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json' } });
+    }) as typeof fetch;
+  }
+
+  const baseListing = {
+    agentId: 'halcyon-shop',
+    displayName: 'Halcyon Shop',
+    baseUrl: 'https://halcyon.example.com',
+    tier: 'http' as const,
+    supportedItemTypes: ['product'],
+    verificationStatus: 'verified',
+    healthStatus: 'healthy',
+    createdAt: '2026-04-24T10:00:00.000Z',
+  };
+
+  it('paginates through cursor pages and projects to static shape', async () => {
+    const fetchImpl = makeFetch([
+      { items: [{ ...baseListing, agentId: 'a-one' }], nextCursor: 'c1' },
+      { items: [{ ...baseListing, agentId: 'a-two' }], nextCursor: null },
+    ]);
+    const reg = await loadRegistry({ url: 'https://example.test/v1/agents', fetchImpl });
+    expect(reg.version).toBe('0.1');
+    expect(reg.agents.map((a) => a.agentId)).toEqual(['a-one', 'a-two']);
+    expect(reg.agents[0].verified).toBe(true);
+    expect(reg.agents[0].addedAt).toBe('2026-04-24');
+  });
+
+  it('filters out delisted agents', async () => {
+    const fetchImpl = makeFetch([
+      {
+        items: [
+          { ...baseListing, agentId: 'a-live' },
+          { ...baseListing, agentId: 'a-gone', healthStatus: 'delisted' },
+        ],
+        nextCursor: null,
+      },
+    ]);
+    const reg = await loadRegistry({ url: 'https://example.test/v1/agents', fetchImpl });
+    expect(reg.agents.map((a) => a.agentId)).toEqual(['a-live']);
+  });
+
+  it('marks unverified entries as verified=false', async () => {
+    const fetchImpl = makeFetch([
+      {
+        items: [{ ...baseListing, agentId: 'a-pending', verificationStatus: 'pending' }],
+        nextCursor: null,
+      },
+    ]);
+    const reg = await loadRegistry({ url: 'https://example.test/v1/agents', fetchImpl });
+    expect(reg.agents[0].verified).toBe(false);
   });
 });
