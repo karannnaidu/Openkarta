@@ -246,7 +246,7 @@ Pick A if budget allows; B is the safe default.
 >
 > **Federated, not platformed.** No gatekeeper. No "preferred partner" tier. Submit to the public registry, get listed.
 >
-> **On a path to a foundation.** The OpenKarta project's core maintainers run the registry today. By v1.1, stewardship transfers to the OpenKarta Foundation or to an established neutral host (Linux Foundation, OpenJS, ONDC). The handover contract is part of v1.0 — we don't ship v1.0 without a written succession path.
+> **On a path to a foundation.** The OpenKarta project's core maintainers run the registry today, under a written neutrality covenant (see `docs/governance.md`). By **v2.0**, stewardship transfers to the OpenKarta Foundation or to an established neutral host (Linux Foundation, OpenJS, ONDC). The handover contract is part of v1.0 — we don't ship v1.0 without a written succession path.
 >
 > **CTA:** Read the foundation roadmap → `/foundation`
 
@@ -366,9 +366,9 @@ This page is the **public face of Plan 03** — design must support both pre-Pla
 **Hero:** "Why this is structured to outlast its founders."
 
 **Sections:**
-1. The neutrality covenant — short, plain-English document, with a link to the full markdown source on GitHub.
-2. Current governance — who runs it today (the OpenKarta project's core maintainers), how decisions get made, where to find the meeting notes.
-3. The handover roadmap — milestone-by-milestone path to foundation incorporation OR transfer to neutral host. (Pull from ROADMAP.md §4a.)
+1. The neutrality covenant — short, plain-English document. The canonical source is `docs/governance.md` in the repo; this page renders an excerpt + a "read the full covenant" link.
+2. Current governance — who runs it today (the OpenKarta project's core maintainers), how decisions get made, where to find the meeting notes. **v0.1 reality:** OpenKarta-the-company runs the registry under the published covenant. **v2.0 target:** incorporated foundation or transfer to neutral host.
+3. The handover roadmap — milestone-by-milestone path to foundation incorporation OR transfer to neutral host, targeting **v2.0**. Pull milestones from the v2.0 section of `docs/governance.md` (and cross-reference `ROADMAP.md` §4a).
 4. How to get involved — three tiers: comment on RFCs (low), join a working group (medium), become a maintainer (high).
 5. Contact: `foundation@openkarta.org`.
 
@@ -407,6 +407,8 @@ Auto-generated from package CHANGELOG.md files + protocol RFCs. Each entry: vers
 ### 5.12 `/legal/*`
 
 Standard. Use a plain template (Tailwind UI / shadcn) — do not over-design.
+
+**`/legal/security` content source:** the disclosure policy section (reporting address, 90-day window, hall of fame, advisory channel). Canonical source: the **Disclosure policy** subsection of the security docs. Today this lives in `docs/security.md` on `main`; the deeper threat model lives in `docs/security-model.md` on the feature branch and belongs on `docs.openkarta.org`, not on the marketing site. When those two docs are reconciled (see governance backlog), point this page at the surviving file.
 
 ### 5.13 `/404`
 
