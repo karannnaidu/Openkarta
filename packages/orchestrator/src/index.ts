@@ -18,3 +18,5 @@ export { createDispatcher } from './llm/dispatcher.js';
 export type { DispatchFn } from './llm/dispatcher.js';
 export { newState } from './llm/memory.js';
 export type { ConversationState } from './llm/memory.js';
+export { chatOnce } from './llm/chat.js';
+export type { ChatTurn, ChatLoopOptions } from './llm/chat.js';

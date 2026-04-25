@@ -8,8 +8,8 @@ export const TOOL_NAMES = [
 
 export interface AnthropicToolDef {
   name: string;
-  description: string;
-  input_schema: { type: 'object'; properties: Record<string, unknown>; required?: string[] };
+  description?: string;
+  input_schema: { type: 'object'; properties?: unknown | null; required?: string[] | null; [k: string]: unknown };
 }
 
 const itemTypeEnum = z.enum(['product', 'stay', 'flight', 'bus', 'service']);
