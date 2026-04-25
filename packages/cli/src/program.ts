@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import { searchCommand } from './commands/search.js';
+import { cartCommand } from './commands/cart.js';
 
 export function buildProgram(): Command {
   const program = new Command();
@@ -9,5 +10,6 @@ export function buildProgram(): Command {
     .version('0.2.0');
 
   program.addCommand(searchCommand());
+  program.addCommand(cartCommand());
   return program;
 }
