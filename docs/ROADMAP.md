@@ -85,7 +85,7 @@ These aren't single plans. They thread through several plans.
 |---|---|
 | **Hosted infrastructure** | Registry API, conformance dashboard, demo agents, web app — all on Cloudflare Pages + Workers + D1 (or Fly.io for stateful workloads). |
 | **Payments** | Razorpay Routes (India) + Stripe Connect (everywhere else) live in production. Settlement webhooks. GST invoice generation. Merchant-of-Record licence is **out of scope** for v1.0 (per spec §5 — year 2+). |
-| **Governance & Foundation handover** | OpenKarta Foundation incorporated (see §4a). Charter, neutrality covenant, registry-operator agreement signed. Calmosis is the interim operator until incorporation; foundation takes over by v1.1. |
+| **Governance & Foundation handover** | OpenKarta Foundation incorporated (see §4a). Charter, neutrality covenant, registry-operator agreement signed. The project's core maintainers run the registry as interim operators until incorporation; the foundation takes over by v1.1. |
 | **Security** | Independent third-party audit of the protocol surface (signing, delegation, quote tokens). Threat model updated. CVE-disclosure process documented. |
 | **Docs site** | Migrate from README files to `docs.openkarta.org` (Mintlify or Docusaurus). Versioned per protocol version. |
 | **Observability & SLOs** | Hosted registry SLOs published (99.9% uptime, p95 < 200ms). Status page at `status.openkarta.org`. Incident runbook. |
@@ -93,7 +93,7 @@ These aren't single plans. They thread through several plans.
 | **Hires** (per spec §10) | 1 protocol engineer (full-time on the rails), 1 mobile engineer (iOS), 1 BD lead (LOIs and platform integrations). At minimum 2 of the 3 on payroll by v1.0. |
 
 ### 4a. Foundation handover model
-The neutrality story (spec §2) requires the registry, protocol spec, and conformance suite to eventually live with a neutral entity, not Calmosis. **Until v1.0, Calmosis is the interim operator** — we host, we publish, we sign badges. **By v1.1, OpenKarta Foundation either incorporates** as a Section 8 non-profit in India with a Delaware C-corp parent, **or transfers stewardship to an existing neutral host** — candidates: Linux Foundation, OpenJS Foundation, ONDC. The handover contract is part of v1.0 — we do not ship v1.0 without a written succession path.
+The neutrality story (spec §2) requires the registry, protocol spec, and conformance suite to eventually live with a neutral entity. **Until v1.0, the OpenKarta project's core maintainers run the registry as interim operators** — we host, we publish, we sign badges, accountable to the project's governance docs. **By v1.1, OpenKarta Foundation either incorporates** as a Section 8 non-profit in India with a Delaware C-corp parent, **or transfers stewardship to an existing neutral host** — candidates: Linux Foundation, OpenJS Foundation, ONDC. The handover contract is part of v1.0 — we do not ship v1.0 without a written succession path.
 
 ---
 
