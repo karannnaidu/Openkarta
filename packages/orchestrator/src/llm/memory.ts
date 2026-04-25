@@ -1,6 +1,5 @@
 import type { OrchestratorCart } from '../cart.js';
-import type { Quote } from '@openkarta/spec';
-import type { ItemType } from '@openkarta/spec';
+import type { ItemType, Quote } from '@openkarta/spec';
 
 export interface ConversationState {
   cart?: OrchestratorCart;
