@@ -1,0 +1,22 @@
+{
+  "name": "@openkarta/registry-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenKarta hosted registry — public dashboard (Astro static site)",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "clean": "rm -rf dist .astro .turbo"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "@openkarta/registry-shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

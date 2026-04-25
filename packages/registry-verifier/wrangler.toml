@@ -1,0 +1,17 @@
+name = "registry-verifier"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "openkarta-registry"
+database_id = "REPLACE_WITH_D1_ID"
+
+[[queues.consumers]]
+queue = "openkarta-verify"
+max_batch_size = 10
+max_batch_timeout = 30
+
+# Secrets (set via `wrangler secret put`):
+#   RESEND_API_KEY

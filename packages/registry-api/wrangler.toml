@@ -1,0 +1,24 @@
+name = "registry-api"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "openkarta-registry"
+database_id = "REPLACE_WITH_D1_ID"
+migrations_dir = "migrations"
+
+[[queues.producers]]
+binding = "VERIFY_QUEUE"
+queue = "openkarta-verify"
+
+[vars]
+PUBLIC_BASE_URL = "https://registry.openkarta.org"
+WEB_BASE_URL    = "https://registry.openkarta.org"
+
+# Secrets (set via `wrangler secret put`):
+#   RESEND_API_KEY
+#   GITHUB_OAUTH_CLIENT_ID
+#   GITHUB_OAUTH_CLIENT_SECRET
+#   SESSION_SECRET

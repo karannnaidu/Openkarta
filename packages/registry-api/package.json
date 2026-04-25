@@ -1,0 +1,29 @@
+{
+  "name": "@openkarta/registry-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenKarta hosted registry — Cloudflare Worker (HTTP API)",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .wrangler .turbo"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "zod": "^3.23.0",
+    "@openkarta/registry-shared": "workspace:*",
+    "@openkarta/spec": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "@cloudflare/vitest-pool-workers": "^0.5.0",
+    "wrangler": "^3.78.0",
+    "vitest": "^2.1.0",
+    "typescript": "^5.4.5"
+  }
+}

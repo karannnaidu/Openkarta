@@ -1,0 +1,26 @@
+{
+  "name": "@openkarta/registry-cron",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenKarta hosted registry — Cloudflare Worker (scheduled re-verify enqueue + git-mirror snapshot)",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .wrangler .turbo"
+  },
+  "dependencies": {
+    "@openkarta/registry-shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "@cloudflare/vitest-pool-workers": "^0.5.0",
+    "wrangler": "^3.78.0",
+    "vitest": "^2.1.0",
+    "typescript": "^5.4.5"
+  }
+}
