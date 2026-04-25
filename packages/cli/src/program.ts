@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { searchCommand } from './commands/search.js';
 
 export function buildProgram(): Command {
   const program = new Command();
@@ -7,9 +8,6 @@ export function buildProgram(): Command {
     .description('OpenKarta consumer CLI — discover agents, build carts, check out')
     .version('0.2.0');
 
-  program.command('search')
-    .description('not yet implemented')
-    .action(() => { throw new Error('not implemented'); });
-
+  program.addCommand(searchCommand());
   return program;
 }
