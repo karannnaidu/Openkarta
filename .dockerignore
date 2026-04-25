@@ -1,0 +1,53 @@
+# Root .dockerignore — used when fly deploys from repo root with
+#   --config packages/reference-agent-shop/fly.toml
+#   --dockerfile packages/reference-agent-shop/Dockerfile
+#
+# The Dockerfile copies pnpm-lock.yaml, pnpm-workspace.yaml, package.json,
+# turbo.json, tsconfig.base.json, and the packages/ tree. Everything else is
+# noise that bloats the build context (and on Windows, node_modules contains
+# .bin/ symlinks with file modes that crash the tar packer).
+
+# Dependencies — pnpm install reinstalls these inside the image
+node_modules
+**/node_modules
+
+# Build output — built fresh inside the image
+**/dist
+**/build
+**/.turbo
+**/coverage
+
+# Local tooling caches
+.next
+.cache
+
+# Source control
+.git
+.gitignore
+.github
+
+# Editor / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+*.swp
+
+# Docs and meta — not needed at runtime
+docs
+web
+registry
+README.md
+LICENSE
+SECURITY.md
+CONTRIBUTING.md
+CHANGELOG.md
+*.md
+
+# Environment files — Fly secrets handle this
+.env
+.env.*
+
+# Temp
+tmp
+*.log

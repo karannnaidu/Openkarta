@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenKarta — the open agentic commerce protocol</title>
+  <meta name="description" content="OpenKarta is the open, MIT-licensed protocol for agentic commerce. Eight verbs, five item types, one contract — across goods, stays, flights, buses, and services." />
+  <meta name="theme-color" content="#ffffff" />
+
+  <meta property="og:title" content="OpenKarta — the open agentic commerce protocol" />
+  <meta property="og:description" content="Eight verbs. Five item types. One open contract for every category." />
+  <meta property="og:url" content="https://openkarta.org" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-text">OpenKarta</span>
+      </a>
+      <nav class="nav-links">
+        <a href="https://github.com/karannnaidu/Openkarta/blob/main/docs/protocol/v0.1.md">Protocol</a>
+        <a href="https://github.com/karannnaidu/Openkarta/tree/main/registry">Registry</a>
+        <a href="https://www.npmjs.com/org/openkarta">npm</a>
+        <a href="https://github.com/karannnaidu/Openkarta" class="nav-cta">GitHub →</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Protocol v0.1 · MIT licensed · live on npm</p>
+        <h1>The open contract for <span class="accent">agentic commerce</span>.</h1>
+        <p class="lede">
+          Eight verbs. Five item types. One typed protocol any AI agent and any merchant can speak —
+          across goods, stays, flights, buses, and services. No platform tax. No proprietary SDK. No lock-in.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/karannnaidu/Openkarta/blob/main/docs/quickstart-agent-author.md">Expose your catalogue →</a>
+          <a class="btn btn-ghost" href="https://github.com/karannnaidu/Openkarta/blob/main/docs/quickstart-integrator.md">Build a consumer agent</a>
+        </div>
+        <pre class="hero-code"><code><span class="muted">$</span> npm install @openkarta/sdk-node @openkarta/spec</code></pre>
+      </div>
+    </section>
+
+    <section class="video-section">
+      <div class="container">
+        <div class="video-header">
+          <p class="eyebrow">Watch · 2 min</p>
+          <h2 class="section-title">See the protocol end to end.</h2>
+          <p class="section-lede">A two-minute walkthrough: a consumer agent discovers a merchant, builds a cart, gets a signed quote, checks out, and tracks the order — all over the eight verbs.</p>
+        </div>
+
+        <div class="video-frame" aria-label="OpenKarta protocol walkthrough video — coming soon">
+          <!--
+            Replace this block with the embed when the video is ready, e.g.:
+
+            <iframe
+              src="https://www.youtube.com/embed/VIDEO_ID"
+              title="OpenKarta protocol walkthrough"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          -->
+          <div class="video-placeholder">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+                <path d="M8 5v14l11-7z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="video-placeholder-label">Walkthrough video — coming soon</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-soft">
+      <div class="container">
+        <h2 class="section-title">Why open matters here.</h2>
+        <p class="section-lede">
+          Agentic commerce will route trillions of dollars in the next decade. If a single closed SDK owns the contract between agents and merchants, it owns the economy. OpenKarta is the alternative.
+        </p>
+
+        <div class="grid-4">
+          <div class="card">
+            <div class="card-num">01</div>
+            <h3>MIT, forever</h3>
+            <p>The spec, the SDK, the reference agents, the conformance harness — all MIT. Fork it, embed it, ship it. No proprietary surface to negotiate around.</p>
+          </div>
+          <div class="card">
+            <div class="card-num">02</div>
+            <h3>Multi-language by design</h3>
+            <p>Today: Node SDK. Tomorrow: any language with HTTP and HMAC. The protocol is the contract — not the SDK. Implementations follow.</p>
+          </div>
+          <div class="card">
+            <div class="card-num">03</div>
+            <h3>Federated registry</h3>
+            <p>Agents register themselves to a public, version-controlled list. No gatekeeper, no platform fee, no &ldquo;preferred partner&rdquo; tier.</p>
+          </div>
+          <div class="card">
+            <div class="card-num">04</div>
+            <h3>Signed, not trusted</h3>
+            <p>Quote tokens are HMAC-signed end-to-end. Conformance badges are HMAC-signed. Merchants never re-price between quote and checkout.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">One contract. Every category.</h2>
+
+        <div class="split">
+          <div class="split-left">
+            <h3>The 8 verbs</h3>
+            <table class="verbs">
+              <tbody>
+                <tr><td><code>discover</code></td><td>Read a merchant's capabilities manifest</td></tr>
+                <tr><td><code>search</code></td><td>Discriminated query by item type</td></tr>
+                <tr><td><code>get</code></td><td>Single-item lookup</td></tr>
+                <tr><td><code>quote</code></td><td>Price a homogeneous cart, get a signed token</td></tr>
+                <tr><td><code>checkout</code></td><td>Place an order against the signed quote</td></tr>
+                <tr><td><code>status</code></td><td>Read order + fulfilment state</td></tr>
+                <tr><td><code>cancel</code></td><td>Cancel an order with reason</td></tr>
+                <tr><td><code>return</code></td><td>Initiate a refund</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="split-right">
+            <h3>The 5 item types</h3>
+            <ul class="types">
+              <li><strong>product</strong><span>physical or digital goods — instant, same-day, scheduled, pickup, standard</span></li>
+              <li><strong>stay</strong><span>hotels, homestays, apartments, villas, hostels — multi-night booking</span></li>
+              <li><strong>flight</strong><span>air travel with carriers, fare classes, baggage</span></li>
+              <li><strong>bus</strong><span>inter-city bus with operators, seat classes, boarding</span></li>
+              <li><strong>service</strong><span>appointments at-customer, at-provider, online, or venue</span></li>
+            </ul>
+            <p class="footnote">Carts are homogeneous: every line shares the same <code>itemType</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-soft">
+      <div class="container">
+        <h2 class="section-title">Three ways to participate.</h2>
+
+        <div class="tier-grid">
+          <div class="tier-card">
+            <div class="tier-name">Lite</div>
+            <div class="tier-time">~1 hour</div>
+            <p>Publish a markdown table at a public URL. We crawl it, host it, route discoveries to you.</p>
+            <p class="tier-for">For the corner shop with a Google Sheet.</p>
+          </div>
+          <div class="tier-card tier-featured">
+            <div class="tier-name">HTTP</div>
+            <div class="tier-time">~1 day</div>
+            <p>Implement the eight verbs over HTTPS. Get full quote, checkout, fulfilment, returns. This is the supported path.</p>
+            <p class="tier-for">For most merchants.</p>
+          </div>
+          <div class="tier-card">
+            <div class="tier-name">Agentic</div>
+            <div class="tier-time">~1 week</div>
+            <p>Expose a stateful, MCP-equivalent surface for conversational checkout flows.</p>
+            <p class="tier-for">For brands building their own agent UX.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Ready to ship.</h2>
+        <p class="section-lede">
+          Seven npm packages. Three reference agents. A signed conformance badge. A demo CLI that runs end-to-end flows against any conformant agent. v0.1.0 is live today.
+        </p>
+
+        <div class="install-grid">
+          <div>
+            <h4>For agent authors</h4>
+            <pre><code><span class="muted"># 1. Clone a reference agent</span>
+git clone https://github.com/karannnaidu/Openkarta.git
+cp -R packages/reference-agent-shop packages/agent-myshop
+
+<span class="muted"># 2. Replace the fixtures</span>
+$EDITOR packages/agent-myshop/src/fixtures/
+
+<span class="muted"># 3. Prove conformance</span>
+npx openkarta-conformance \
+  --target https://api.myshop.example.com</code></pre>
+          </div>
+          <div>
+            <h4>For consumer agents</h4>
+            <pre><code><span class="muted"># Install the typed client</span>
+npm install @openkarta/sdk-node @openkarta/spec
+
+<span class="muted"># Discover, search, quote, checkout</span>
+import { createClient } from '@openkarta/sdk-node';
+
+const agent = createClient({
+  baseUrl: 'https://halcyon-shop.fly.dev',
+});
+const manifest = await agent.discover();</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <h2>The contract should be open. The competition should be on service.</h2>
+        <p>OpenKarta is run by independent contributors and is on a path to neutral foundation governance. Help shape v0.2.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/karannnaidu/Openkarta">Star on GitHub</a>
+          <a class="btn btn-ghost" href="mailto:hello@openkarta.org">hello@openkarta.org</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <span class="brand-text">OpenKarta</span>
+        <p class="footer-note">MIT &copy; 2026 OpenKarta contributors.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h5>Spec</h5>
+          <a href="https://github.com/karannnaidu/Openkarta/blob/main/docs/protocol/v0.1.md">Protocol v0.1</a>
+          <a href="https://github.com/karannnaidu/Openkarta/blob/main/docs/quickstart-agent-author.md">Agent author quickstart</a>
+          <a href="https://github.com/karannnaidu/Openkarta/blob/main/docs/quickstart-integrator.md">Integrator quickstart</a>
+        </div>
+        <div>
+          <h5>Code</h5>
+          <a href="https://github.com/karannnaidu/Openkarta">GitHub</a>
+          <a href="https://www.npmjs.com/org/openkarta">npm packages</a>
+          <a href="https://github.com/karannnaidu/Openkarta/tree/main/registry">Registry</a>
+        </div>
+        <div>
+          <h5>Community</h5>
+          <a href="https://github.com/karannnaidu/Openkarta/blob/main/CONTRIBUTING.md">Contribute</a>
+          <a href="https://github.com/karannnaidu/Openkarta/blob/main/SECURITY.md">Security</a>
+          <a href="mailto:hello@openkarta.org">hello@openkarta.org</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

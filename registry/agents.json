@@ -1,0 +1,22 @@
+{
+  "$schema": "./schema.json",
+  "version": "0.1",
+  "updated": "2026-04-25",
+  "agents": [
+    {
+      "agentId": "halcyon-shop",
+      "displayName": "Halcyon Shop (reference)",
+      "description": "Reference quick-commerce agent shipped with the OpenKarta repo. Demo only — not a real merchant.",
+      "baseUrl": "https://halcyon-shop.fly.dev",
+      "manifestUrl": "https://halcyon-shop.fly.dev/v0/discover",
+      "tier": "http",
+      "supportedItemTypes": ["product"],
+      "regions": [{ "country": "IN" }],
+      "publicKey": null,
+      "badgeUrl": null,
+      "tags": ["reference", "demo"],
+      "addedAt": "2026-04-25",
+      "verified": true
+    }
+  ]
+}

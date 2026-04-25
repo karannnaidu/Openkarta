@@ -70,12 +70,34 @@ The reference agents in this repo are all `http` tier. The conformance harness a
 - [**Agent author quickstart**](docs/quickstart-agent-author.md) — expose your catalogue with the 1-day HTTP path.
 - [**Protocol v0.1 reference**](docs/protocol/v0.1.md) — every endpoint, every field, every error.
 
+## Try the live demo
+
+A reference shop agent is deployed at **<https://halcyon-shop.fly.dev>** so you can probe the protocol without setting anything up:
+
+```bash
+curl https://halcyon-shop.fly.dev/v0/discover
+
+npx -y -p @openkarta/conformance-tests openkarta-conformance \
+  --target https://halcyon-shop.fly.dev
+```
+
+Demo only — in-memory state, scales to zero between requests, do not point real consumer agents at it.
+
+## Registry
+
+Conformant agents are listed in [`registry/agents.json`](registry/) — a static, version-controlled list anyone can submit to via PR. See [`registry/README.md`](registry/README.md) for the submission process. A hosted registry service with search and badge verification is planned for v0.2 (see [Plan 08](docs/superpowers/plans/)).
+
+## Landing page
+
+The marketing site at <https://openkarta.org> is plain HTML/CSS in [`web/`](web/) — Cloudflare Pages, no build step. PRs welcome.
+
 ## Conformance badge
 
 Run the harness against any agent and embed the resulting badge in a README:
 
 ```bash
-npx openkarta-conformance --target https://your-agent.example.com --json > badge.json
+npx -y -p @openkarta/conformance-tests openkarta-conformance \
+  --target https://your-agent.example.com --json > badge.json
 ```
 
 ```markdown
