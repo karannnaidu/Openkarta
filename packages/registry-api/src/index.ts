@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { magicLinkRouter } from './auth/magic-link.js';
 import { meRouter } from './auth/me.js';
+import { githubRouter } from './auth/github.js';
 import { makeResendClient, type EmailClient } from './email/resend.js';
 
 export type Bindings = {
@@ -33,5 +34,6 @@ app.get('/health', (c) => c.json({ ok: true }));
 
 app.route('/auth', magicLinkRouter((env) => emailClientFactory(env)));
 app.route('/auth', meRouter());
+app.route('/auth', githubRouter());
 
 export default app;
