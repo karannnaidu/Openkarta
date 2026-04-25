@@ -1,6 +1,8 @@
 node_modules/
 dist/
 .turbo/
+.astro/
+.wrangler/
 *.log
 *.tsbuildinfo
 *.rtf
