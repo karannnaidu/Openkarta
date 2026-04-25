@@ -161,9 +161,6 @@ importers:
         specifier: ^3.23.0
         version: 3.25.76
     devDependencies:
-      '@openkarta/reference-agent-shop':
-        specifier: workspace:*
-        version: link:../reference-agent-shop
       '@types/node':
         specifier: ^25.6.0
         version: 25.6.0

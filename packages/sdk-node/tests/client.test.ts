@@ -1,22 +1,64 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { bootAgent, loadFixtures } from '@openkarta/reference-agent-shop/dist/agent.js';
-import { createClient } from '../src/client.js';
+import type { FastifyInstance } from 'fastify';
+import { createServer, type Handlers } from '../src/server.js';
+import { createClient, OpenKartaError } from '../src/index.js';
 
+// Inline test agent — avoids a workspace dep on @openkarta/reference-agent-shop
+// (which itself depends on sdk-node, so importing it here would cycle).
+// Stub handlers mirror the shape used by packages/sdk-node/tests/server.test.ts.
+const stubHandlers: Handlers = {
+  async discover() {
+    return {
+      agentId: 'test-agent',
+      displayName: 'Test Agent',
+      protocolVersion: '0.1',
+      tier: 'http',
+      baseUrl: 'http://localhost:0',
+      actions: ['discover', 'search', 'get', 'quote', 'checkout', 'status', 'cancel', 'return'],
+      supportedItemTypes: ['product'],
+      paymentRails: ['razorpay_routes'],
+      languages: ['en'],
+      regions: [{ country: 'IN' }],
+      inventoryVolatility: 'realtime',
+      catalogSize: 'small',
+      priceRange: { minMinor: 0, maxMinor: 1, currency: 'INR' },
+      productCapabilities: {
+        categories: ['x'],
+        serviceAreas: [{ country: 'IN' }],
+        deliveryModes: ['standard'],
+        returnWindow: 7,
+      },
+    };
+  },
+  async search() {
+    return { items: [{ type: 'product', id: 'p1', title: 'Coffee', priceMinor: 100, currency: 'INR' }] };
+  },
+  async get() { throw Object.assign(new Error('not found'), { code: 'item_not_found' }); },
+  async quote() { throw Object.assign(new Error('unused'), { code: 'quote_invalid' }); },
+  async checkout() { throw Object.assign(new Error('unused'), { code: 'quote_invalid' }); },
+  async status() { throw Object.assign(new Error('unused'), { code: 'item_not_found' }); },
+  async cancel() { throw Object.assign(new Error('unused'), { code: 'item_not_found' }); },
+  async return() { throw Object.assign(new Error('unused'), { code: 'item_not_found' }); },
+};
+
+let app: FastifyInstance;
 let url: string;
-// loadFixtures resolves the path relative to its own module location (dist/),
-// so './fixtures' points at packages/reference-agent-shop/dist/fixtures/.
-const fx = loadFixtures('./fixtures');
 
 beforeAll(async () => {
-  url = await bootAgent(fx, 0, 'test-secret-32-bytes-________xx');
+  app = createServer({ handlers: stubHandlers, secret: 'test-secret-32-bytes-________xx' });
+  // port: 0 → kernel-assigned ephemeral port; host '127.0.0.1' avoids IPv6 quirks on Windows CI.
+  url = await app.listen({ port: 0, host: '127.0.0.1' });
 });
-afterAll(async () => { /* fastify is closed implicitly when vitest exits */ });
+
+afterAll(async () => {
+  await app.close();
+});
 
 describe('createClient', () => {
   it('discovers a manifest', async () => {
     const client = createClient({ baseUrl: url });
     const manifest = await client.discover();
-    expect(manifest.agentId).toBe('halcyon-shop');
+    expect(manifest.agentId).toBe('test-agent');
     expect(manifest.protocolVersion).toBe('0.1');
   });
 
@@ -41,8 +83,13 @@ describe('createClient', () => {
     });
   });
 
-  it('honours a per-call timeout', async () => {
+  it('honours a per-call timeout with a dedicated `timeout` code', async () => {
     const client = createClient({ baseUrl: url, timeoutMs: 1 });
-    await expect(client.discover()).rejects.toThrow(/timeout|abort/i);
+    // 1ms is reliably shorter than network setup, so the abort fires before the response.
+    await expect(client.discover()).rejects.toBeInstanceOf(OpenKartaError);
+    await expect(client.discover()).rejects.toMatchObject({
+      code:       'timeout',
+      httpStatus: 0,
+    });
   });
 });

@@ -9,18 +9,7 @@ import type {
   Refund,
   SearchQuery,
 } from '@openkarta/spec';
-
-export class OpenKartaError extends Error {
-  constructor(
-    public readonly code: ErrorCode,
-    public readonly httpStatus: number,
-    message: string,
-    public readonly details?: unknown,
-  ) {
-    super(message);
-    this.name = 'OpenKartaError';
-  }
-}
+import { OpenKartaError } from './errors.js';
 
 export interface ClientOptions {
   baseUrl:    string;
@@ -29,12 +18,7 @@ export interface ClientOptions {
   headers?:   Record<string, string>;
   /** Custom fetch implementation; defaults to globalThis.fetch. */
   fetchImpl?: typeof fetch;
-  /** @deprecated use fetchImpl */
-  fetch?:     typeof fetch;
 }
-
-/** @deprecated use {@link ClientOptions} */
-export type ClientOpts = ClientOptions;
 
 export interface SearchResults {
   items: Item[];
@@ -45,6 +29,11 @@ export interface CheckoutInput {
   payment:     { rail?: string; method?: string; ref?: string };
   address?:    unknown;
   quoteToken:  string;
+}
+
+export interface ReturnInput {
+  reason: string;
+  items?: unknown[];
 }
 
 export interface OpenKartaClient {
@@ -61,11 +50,8 @@ export interface OpenKartaClient {
    * accepts an optional `items` array (per-line refund quantity); when omitted the
    * request is treated as a full-order return. Returns a `Refund` record.
    */
-  return:   (orderId: string, reason: string, items?: unknown[]) => Promise<Refund>;
+  return:   (orderId: string, input: ReturnInput) => Promise<Refund>;
 }
-
-/** @deprecated retained for backwards compatibility — use {@link OpenKartaClient}. */
-export type Client = OpenKartaClient;
 
 interface ServerErrorBody {
   error?: {
@@ -81,7 +67,7 @@ const doFetch = async <T = unknown>(
   path: string,
   init: RequestInit = {},
 ): Promise<T> => {
-  const f = opts.fetchImpl ?? opts.fetch ?? globalThis.fetch;
+  const f = opts.fetchImpl ?? globalThis.fetch;
   const headers: Record<string, string> = {
     'content-type': 'application/json',
     ...(opts.userToken ? { 'x-openkarta-user-token': opts.userToken } : {}),
@@ -91,7 +77,7 @@ const doFetch = async <T = unknown>(
 
   const controller = opts.timeoutMs ? new AbortController() : undefined;
   const timer      = controller
-    ? setTimeout(() => controller.abort(new Error('timeout')), opts.timeoutMs)
+    ? setTimeout(() => controller.abort(), opts.timeoutMs)
     : undefined;
 
   let res: Response;
@@ -103,10 +89,10 @@ const doFetch = async <T = unknown>(
     });
   } catch (err) {
     const e = err as Error & { name?: string };
-    if (e?.name === 'AbortError' || /abort/i.test(e?.message ?? '')) {
-      throw new OpenKartaError('internal', 0, `Request aborted: timeout after ${opts.timeoutMs}ms`);
+    if (e?.name === 'AbortError') {
+      throw new OpenKartaError('timeout', 0, `Request aborted: timeout after ${opts.timeoutMs}ms`);
     }
-    throw err;
+    throw new OpenKartaError('network_error', 0, e?.message ?? 'Network request failed');
   } finally {
     if (timer) clearTimeout(timer);
   }
@@ -143,8 +129,8 @@ export const createClient = (opts: ClientOptions): OpenKartaClient => ({
     method: 'POST',
     body:   JSON.stringify({ reason }),
   }),
-  return:   (orderId, reason, items = []) => doFetch<Refund>(opts, `/v0/orders/${encodeURIComponent(orderId)}/return`, {
+  return:   (orderId, input) => doFetch<Refund>(opts, `/v0/orders/${encodeURIComponent(orderId)}/return`, {
     method: 'POST',
-    body:   JSON.stringify({ items, reason }),
+    body:   JSON.stringify({ items: input.items ?? [], reason: input.reason }),
   }),
 });
