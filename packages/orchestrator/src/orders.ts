@@ -1,5 +1,5 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import { homedir } from 'node:os';
 import type { OrderRecord } from './types.js';
 
@@ -10,7 +10,7 @@ export interface OrderStore {
   find(orderId: string): Promise<OrderRecord | undefined>;
 }
 
-const DEFAULT_PATH = `${homedir()}/.openkarta/orders.json`;
+const DEFAULT_PATH = join(homedir(), '.openkarta', 'orders.json');
 
 export function createOrderStore(opts: OrderStoreOptions = {}): OrderStore {
   const file = opts.ordersFile ?? DEFAULT_PATH;
@@ -18,8 +18,10 @@ export function createOrderStore(opts: OrderStoreOptions = {}): OrderStore {
   async function readAll(): Promise<OrderRecord[]> {
     try {
       const raw = await readFile(file, 'utf-8');
-      const parsed = JSON.parse(raw) as { orders?: OrderRecord[] };
-      return Array.isArray(parsed.orders) ? parsed.orders : [];
+      const parsed: unknown = JSON.parse(raw);
+      if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) return [];
+      const orders = (parsed as { orders?: unknown }).orders;
+      return Array.isArray(orders) ? (orders as OrderRecord[]) : [];
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === 'ENOENT') return [];
       throw err;

@@ -35,5 +35,8 @@ describe('checkoutCart', () => {
     expect(order.orderId).toBeTruthy();
     const all = await store.list();
     expect(all.find((o) => o.orderId === order.orderId)).toBeDefined();
+    const reopened = createOrderStore({ ordersFile: join(tmp, 'orders.json') });
+    const persisted = await reopened.list();
+    expect(persisted.find((o) => o.orderId === order.orderId)).toBeDefined();
   });
 });

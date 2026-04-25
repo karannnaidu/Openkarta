@@ -14,6 +14,8 @@ export interface CheckoutInput {
 }
 
 export async function checkoutCart(input: CheckoutInput): Promise<Order> {
+  if (input.cart.lines.length === 0) throw new Error('cannot checkout empty cart');
+
   const client = createClient({
     baseUrl: input.cart.agentBaseUrl,
     timeoutMs: input.timeoutMs ?? 30_000,
