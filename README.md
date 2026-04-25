@@ -70,6 +70,22 @@ The reference agents in this repo are all `http` tier. The conformance harness a
 - [**Agent author quickstart**](docs/quickstart-agent-author.md) — expose your catalogue with the 1-day HTTP path.
 - [**Protocol v0.1 reference**](docs/protocol/v0.1.md) — every endpoint, every field, every error.
 
+## Consumer side (v0.2)
+
+Two new packages let any consumer agent use OpenKarta end-to-end:
+
+| Package | Purpose |
+|---|---|
+| [`@openkarta/orchestrator`](packages/orchestrator/) | Library: registry → search → cart → quote → checkout → status |
+| [`@openkarta/cli`](packages/cli/) | The `openkarta` command-line interface (`openkarta search`, `openkarta chat`, …) |
+
+```bash
+npm install -g @openkarta/cli
+openkarta search --type product --query coffee
+```
+
+See [`docs/orchestrator.md`](docs/orchestrator.md) and [`docs/cli.md`](docs/cli.md).
+
 ## Try the live demo
 
 A reference shop agent is deployed at **<https://halcyon-shop.fly.dev>** so you can probe the protocol without setting anything up:
