@@ -24,7 +24,7 @@ export const executeProductFlow = async (c: Client): Promise<TranscriptStep[]> =
     detail: { firstItemId: itemId, firstTitle: search.items[0]!.title },
   });
 
-  const cart = { cartId: `c_${Math.random().toString(36).slice(2, 8)}`, lines: [{ itemType: 'product', itemId, quantity: 1 }] };
+  const cart = { cartId: `c_${Math.random().toString(36).slice(2, 8)}`, lines: [{ itemType: 'product' as const, itemId, quantity: 1 }] };
   const quote = (await c.quote(cart)) as QuoteRes;
   steps.push({
     step: 3, action: 'quote',

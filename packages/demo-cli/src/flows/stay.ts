@@ -33,7 +33,7 @@ export const executeStayFlow = async (c: Client): Promise<TranscriptStep[]> => {
   const cart = {
     cartId: `c_${Math.random().toString(36).slice(2, 8)}`,
     lines: [{
-      itemType: 'stay',
+      itemType: 'stay' as const,
       itemId,
       checkIn:  '2026-06-01',
       checkOut: '2026-06-04',

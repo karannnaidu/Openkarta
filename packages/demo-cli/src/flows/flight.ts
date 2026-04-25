@@ -33,7 +33,7 @@ export const executeFlightFlow = async (c: Client): Promise<TranscriptStep[]> =>
   const cart = {
     cartId: `c_${Math.random().toString(36).slice(2, 8)}`,
     lines: [{
-      itemType:   'flight',
+      itemType:   'flight' as const,
       itemId,
       passengers: [{ firstName: 'Karan', lastName: 'Singh' }],
     }],
