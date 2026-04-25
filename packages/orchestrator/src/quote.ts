@@ -13,9 +13,9 @@ export async function quoteCart(
     ...(opts.fetchImpl ? { fetchImpl: opts.fetchImpl } : {}),
   });
   const protocolCart: Cart = {
-    cartId: `oc_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    cartId: `oc_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
     lines: cart.lines.map((l) => ({
-      itemType: l.itemType as 'product',
+      itemType: l.itemType,
       itemId: l.itemId,
       quantity: l.quantity,
     })) as Cart['lines'],
@@ -24,6 +24,6 @@ export async function quoteCart(
     return await client.quote(protocolCart);
   } catch (err) {
     if (err instanceof OpenKartaError) throw err;
-    throw new OpenKartaError('network_error', 0, (err as Error).message);
+    throw new OpenKartaError('network_error', 0, err instanceof Error ? err.message : String(err));
   }
 }
