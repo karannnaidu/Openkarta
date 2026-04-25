@@ -8,6 +8,7 @@ dist/
 *.rtf
 .env
 .env.local
+.dev.vars
 coverage/
 .DS_Store
 .vscode/
