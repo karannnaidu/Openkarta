@@ -30,6 +30,11 @@ const RegistryZ = z.object({
   agents: z.array(RegistryAgentZ),
 });
 
+type _RegistryShapeMatches = keyof RegistrySnapshot extends keyof z.infer<typeof RegistryZ>
+  ? true
+  : false;
+const _registryShapeCheck: _RegistryShapeMatches = true;
+
 export interface LoadRegistryInput {
   /** A registry URL to fetch. */
   url?: string;
@@ -39,6 +44,9 @@ export interface LoadRegistryInput {
 }
 
 export async function loadRegistry(input: LoadRegistryInput): Promise<RegistrySnapshot> {
+  if (input.inline !== undefined && input.url !== undefined) {
+    throw new Error('loadRegistry: pass either { url } or { inline }, not both');
+  }
   let raw: string;
   if (input.inline !== undefined) {
     raw = input.inline;
@@ -64,6 +72,9 @@ export interface AgentFilter {
 }
 
 export function filterAgents(agents: RegistryAgent[], filter: AgentFilter): RegistryAgent[] {
+  if (filter.city && !filter.country) {
+    throw new Error('filterAgents: `city` filter requires `country`');
+  }
   return agents.filter((a) => {
     if (!a.supportedItemTypes.includes(filter.itemType)) return false;
     if (filter.tier && a.tier !== filter.tier) return false;
