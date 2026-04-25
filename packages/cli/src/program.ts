@@ -3,6 +3,7 @@ import { searchCommand } from './commands/search.js';
 import { cartCommand } from './commands/cart.js';
 import { checkoutCommand } from './commands/checkout.js';
 import { ordersCommand } from './commands/orders.js';
+import { chatCommand } from './commands/chat.js';
 
 export function buildProgram(): Command {
   const program = new Command();
@@ -15,5 +16,6 @@ export function buildProgram(): Command {
   program.addCommand(cartCommand());
   program.addCommand(checkoutCommand());
   program.addCommand(ordersCommand());
+  program.addCommand(chatCommand());
   return program;
 }
