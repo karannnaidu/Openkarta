@@ -1,10 +1,12 @@
-# Why reception agents
+# Why brand endpoints
 
-A reception agent is the small server a brand stands up that speaks the eight OpenKarta verbs. People keep asking the same question:
+> **First, the naming.** A brand's "endpoints" in OpenKarta are *not* an AI agent and *not* a separate server you have to stand up. They're a **set of eight HTTP routes** the brand exposes — `/v0/discover`, `/v0/search`, `/v0/get`, `/v0/quote`, `/v0/checkout`, `/v0/orders/:id/status`, `/v0/orders/:id/cancel`, `/v0/orders/:id/return`. They can live on the brand's existing API server, on a thin adapter microservice, on a serverless function — wherever it's convenient. No LLM, no inference, no autonomous reasoning. Just routes that follow a contract. Earlier drafts of this project called this layer a "reception agent" or "brand agent"; that was misleading. The consumer side is where the AI lives. The brand side is just additional endpoints.
 
-> Why does the brand need a separate server? Can't ChatGPT or Claude just hit the brand's existing API?
+People keep asking the same question:
 
-This doc is the honest answer — what reception agents are actually for, where the design holds up, and where it doesn't.
+> Why do brands need to expose these *additional* endpoints? Can't ChatGPT or Claude just hit the brand's existing API?
+
+This doc is the honest answer — what the eight brand endpoints are actually for, where the design holds up, and where it doesn't.
 
 ---
 
@@ -15,8 +17,8 @@ A modern brand already has APIs. Shopify stores have Storefront APIs. Booking.co
 So the obvious thing to propose is:
 
 1. The brand publishes its existing OpenAPI spec.
-2. The AI agent reads the spec, calls the endpoints, parses the responses.
-3. We skip the entire "reception agent" layer.
+2. The AI agent reads the spec, calls the routes, parses the responses.
+3. We skip the OpenKarta brand-endpoints layer entirely.
 
 Or even simpler:
 
@@ -28,9 +30,9 @@ These are not bad arguments. They're real, and we should answer them straight.
 
 ---
 
-## What reception agents are actually for
+## What the brand endpoints are actually for
 
-Strip away the diagrams. There is exactly **one** thing that forces a reception agent to exist: **money has to move deterministically.**
+Strip away the diagrams. There is exactly **one** thing that forces these specific endpoints to exist as a contract: **money has to move deterministically.**
 
 Three concrete pieces of that:
 
@@ -38,11 +40,9 @@ Three concrete pieces of that:
 
 When the AI agent says *"the coffee is ₹650, ship to Bangalore"*, the user expects the charge to be ₹650. Not ₹680 because the page got re-fetched. Not ₹650 today and ₹720 at checkout because the cart "expired".
 
-The way OpenKarta does this: the brand returns a **signed quote token** — a short string containing the price, the cart, the expiry, and a cryptographic signature using the brand's private key. The consumer agent passes that token back at checkout. The brand verifies its own signature and *must* honour the price.
+The way OpenKarta does this: the brand's `/v0/quote` endpoint returns a **signed quote token** — a short string containing the price, the cart, the expiry, and a cryptographic signature using the brand's private key. The consumer agent passes that token back to `/v0/checkout`. The brand verifies its own signature and *must* honour the price.
 
-For this to work, the brand needs to hold a signing key and use it on every quote. That key sits on a server the brand controls. That server is the reception agent.
-
-You cannot do this with a generic OpenAPI spec. There's no slot in OpenAPI that says "this field is a signature you must verify before honouring the price". The signing behaviour has to be a contract the brand promises to keep — which is what the protocol is.
+For this to work, the brand's checkout endpoint has to perform that signature verification on every call, and refuse to charge anything other than what the signed quote said. That's a *behaviour*, not just a route shape. You cannot put it in an OpenAPI spec — there's no slot in OpenAPI that says "this field is a signature you must verify before honouring the price". It has to be a contract the brand promises to keep — which is what the protocol is.
 
 ### 2. Commerce semantics that JSON schemas can't carry
 
@@ -69,7 +69,7 @@ The OpenKarta protocol forces idempotency on `checkout`, `cancel`, and `return` 
 
 ## Where the "just use the existing API" argument actually wins
 
-There's a part of the design where the reception agent is **not** strictly necessary, and we should be honest about it: **discovery and search.**
+There's a part of the design where the dedicated OpenKarta endpoints are **not** strictly necessary, and we should be honest about it: **discovery and search.**
 
 For pure read paths — *"who sells coffee in Bangalore?"*, *"what's in stock?"* — you really could:
 
@@ -98,25 +98,25 @@ What this means for the design today:
 
 - The eight verbs and their semantics matter more than the transport. If MCP becomes the transport, fine.
 - The signed-quote / idempotent-checkout / closed-error-enum behaviours are the actual contribution. Those are protocol-shaped, not transport-shaped.
-- A reception agent built on OpenKarta should be straightforward to expose as an MCP server later. We should not paint ourselves into a transport corner.
+- The brand endpoints we ask for today should be straightforward to re-expose as MCP tools later. We should not paint ourselves into a transport corner.
 
 ---
 
-## What a reception agent actually is, in one sentence
+## What "brand endpoints" actually are, in one sentence
 
-> A small, brand-controlled HTTP server that promises eight specific behaviours, signs its quotes, and guarantees safe retries on the verbs that move money.
+> Eight HTTP routes a brand adds to whatever API surface they already run, that together promise specific behaviours — signed quotes, idempotent writes, closed-enum errors — on the verbs that move money.
 
-Not a new product. Not a heavy lift. Often a few hundred lines of code in front of a backend the brand already has. The work isn't standing up a server — it's making the eight specific commitments the protocol asks for, and signing them.
+Not a new product. Not a separate server unless the brand chooses to deploy them that way. Often a few hundred lines of code wrapping a backend the brand already has. The work isn't standing up infrastructure — it's making eight specific commitments the protocol asks for, and signing them.
 
-That signing, that commitment, and the guarantee that every conformant brand makes the *same* commitments — that's the entire reason the layer exists.
+That signing, that commitment, and the guarantee that every conformant brand makes the *same* commitments — that's the entire reason the contract exists.
 
 ---
 
 ## Quick decision rule
 
-When someone asks *"do we really need this?"*, the answer is:
+When someone asks *"do we really need these endpoints?"*, the answer is:
 
 - For **read-only / discovery** flows? Strictly, no. You could scrape and hope.
-- For **anything that takes payment, books inventory, or modifies an order**? Yes. The reception agent is what makes the operation safe to retry, the price safe to trust, and the brand's behaviour safe to assume.
+- For **anything that takes payment, books inventory, or modifies an order**? Yes. The OpenKarta endpoints are what make the operation safe to retry, the price safe to trust, and the brand's behaviour safe to assume.
 
 We are betting OpenKarta on the second category, because that's where the value is — and where doing it wrong is genuinely dangerous.
