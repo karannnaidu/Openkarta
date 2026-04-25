@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
-import { loadRegistry, filterAgents } from '../src/registry.js';
+import { loadRegistry, filterAgents, DEFAULT_REGISTRY_URL } from '../src/registry.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const fixturePath = join(here, '..', 'fixtures', 'agents-fixture.json');
@@ -43,5 +43,12 @@ describe('filterAgents', () => {
     const reg = await loadRegistry({ inline: json });
     const matches = filterAgents(reg.agents, { itemType: 'product', country: 'US' });
     expect(matches).toEqual([]);
+  });
+});
+
+describe('DEFAULT_REGISTRY_URL', () => {
+  it('points to the canonical Stage-1 registry', () => {
+    expect(DEFAULT_REGISTRY_URL).toMatch(/^https:\/\//);
+    expect(DEFAULT_REGISTRY_URL).toContain('/registry/agents.json');
   });
 });

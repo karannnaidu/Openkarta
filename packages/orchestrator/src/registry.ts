@@ -91,3 +91,5 @@ export function filterAgents(agents: RegistryAgent[], filter: AgentFilter): Regi
     return true;
   });
 }
+
+export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/karannnaidu/Openkarta/main/registry/agents.json';
