@@ -31,6 +31,30 @@ const handleThrown = (err: unknown): { status: number; body: unknown } => {
 export const createServer = (opts: CreateServerOpts): FastifyInstance => {
   const app = Fastify({ logger: opts.logger ?? false });
 
+  app.get('/', async (_req, reply) => {
+    let displayName = 'OpenKarta agent';
+    try {
+      const m = (await opts.handlers.discover()) as { displayName?: string; agentId?: string };
+      displayName = m.displayName ?? m.agentId ?? displayName;
+    } catch { /* fall back to default name */ }
+    reply.header('content-type', 'text/html; charset=utf-8');
+    return reply.code(200).send(
+      `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${displayName} — OpenKarta agent</title>` +
+      `<meta name="viewport" content="width=device-width,initial-scale=1">` +
+      `<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:42rem;margin:4rem auto;padding:0 1.25rem;color:#0a0d12;line-height:1.55}` +
+      `h1{font-size:1.5rem;margin:0 0 .5rem}.muted{color:#5b6470}code{background:#f3f5f8;padding:.15rem .4rem;border-radius:.25rem;font-size:.95em}` +
+      `a{color:#0066ff;text-decoration:none}a:hover{text-decoration:underline}ul{padding-left:1.25rem}li{margin:.25rem 0}</style></head><body>` +
+      `<h1>${displayName}</h1>` +
+      `<p class="muted">This is an OpenKarta agent. It speaks the open agentic-commerce protocol over HTTP.</p>` +
+      `<p>Endpoints:</p><ul>` +
+      `<li><a href="/v0/discover"><code>GET /v0/discover</code></a> — capabilities manifest</li>` +
+      `<li><code>POST /v0/search</code> — query items by type</li>` +
+      `<li><code>POST /v0/quote</code> · <code>POST /v0/checkout</code> — cart and order flow</li>` +
+      `</ul><p>Learn more: <a href="https://openkarta.org">openkarta.org</a> · ` +
+      `<a href="https://github.com/karannnaidu/Openkarta">github.com/karannnaidu/Openkarta</a></p></body></html>`,
+    );
+  });
+
   app.get('/v0/discover', async (_req, reply) => {
     try {
       const m = await opts.handlers.discover();
