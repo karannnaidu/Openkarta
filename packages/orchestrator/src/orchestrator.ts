@@ -21,11 +21,13 @@ export function createOrchestrator(opts: OrchestratorOptions = {}): Orchestrator
 
   async function getRegistry(): Promise<RegistrySnapshot> {
     if (registryPromise) return registryPromise;
-    registryPromise = loadRegistry({
+    const p = loadRegistry({
       url: opts.registryUrl ?? DEFAULT_REGISTRY_URL,
       ...(opts.fetchImpl ? { fetchImpl: opts.fetchImpl } : {}),
     });
-    return registryPromise;
+    p.catch(() => { if (registryPromise === p) registryPromise = null; });
+    registryPromise = p;
+    return p;
   }
 
   return {
