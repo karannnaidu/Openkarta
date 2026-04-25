@@ -1,0 +1,23 @@
+import { describe, it, expect } from 'vitest';
+import { buildToolDefs, TOOL_NAMES } from '../src/llm/tool-defs.js';
+
+describe('buildToolDefs', () => {
+  it('produces one definition per orchestrator action', () => {
+    const defs = buildToolDefs();
+    expect(defs.map((d) => d.name).sort()).toEqual([...TOOL_NAMES].sort());
+  });
+
+  it('every def has an input_schema with type:object', () => {
+    for (const d of buildToolDefs()) {
+      expect(d.input_schema.type).toBe('object');
+    }
+  });
+
+  it('view_cart and quote have no required fields', () => {
+    const defs = buildToolDefs();
+    const viewCart = defs.find((d) => d.name === 'view_cart');
+    const quote = defs.find((d) => d.name === 'quote');
+    expect(viewCart?.input_schema.required).toBeUndefined();
+    expect(quote?.input_schema.required).toBeUndefined();
+  });
+});
