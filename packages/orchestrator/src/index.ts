@@ -10,5 +10,5 @@ export type { OrchestratorCart, AddLineInput } from './cart.js';
 export { quoteCart } from './quote.js';
 export { checkoutCart } from './checkout.js';
 export type { CheckoutInput } from './checkout.js';
-export { createOrderStore } from './orders.js';
-export type { OrderStore, OrderStoreOptions } from './orders.js';
+export { createOrderStore, getOrderStatus, cancelOrder, returnOrder } from './orders.js';
+export type { OrderStore, OrderStoreOptions, OrderOpOptions } from './orders.js';
