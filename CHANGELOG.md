@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 — 2026-04-25
+
+### Added
+- `@openkarta/sdk-node`: `createClient(opts)` — typed client wrapping all 8 verbs.
+- `@openkarta/orchestrator` (new): consumer-side library — registry, fan-out search, homogeneous cart, signed-quote checkout, order tracking, Anthropic-bridged chat loop.
+- `@openkarta/cli` (new): `openkarta` CLI with `search / cart / checkout / orders / chat`.
+
+### Docs
+- `docs/orchestrator.md`, `docs/cli.md`.
+
 ## 0.1.0 — 2026-05-?? (unreleased)
 
 Initial public release of OpenKarta.
