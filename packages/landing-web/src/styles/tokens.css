@@ -1,0 +1,66 @@
+/*
+ * OpenKarta landing site — color tokens.
+ * Single source of truth. Edit this file to change the palette.
+ *
+ * Palette: Quiet Sage (sage green accent + sage-tinted surface ladder).
+ * Spec: docs/superpowers/specs/2026-04-26-landing-secondary-color-palette-design.md
+ */
+
+:root {
+  /* Brand accent — Quiet Sage */
+  --color-primary: #4A7C59;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #3D6649;
+  --color-on-primary-container: #DCEAD9;
+  --color-inverse-primary: #A8C8AE;
+  --color-primary-fixed: #DCEAD9;
+  --color-primary-fixed-dim: #A8C8AE;
+  --color-on-primary-fixed: #0F2014;
+  --color-on-primary-fixed-variant: #2F5039;
+  --color-surface-tint: #4A7C59;
+
+  /* Secondary — neutral (unchanged) */
+  --color-secondary: #5F5E5E;
+  --color-on-secondary: #FFFFFF;
+  --color-secondary-container: #E5E2E1;
+  --color-on-secondary-container: #656464;
+  --color-secondary-fixed: #E5E2E1;
+  --color-secondary-fixed-dim: #C9C6C5;
+  --color-on-secondary-fixed: #1C1B1B;
+  --color-on-secondary-fixed-variant: #474646;
+
+  /* Tertiary — neutral (unchanged) */
+  --color-tertiary: #4C4E4F;
+  --color-on-tertiary: #FFFFFF;
+  --color-tertiary-container: #656666;
+  --color-on-tertiary-container: #E4E4E5;
+  --color-tertiary-fixed: #E2E2E2;
+  --color-tertiary-fixed-dim: #C6C6C7;
+  --color-on-tertiary-fixed: #1A1C1C;
+  --color-on-tertiary-fixed-variant: #454747;
+
+  /* Error — standard red (unchanged) */
+  --color-error: #BA1A1A;
+  --color-on-error: #FFFFFF;
+  --color-error-container: #FFDAD6;
+  --color-on-error-container: #93000A;
+
+  /* Surface ladder — sage-tinted */
+  --color-background: #FAFBF9;
+  --color-on-background: #1B1C1C;
+  --color-surface: #FAFBF9;
+  --color-on-surface: #1B1C1C;
+  --color-surface-bright: #FAFBF9;
+  --color-surface-dim: #C7D2C2;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F1F4EF;
+  --color-surface-container: #E8EEE5;
+  --color-surface-container-high: #DCE5D8;
+  --color-surface-container-highest: #CDDAC8;
+  --color-surface-variant: #DCE5D8;
+  --color-on-surface-variant: #434656;
+  --color-inverse-surface: #303031;
+  --color-inverse-on-surface: #F2F0F0;
+  --color-outline: #7A8A78;
+  --color-outline-variant: #C7D2C2;
+}
