@@ -9,9 +9,9 @@ const { lang, filename, inline = false, class: extra = '' } = Astro.props;
 const hasHeader = Boolean(filename || lang);
 ---
 {inline ? (
-  <code class:list={["ok-inline-code font-code-block text-code-block bg-inverse-surface text-inverse-on-surface px-1.5 py-0.5 border border-inverse-surface", extra]}><slot /></code>
+  <code class:list={["ok-inline-code font-code-block text-code-block bg-black text-white px-1.5 py-0.5 border border-inverse-surface", extra]}><slot /></code>
 ) : (
-  <div class:list={["ok-codeblock relative border border-inverse-surface bg-inverse-surface text-inverse-on-surface", extra]}>
+  <div class:list={["ok-codeblock relative border border-inverse-surface bg-black text-white", extra]}>
     {hasHeader ? (
       <div class="flex items-center justify-between border-b border-inverse-on-surface/10 px-4 py-2 gap-4 bg-on-background/30">
         <span class="font-code-block text-code-block text-inverse-on-surface/80 truncate">

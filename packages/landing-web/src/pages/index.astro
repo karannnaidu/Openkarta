@@ -19,35 +19,66 @@ import CodeBlock from '../components/CodeBlock.astro';
       </p>
       <div class="flex flex-wrap gap-4 items-center mb-8">
         <a class="group bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/merchant">Expose your catalogue <span class="ok-arrow inline-block">→</span></a>
-        <a class="group bg-transparent text-primary px-6 py-3 border-2 border-primary hover:bg-primary hover:text-on-primary transition-colors duration-240" href="/developers">Build a consumer agent <span class="ok-arrow inline-block">→</span></a>
+        <a class="group border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/developers">Build a consumer agent <span class="ok-arrow inline-block">→</span></a>
       </div>
       <CodeBlock lang="bash" class="inline-block max-w-full">$ npm install @openkarta/sdk-node @openkarta/spec</CodeBlock>
     </div>
   </section>
 
-  <!-- 1b. Hero video reel -->
+  <!-- 1b. OpenKarta protocol reel — poster only, video fetched on click anywhere -->
   <section class="hidden md:block px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
-    <div class="border border-on-background/10 bg-surface-container-lowest overflow-hidden">
-      <video class="block w-full h-auto" autoplay muted loop playsinline preload="metadata" aria-label="OpenKarta protocol reel">
-        <source src="/hero.mp4" type="video/mp4" />
-      </video>
+    <div
+      id="ok-video"
+      class="relative border border-on-background/10 bg-surface-container-lowest overflow-hidden cursor-pointer group"
+      data-src="/openkarta.mp4"
+      data-poster="/openkarta-poster.jpg"
+      role="button"
+      tabindex="0"
+      aria-label="Play OpenKarta protocol reel"
+    >
+      <img src="/openkarta-poster.jpg" alt="" class="block w-full h-auto" />
+      <div class="absolute inset-0 flex items-center justify-center bg-black/25 group-hover:bg-black/35 transition-colors">
+        <span class="flex items-center justify-center w-24 h-24 rounded-full bg-white/95 shadow-2xl group-hover:scale-110 transition-transform">
+          <svg viewBox="0 0 24 24" class="w-10 h-10 text-black ml-1" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </div>
     </div>
   </section>
+  <script is:inline>
+    (() => {
+      const wrap = document.getElementById('ok-video');
+      if (!wrap) return;
+      const start = () => {
+        const src = wrap.dataset.src;
+        const poster = wrap.dataset.poster;
+        wrap.innerHTML = `<video class="block w-full h-auto" controls autoplay playsinline poster="${poster}"><source src="${src}" type="video/mp4" /></video>`;
+        wrap.style.cursor = 'default';
+        wrap.removeAttribute('role');
+        wrap.removeAttribute('tabindex');
+      };
+      wrap.addEventListener('click', start, { once: true });
+      wrap.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); start(); }
+      }, { once: true });
+    })();
+  </script>
 
   <!-- 2. Two worlds -->
   <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
     <h2 class="font-h2-editorial text-on-background mb-8 max-w-2xl">Two ways your AI assistant could buy something.</h2>
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mb-12 font-label-caps text-label-caps uppercase" data-ok-scene-tabs>
-      <span class="text-on-surface-variant">Demonstrating</span>
-      <button type="button" data-ok-scene-tab="0" class="ok-scene-tab text-on-background border-b border-on-background pb-1 transition-colors duration-240">Product</button>
-      <button type="button" data-ok-scene-tab="1" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Stay</button>
-      <button type="button" data-ok-scene-tab="2" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Flight</button>
-      <button type="button" data-ok-scene-tab="3" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Bus</button>
-      <button type="button" data-ok-scene-tab="4" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Service</button>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-12 font-label-caps text-label-caps uppercase" data-ok-scene-tabs>
+      <span class="text-on-surface-variant">Pick a category</span>
+      <div role="tablist" aria-label="Demo category" class="flex flex-wrap gap-2">
+        <button type="button" role="tab" data-ok-scene-tab="0" class="ok-scene-tab px-4 py-2 border text-on-background border-on-background bg-on-background/5 hover:bg-on-background/10 transition-colors duration-240 cursor-pointer">Product</button>
+        <button type="button" role="tab" data-ok-scene-tab="1" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Stay</button>
+        <button type="button" role="tab" data-ok-scene-tab="2" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Flight</button>
+        <button type="button" role="tab" data-ok-scene-tab="3" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Bus</button>
+        <button type="button" role="tab" data-ok-scene-tab="4" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Service</button>
+      </div>
     </div>
     <div class="grid md:grid-cols-2 gap-16 md:gap-gutter" data-ok-stagger=":scope > div">
       <div class="flex flex-col gap-8 fade-slide-up">
-        <div class="font-label-caps text-label-caps text-on-surface-variant border-b border-on-background/10 pb-4">WORLD A · TODAY</div>
+        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD A · TODAY</div>
         <div class="bg-surface-container-low p-6 border border-on-background/10">
           <div class="flex gap-4 items-start mb-6">
             <div class="w-8 h-8 bg-surface-variant rounded-full flex-shrink-0 flex items-center justify-center">
@@ -67,7 +98,7 @@ import CodeBlock from '../components/CodeBlock.astro';
         </div>
       </div>
       <div class="flex flex-col gap-8 fade-slide-up">
-        <div class="font-label-caps text-label-caps text-on-background border-b border-on-background pb-4">WORLD B · OPENKARTA</div>
+        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD B · OPENKARTA</div>
         <div class="bg-surface-container-lowest p-6 border border-on-background/10 hover-lift">
           <div class="flex gap-4 items-start mb-6">
             <div class="w-8 h-8 bg-on-background text-surface-container-lowest rounded-full flex-shrink-0 flex items-center justify-center">
@@ -125,7 +156,7 @@ import CodeBlock from '../components/CodeBlock.astro';
           { n: 5, title: 'Status & lifecycle', body: 'status() polls. cancel() and return() close the loop with auditable state transitions.' },
         ].map((s) => (
           <div class="flex gap-4 items-start group">
-            <div class="font-code-block text-code-block text-surface-container-lowest bg-on-background w-7 h-7 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-container transition-colors">{s.n}</div>
+            <div class="font-code-block text-code-block text-on-background border border-on-background bg-transparent w-7 h-7 flex items-center justify-center flex-shrink-0 group-hover:bg-on-background/5 transition-colors">{s.n}</div>
             <div>
               <div class="font-medium mb-1">{s.title}</div>
               <div class="font-body-dense text-body-dense text-on-surface-variant">{s.body}</div>
@@ -155,23 +186,17 @@ import CodeBlock from '../components/CodeBlock.astro';
         <div class="font-label-caps text-label-caps text-on-surface-variant mt-2">ITEM TYPES</div>
       </div>
     </div>
-    <div class="bg-primary text-on-primary p-12 md:p-20 flex flex-col items-center text-center">
-      <h2 class="font-h2-editorial text-on-primary max-w-2xl mb-8">
+    <div class="border border-on-background/15 bg-surface-container-lowest p-12 md:p-20 flex flex-col items-center text-center">
+      <h2 class="font-h2-editorial text-on-background max-w-2xl mb-8">
         The contract should be open. The competition should be on service.
       </h2>
-      <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-2xl">
-        <div class="flex-1 bg-inverse-surface border border-surface-container-lowest/20 p-4 font-code-block text-code-block text-surface-container-lowest text-left">
-          // Brand agent (sell anything)<br />
-          npm i @openkarta/sdk-node
-        </div>
-        <div class="flex-1 bg-inverse-surface border border-surface-container-lowest/20 p-4 font-code-block text-code-block text-surface-container-lowest text-left">
-          // Consumer agent (buy anywhere)<br />
-          npm i @openkarta/orchestrator
-        </div>
+      <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-2xl text-left">
+        <CodeBlock class="flex-1" filename="Brand agent (sell anything)" lang="bash">{`npm i @openkarta/sdk-node`}</CodeBlock>
+        <CodeBlock class="flex-1" filename="Consumer agent (buy anywhere)" lang="bash">{`npm i @openkarta/orchestrator`}</CodeBlock>
       </div>
       <div class="flex flex-wrap gap-4 justify-center">
-        <a class="bg-surface-container-lowest text-on-background px-8 py-4 border border-transparent hover:bg-transparent hover:text-surface-container-lowest hover:border-surface-container-lowest transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
-        <a class="bg-transparent text-surface-container-lowest px-8 py-4 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240 font-medium" href="/developers">Developer quickstart</a>
+        <a class="bg-primary text-on-primary px-8 py-4 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
+        <a class="border border-on-background/25 bg-transparent text-on-background px-8 py-4 hover:bg-on-background/5 transition-colors duration-240 font-medium" href="/developers">Developer quickstart</a>
       </div>
     </div>
   </section>
@@ -184,7 +209,8 @@ import CodeBlock from '../components/CodeBlock.astro';
       background-color: rgba(27, 28, 28, 0.04);
       border-color: rgba(27, 28, 28, 0.4);
     }
-    .ok-scene-tab { cursor: pointer; background: none; border: 0; border-bottom-width: 1px; padding: 0 0 4px 0; font: inherit; }
+    .ok-scene-tab { font: inherit; }
+    .ok-scene-tab:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
     @media (prefers-reduced-motion: reduce) {
       .ok-scene-text, .ok-scene-chip { transition: none; }
     }
@@ -321,11 +347,13 @@ import CodeBlock from '../components/CodeBlock.astro';
       function setActive(idx) {
         tabs.forEach((t, k) => {
           if (k === idx) {
-            t.classList.add('text-on-background', 'border-on-background');
-            t.classList.remove('text-on-surface-variant', 'border-transparent');
+            t.classList.add('text-on-background', 'border-on-background', 'bg-on-background/5');
+            t.classList.remove('text-on-surface-variant', 'border-on-background/20', 'bg-transparent');
+            t.setAttribute('aria-selected', 'true');
           } else {
-            t.classList.remove('text-on-background', 'border-on-background');
-            t.classList.add('text-on-surface-variant', 'border-transparent');
+            t.classList.remove('text-on-background', 'border-on-background', 'bg-on-background/5');
+            t.classList.add('text-on-surface-variant', 'border-on-background/20', 'bg-transparent');
+            t.setAttribute('aria-selected', 'false');
           }
         });
         rows.forEach((r, k) => {

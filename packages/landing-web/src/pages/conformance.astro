@@ -13,7 +13,7 @@ const packs = [
 ---
 <BaseLayout title="Conformance — Signed badges — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
-    <div class="font-label-caps text-label-caps uppercase mb-8 bg-primary text-on-primary inline-block px-3 py-1">Conformance · signed badges</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Conformance · signed badges</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Pass the suite. Sign the badge. Get listed.
     </h1>
@@ -22,7 +22,7 @@ const packs = [
     </p>
     <div class="flex flex-wrap gap-4 mt-12">
       <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="https://www.npmjs.com/package/@openkarta/conformance-tests">npm i @openkarta/conformance-tests ↗</a>
-      <a class="bg-transparent text-primary px-6 py-3 border-2 border-primary hover:bg-primary hover:text-on-primary transition-colors duration-240" href="https://registry.openkarta.org">View live badges ↗</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="https://registry.openkarta.org">View live badges ↗</a>
     </div>
   </section>
 
@@ -31,22 +31,22 @@ const packs = [
     <h2 class="font-h2-editorial text-on-background mb-16">How a run works.</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-ok-stagger=":scope > div">
       <div class="border-t border-on-background pt-6">
-        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">1</div>
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center border border-on-background bg-transparent mb-4">1</div>
         <h3 class="font-medium mb-2">Detect</h3>
         <p class="font-body-dense text-body-dense text-on-surface-variant">discover() returns the agent's <span class="font-code-block">supportedItemTypes</span>. The runner picks core + matching per-type packs automatically.</p>
       </div>
       <div class="border-t border-on-background pt-6">
-        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">2</div>
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center border border-on-background bg-transparent mb-4">2</div>
         <h3 class="font-medium mb-2">Execute</h3>
         <p class="font-body-dense text-body-dense text-on-surface-variant">Every test exercises the wire format directly — closed-enum errors, TTL clamping, signature verification, lifecycle transitions.</p>
       </div>
       <div class="border-t border-on-background pt-6">
-        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">3</div>
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center border border-on-background bg-transparent mb-4">3</div>
         <h3 class="font-medium mb-2">Sign</h3>
         <p class="font-body-dense text-body-dense text-on-surface-variant">A pass emits an HMAC-signed badge bound to the agentId, suite version, packs run, and timestamp. Tamper-evident.</p>
       </div>
       <div class="border-t border-on-background pt-6">
-        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">4</div>
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center border border-on-background bg-transparent mb-4">4</div>
         <h3 class="font-medium mb-2">Re-verify</h3>
         <p class="font-body-dense text-body-dense text-on-surface-variant">Cron re-runs the suite daily against every listed agent. Stale badges auto-degrade; seven failures → delisted.</p>
       </div>

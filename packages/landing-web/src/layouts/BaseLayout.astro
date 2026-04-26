@@ -27,60 +27,63 @@ const {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif:wght@400;500&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script is:inline src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script is:inline>
-  tailwind = {
-    config: {
-      darkMode: 'class',
-      theme: {
-        extend: {
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
           colors: {
-            primary: 'var(--color-primary)',
-            'on-primary': 'var(--color-on-primary)',
-            'primary-container': 'var(--color-primary-container)',
-            'on-primary-container': 'var(--color-on-primary-container)',
-            'inverse-primary': 'var(--color-inverse-primary)',
-            'primary-fixed': 'var(--color-primary-fixed)',
-            'primary-fixed-dim': 'var(--color-primary-fixed-dim)',
-            'on-primary-fixed': 'var(--color-on-primary-fixed)',
-            'on-primary-fixed-variant': 'var(--color-on-primary-fixed-variant)',
-            secondary: 'var(--color-secondary)',
-            'on-secondary': 'var(--color-on-secondary)',
-            'secondary-container': 'var(--color-secondary-container)',
-            'on-secondary-container': 'var(--color-on-secondary-container)',
-            'secondary-fixed': 'var(--color-secondary-fixed)',
-            'secondary-fixed-dim': 'var(--color-secondary-fixed-dim)',
-            'on-secondary-fixed': 'var(--color-on-secondary-fixed)',
-            'on-secondary-fixed-variant': 'var(--color-on-secondary-fixed-variant)',
-            tertiary: 'var(--color-tertiary)',
-            'on-tertiary': 'var(--color-on-tertiary)',
-            'tertiary-container': 'var(--color-tertiary-container)',
-            'on-tertiary-container': 'var(--color-on-tertiary-container)',
-            'tertiary-fixed': 'var(--color-tertiary-fixed)',
-            'tertiary-fixed-dim': 'var(--color-tertiary-fixed-dim)',
-            'on-tertiary-fixed': 'var(--color-on-tertiary-fixed)',
-            'on-tertiary-fixed-variant': 'var(--color-on-tertiary-fixed-variant)',
-            error: 'var(--color-error)',
-            'on-error': 'var(--color-on-error)',
-            'error-container': 'var(--color-error-container)',
-            'on-error-container': 'var(--color-on-error-container)',
-            background: 'var(--color-background)',
-            'on-background': 'var(--color-on-background)',
-            surface: 'var(--color-surface)',
-            'on-surface': 'var(--color-on-surface)',
-            'surface-dim': 'var(--color-surface-dim)',
-            'surface-bright': 'var(--color-surface-bright)',
-            'surface-container-lowest': 'var(--color-surface-container-lowest)',
-            'surface-container-low': 'var(--color-surface-container-low)',
-            'surface-container': 'var(--color-surface-container)',
-            'surface-container-high': 'var(--color-surface-container-high)',
-            'surface-container-highest': 'var(--color-surface-container-highest)',
-            'surface-variant': 'var(--color-surface-variant)',
-            'on-surface-variant': 'var(--color-on-surface-variant)',
-            'surface-tint': 'var(--color-surface-tint)',
-            'inverse-surface': 'var(--color-inverse-surface)',
-            'inverse-on-surface': 'var(--color-inverse-on-surface)',
-            outline: 'var(--color-outline)',
-            'outline-variant': 'var(--color-outline-variant)',
+            // Tailwind Play CDN strips functions and can't resolve var()-based
+            // colors reliably. Use hex literals here; keep tokens.css in sync
+            // for raw-CSS uses (color-mix, var() in custom CSS).
+            primary: '#0D9488',
+            'on-primary': '#FFFFFF',
+            'primary-container': '#115E59',
+            'on-primary-container': '#CCFBF1',
+            'inverse-primary': '#5EEAD4',
+            'primary-fixed': '#CCFBF1',
+            'primary-fixed-dim': '#5EEAD4',
+            'on-primary-fixed': '#042F2E',
+            'on-primary-fixed-variant': '#115E59',
+            secondary: '#5F5E5E',
+            'on-secondary': '#FFFFFF',
+            'secondary-container': '#E5E2E1',
+            'on-secondary-container': '#656464',
+            'secondary-fixed': '#E5E2E1',
+            'secondary-fixed-dim': '#C9C6C5',
+            'on-secondary-fixed': '#1C1B1B',
+            'on-secondary-fixed-variant': '#474646',
+            tertiary: '#F97316',
+            'on-tertiary': '#FFFFFF',
+            'tertiary-container': '#FFEDD5',
+            'on-tertiary-container': '#7C2D12',
+            'tertiary-fixed': '#FFEDD5',
+            'tertiary-fixed-dim': '#FDBA74',
+            'on-tertiary-fixed': '#431407',
+            'on-tertiary-fixed-variant': '#9A3412',
+            error: '#BA1A1A',
+            'on-error': '#FFFFFF',
+            'error-container': '#FFDAD6',
+            'on-error-container': '#93000A',
+            background: '#D0DEE0',
+            'on-background': '#0F2326',
+            surface: '#D0DEE0',
+            'on-surface': '#0F2326',
+            'surface-dim': '#88AAB0',
+            'surface-bright': '#FFFFFF',
+            'surface-container-lowest': '#FFFFFF',
+            'surface-container-low': '#88BFC2',
+            'surface-container': '#BDD0D2',
+            'surface-container-high': '#88AAB0',
+            'surface-container-highest': '#5F8D93',
+            'surface-variant': '#BDD0D2',
+            'on-surface-variant': '#2F4045',
+            'surface-tint': '#0D9488',
+            'inverse-surface': '#0A0A0A',
+            'inverse-on-surface': '#F4F4F5',
+            outline: '#5A7479',
+            'outline-variant': '#A8C5C8',
           },
           spacing: {
             'margin-page': '64px',
@@ -110,10 +113,8 @@ const {
           borderRadius: { DEFAULT: '0', sm: '0', md: '0', lg: '0', xl: '0', full: '9999px' },
         },
       },
-    },
   };
 </script>
-<script is:inline src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <style is:global>
   body { font-family: Inter, system-ui, sans-serif; }
   pre { white-space: pre; }
@@ -121,12 +122,14 @@ const {
   .hover-lift {
     transition: transform 240ms cubic-bezier(0.2, 0, 0, 1),
                 border-color 240ms cubic-bezier(0.2, 0, 0, 1),
+                background-color 240ms cubic-bezier(0.2, 0, 0, 1),
                 box-shadow 240ms cubic-bezier(0.2, 0, 0, 1);
   }
   .hover-lift:hover {
     transform: translateY(-4px);
-    border-color: rgba(27, 28, 28, 1);
-    box-shadow: 0 10px 30px -20px rgba(27, 28, 28, 0.4);
+    border-color: var(--color-primary);
+    background-color: color-mix(in oklab, var(--color-primary) 8%, transparent);
+    box-shadow: 0 10px 30px -16px color-mix(in oklab, var(--color-primary) 60%, transparent);
   }
   .fade-slide-up {
     opacity: 0;
@@ -161,7 +164,12 @@ const {
     animation: okblink 1s steps(2,end) infinite; color: currentColor;
   }
   @keyframes okblink { 50% { opacity: 0; } }
-  .header-shrunk { height: 64px !important; backdrop-filter: blur(16px); }
+  .header-shrunk {
+    height: 64px !important;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 6px 24px -12px rgba(15, 35, 38, 0.25), 0 2px 6px -2px rgba(15, 35, 38, 0.08);
+    border-bottom-color: rgba(15, 35, 38, 0.16);
+  }
   .header-shrunk .ok-logo-img { height: 32px; width: 32px; }
   .ok-logo-img { transition: height 240ms cubic-bezier(0.2,0,0,1), width 240ms cubic-bezier(0.2,0,0,1); }
   .diagram-node { border: 1px solid var(--color-on-background); }

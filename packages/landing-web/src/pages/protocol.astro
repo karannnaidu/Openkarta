@@ -32,7 +32,7 @@ const principles = [
 ---
 <BaseLayout title="Protocol Specification — OpenKarta" activeNav="protocol">
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
-    <div class="font-label-caps text-label-caps uppercase mb-8 bg-primary text-on-primary inline-block px-3 py-1">SPEC · v0.1 · MIT</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">SPEC · v0.1 · MIT</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Eight verbs. Five item types. One contract.
     </h1>
@@ -41,7 +41,7 @@ const principles = [
     </p>
     <div class="flex flex-wrap gap-4 mt-12">
       <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta/tree/main/packages/spec">View source ↗</a>
-      <a class="bg-transparent text-primary px-6 py-3 border-2 border-primary hover:bg-primary hover:text-on-primary transition-colors duration-240" href="https://www.npmjs.com/package/@openkarta/spec">npm i @openkarta/spec ↗</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="https://www.npmjs.com/package/@openkarta/spec">npm i @openkarta/spec ↗</a>
     </div>
   </section>
 
@@ -51,10 +51,10 @@ const principles = [
     <div class="overflow-x-auto border border-on-background/10">
       <table class="w-full font-body-dense text-body-dense bg-surface-container-lowest">
         <thead>
-          <tr class="border-b border-on-background/10 bg-surface-container-low">
-            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant">Verb</th>
+          <tr class="border-b border-on-background/10 bg-primary-container">
+            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-primary-container">Verb</th>
             {types.map((t) => (
-              <th class="border-l border-on-background/10 py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant">{t.name}</th>
+              <th class="border-l border-on-primary-container/30 py-3 px-4 font-label-caps text-label-caps uppercase text-on-primary-container">{t.name}</th>
             ))}
           </tr>
         </thead>
