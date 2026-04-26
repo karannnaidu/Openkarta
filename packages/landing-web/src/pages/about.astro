@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="About — OpenKarta" activeNav="manifesto">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight">OpenKarta</h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      An MIT-licensed open contract for agentic commerce — built by the community for the machine economy.
+    </p>
+    <div class="mt-16 w-full h-px bg-on-background/10"></div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+      <div class="md:col-span-2">
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-6">What we are</div>
+        <p class="font-body-main text-body-main text-on-background mb-6">
+          OpenKarta is an open standard that lets any AI agent discover a merchant, browse their catalogue, build a cart, get a signed quote, check out, and track an order — using exactly the same eight verbs across five item types: product, stay, flight, bus, service.
+        </p>
+        <p class="font-body-main text-body-main text-on-surface-variant mb-6">
+          Small. Typed. Shippable. The v0.1 reference implementation lives in a single monorepo with a Node SDK, three reference agents, a conformance harness, and a consumer-side orchestrator. It is small enough that one engineer can read it in a weekend and ship a brand agent on Monday.
+        </p>
+        <p class="font-body-main text-body-main text-on-surface-variant">
+          The contract should be open. The competition should be on service.
+        </p>
+      </div>
+      <div class="border-l border-on-background/10 pl-8">
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-6">By the numbers</div>
+        <div class="space-y-6">
+          <div>
+            <div class="font-display-lg text-on-background text-5xl">10</div>
+            <div class="font-body-dense text-on-surface-variant mt-1">Published packages</div>
+          </div>
+          <div>
+            <div class="font-display-lg text-on-background text-5xl">3</div>
+            <div class="font-body-dense text-on-surface-variant mt-1">Reference agents</div>
+          </div>
+          <div>
+            <div class="font-display-lg text-on-background text-5xl">5</div>
+            <div class="font-body-dense text-on-surface-variant mt-1">Item types</div>
+          </div>
+          <div>
+            <div class="font-display-lg text-on-background text-5xl">8</div>
+            <div class="font-body-dense text-on-surface-variant mt-1">Protocol verbs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-6">Built by the community</div>
+    <div class="border border-on-background/10 p-12 bg-surface-container-lowest">
+      <h2 class="font-h2-editorial text-on-background max-w-2xl">
+        The protocol is its own news. Read the spec, run the conformance suite, ship an agent.
+      </h2>
+      <div class="mt-12 flex flex-wrap gap-4">
+        <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta">View on GitHub ↗</a>
+        <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="/manifesto">Read the manifesto</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-label-caps text-label-caps text-on-surface uppercase mb-8 tracking-widest">Get in touch</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 p-8 bg-surface-container-low hover-lift flex flex-col">
+        <span class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">General</span>
+        <a class="font-code-block text-code-block text-on-background hover:text-primary-container transition-colors duration-240" href="mailto:hello@openkarta.org">hello@openkarta.org</a>
+      </div>
+      <div class="border border-on-background/10 p-8 bg-surface-container-low hover-lift flex flex-col">
+        <span class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Press inquiries</span>
+        <a class="font-code-block text-code-block text-on-background hover:text-primary-container transition-colors duration-240" href="mailto:press@openkarta.org">press@openkarta.org</a>
+      </div>
+      <div class="border border-on-background/10 p-8 bg-surface-container-low hover-lift flex flex-col">
+        <span class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Vulnerability disclosure</span>
+        <a class="font-code-block text-code-block text-on-background hover:text-primary-container transition-colors duration-240" href="mailto:security@openkarta.org">security@openkarta.org</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

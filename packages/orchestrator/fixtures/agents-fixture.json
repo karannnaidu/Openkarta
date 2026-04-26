@@ -1,0 +1,25 @@
+{
+  "$schema": "../../../registry/schema.json",
+  "version": "0.1",
+  "updated": "2026-04-24",
+  "agents": [
+    {
+      "agentId": "halcyon-shop",
+      "displayName": "Halcyon Shop (test)",
+      "baseUrl": "https://example.invalid",
+      "tier": "http",
+      "supportedItemTypes": ["product"],
+      "regions": [{ "country": "IN" }],
+      "addedAt": "2026-04-24"
+    },
+    {
+      "agentId": "halcyon-stays",
+      "displayName": "Halcyon Stays (test)",
+      "baseUrl": "https://example.invalid",
+      "tier": "http",
+      "supportedItemTypes": ["stay", "service"],
+      "regions": [{ "country": "IN", "city": "Goa" }],
+      "addedAt": "2026-04-24"
+    }
+  ]
+}

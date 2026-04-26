@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Agent — OpenKarta Registry">
+  <div id="loading">Loading…</div>
+  <div id="error" class="error" style="display:none"></div>
+  <div id="content" style="display:none"></div>
+
+  <script>
+    import { getAgent, API_BASE } from '../lib/api.ts';
+
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    function strip(history) {
+      // Build a 30-day pass/fail strip; missing days show as neutral.
+      const byDate = new Map(history.map((d) => [d.date, d.passed]));
+      const days = [];
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
+        const passed = byDate.get(d);
+        days.push(`<div class="day ${passed === true ? 'pass' : passed === false ? 'fail' : ''}" title="${d}"></div>`);
+      }
+      return `<div class="history-strip">${days.join('')}</div>`;
+    }
+
+    async function load() {
+      const id = new URLSearchParams(location.search).get('id');
+      if (!id) { $('error').textContent = 'Missing ?id'; $('error').style.display = ''; $('loading').style.display = 'none'; return; }
+      try {
+        const detail = await getAgent(id);
+        const a = detail.agent;
+        const badge = detail.lastBadgeRun;
+        const embedUrl = `${API_BASE}/v1/agents/${encodeURIComponent(a.agentId)}/badge`;
+        $('content').innerHTML = `
+          <h1>${escapeHtml(a.displayName)} <span class="badge badge--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></h1>
+          <p class="tier">${escapeHtml(a.agentId)} • ${escapeHtml(a.tier)} • <a href="${escapeHtml(a.baseUrl)}" target="_blank" rel="noopener">${escapeHtml(a.baseUrl)}</a></p>
+          ${a.description ? `<p>${escapeHtml(a.description)}</p>` : ''}
+          <h2>Capabilities</h2>
+          <p>Item types: ${a.supportedItemTypes.map(escapeHtml).join(', ')}</p>
+          <p>Regions: ${(a.regions ?? []).map((r) => escapeHtml(r.country) + (r.city ? ' / ' + escapeHtml(r.city) : '')).join(', ') || '—'}</p>
+          <h2>Last conformance run</h2>
+          ${badge ? `<p>${badge.passed ? 'Passed' : 'Failed'} — ${badge.testsPassed} passed, ${badge.testsFailed} failed (${escapeHtml(new Date(badge.ranAt).toLocaleString())})</p>${badge.errorSummary ? `<div class="code">${escapeHtml(badge.errorSummary)}</div>` : ''}` : '<p>—</p>'}
+          <h2>30-day history</h2>
+          ${strip(detail.history)}
+          <h2>Embed badge</h2>
+          <div class="code">&lt;a href="${escapeHtml(embedUrl)}"&gt;OpenKarta-conformant&lt;/a&gt;</div>
+        `;
+        $('content').style.display = '';
+      } catch (err) {
+        $('error').textContent = err.message ?? 'Request failed';
+        $('error').style.display = '';
+      } finally {
+        $('loading').style.display = 'none';
+      }
+    }
+    load();
+  </script>
+</BaseLayout>

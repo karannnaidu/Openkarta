@@ -1,4 +1,4 @@
-import { type Client, createClient } from '@openkarta/sdk-node';
+import { type OpenKartaClient, createClient } from '@openkarta/sdk-node';
 import { type TranscriptStep, printTranscript } from '../transcript.js';
 
 interface Manifest    { agentId: string; supportedItemTypes: string[]; tier: string }
@@ -6,7 +6,7 @@ interface SearchRes   { items: Array<{ id: string; title: string }> }
 interface QuoteRes    { quoteToken: string; totalMinor: number; currency: string; expiresAt: string }
 interface OrderRes    { orderId: string; paymentStatus: string; fulfilmentStatus: { state: string } }
 
-export const executeProductFlow = async (c: Client): Promise<TranscriptStep[]> => {
+export const executeProductFlow = async (c: OpenKartaClient): Promise<TranscriptStep[]> => {
   const steps: TranscriptStep[] = [];
 
   const manifest = (await c.discover()) as Manifest;
@@ -24,7 +24,7 @@ export const executeProductFlow = async (c: Client): Promise<TranscriptStep[]> =
     detail: { firstItemId: itemId, firstTitle: search.items[0]!.title },
   });
 
-  const cart = { cartId: `c_${Math.random().toString(36).slice(2, 8)}`, lines: [{ itemType: 'product', itemId, quantity: 1 }] };
+  const cart = { cartId: `c_${Math.random().toString(36).slice(2, 8)}`, lines: [{ itemType: 'product' as const, itemId, quantity: 1 }] };
   const quote = (await c.quote(cart)) as QuoteRes;
   steps.push({
     step: 3, action: 'quote',

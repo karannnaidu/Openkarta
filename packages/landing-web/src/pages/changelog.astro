@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const releases = [
+  {
+    version: '0.3.0',
+    date: '2026-04-25',
+    tag: 'breaking',
+    title: 'Vendor-neutral chat loop',
+    summary: 'The orchestrator and CLI no longer depend on any one LLM vendor. Point at any chat-completions endpoint — hosted or local.',
+    changes: [
+      { kind: 'BREAKING', text: '@openkarta/orchestrator: chatOnce now uses the standard chat/completions wire format. Options: { baseURL, model, apiKey? }. Dropped @anthropic-ai/sdk dependency.' },
+      { kind: 'BREAKING', text: '@openkarta/orchestrator: tool definitions renamed AnthropicToolDef → ToolDef; field input_schema → parameters.' },
+      { kind: 'BREAKING', text: '@openkarta/cli: openkarta chat now takes --base-url, --model, --api-key. Defaults point at OpenRouter.' },
+      { kind: 'WHY', text: 'Bring your own provider, key, and model — Ollama, llama.cpp, vLLM, or any hosted endpoint.' },
+    ],
+  },
+  {
+    version: '0.2.0',
+    date: '2026-04-25',
+    tag: 'minor',
+    title: 'Orchestrator + CLI go public',
+    summary: 'First consumer-side library: registry → fan-out search → homogeneous cart → signed-quote checkout → order tracking.',
+    changes: [
+      { kind: 'ADDED', text: '@openkarta/sdk-node: createClient(opts) — typed client wrapping all 8 verbs.' },
+      { kind: 'ADDED', text: '@openkarta/orchestrator: consumer-side library with registry, fan-out search, homogeneous cart, signed-quote checkout, order tracking.' },
+      { kind: 'ADDED', text: '@openkarta/cli: openkarta with search / cart / checkout / orders / chat subcommands.' },
+      { kind: 'DOCS', text: 'docs/orchestrator.md and docs/cli.md.' },
+    ],
+  },
+  {
+    version: '0.1.0',
+    date: '2026-04-15',
+    tag: 'minor',
+    title: 'Initial public release',
+    summary: 'The protocol, the SDK, three reference agents, and the conformance suite.',
+    changes: [
+      { kind: 'ADDED', text: '@openkarta/spec: five item types, discriminated unions, homogeneous cart, CapabilitiesManifest v0.2, closed-enum errors, user-token delegation.' },
+      { kind: 'ADDED', text: '@openkarta/sdk-node: Fastify server, typed client, HMAC-signed quote tokens, error helpers.' },
+      { kind: 'ADDED', text: 'Reference agents — Halcyon Shop (product + quick-commerce), Halcyon Stays (stay + service), Halcyon Travel (flight + bus).' },
+      { kind: 'ADDED', text: '@openkarta/conformance-tests: core pack (8) + five per-type packs (22 total). Auto-detects supportedItemTypes; emits a signed badge.' },
+      { kind: 'ADDED', text: '@openkarta/demo-cli: end-to-end flows for product, stay, and flight.' },
+    ],
+  },
+];
+---
+<BaseLayout title="Changelog — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Changelog · semver · MIT</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Every wire-format change. In plain text.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      The protocol is semver. Major bumps ship in parallel package versions with an 18-month deprecation window. Minor and patch releases never break the wire format.
+    </p>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <aside class="md:col-span-3 hidden md:block">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4 sticky top-24">Releases</div>
+        <ul class="space-y-2 sticky top-32">
+          {releases.map((r) => (
+            <li><a class="font-code-block text-code-block text-on-surface-variant hover:text-on-background" href={`#v${r.version.replace(/\./g, '-')}`}>v{r.version} · {r.date}</a></li>
+          ))}
+        </ul>
+      </aside>
+      <div class="md:col-span-9 space-y-16">
+        {releases.map((r) => (
+          <article id={`v${r.version.replace(/\./g, '-')}`} class="border border-on-background/10 bg-surface-container-lowest p-10">
+            <div class="flex flex-wrap items-baseline gap-4 mb-6">
+              <span class="font-code-block text-code-block bg-on-background text-surface-container-lowest px-3 py-1">v{r.version}</span>
+              <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">{r.date}</span>
+              <span class={`font-label-caps text-label-caps uppercase px-2 py-0.5 border ${r.tag === 'breaking' ? 'border-red-500 text-red-500' : 'border-on-background/20 text-on-surface-variant'}`}>{r.tag}</span>
+            </div>
+            <h2 class="font-h2-editorial text-on-background mb-3">{r.title}</h2>
+            <p class="font-body-main text-body-main text-on-surface-variant mb-8">{r.summary}</p>
+            <ul class="space-y-3">
+              {r.changes.map((c) => (
+                <li class="flex items-start gap-4 border-t border-on-background/10 pt-3">
+                  <span class={`font-code-block text-xs uppercase px-2 py-0.5 border min-w-[80px] text-center ${c.kind === 'BREAKING' ? 'bg-red-500 text-white border-red-500' : c.kind === 'ADDED' ? 'bg-emerald-500 text-white border-emerald-500' : c.kind === 'DOCS' ? 'bg-surface-container-low border-on-background/10 text-on-surface-variant' : 'bg-surface-container-low border-on-background/10 text-on-surface-variant'}`}>{c.kind}</span>
+                  <span class="font-body-dense text-body-dense text-on-background flex-1">{c.text}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="border border-on-background/10 bg-surface-container-lowest p-8 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Subscribe</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Watch the GitHub repo or the npm packages directly. Releases are tagged on commit.</p>
+      </div>
+      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta/releases">GitHub releases ↗</a>
+    </div>
+  </section>
+</BaseLayout>

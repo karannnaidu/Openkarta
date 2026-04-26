@@ -1,0 +1,29 @@
+{
+  "name": "@openkarta/orchestrator",
+  "version": "0.4.0",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@openkarta/spec":     "workspace:*",
+    "@openkarta/sdk-node": "workspace:*",
+    "zod": "^3.23.0",
+    "zod-to-json-schema": "^3.23.0"
+  },
+  "devDependencies": {
+    "@openkarta/reference-agent-shop":   "workspace:*",
+    "@openkarta/reference-agent-stays":  "workspace:*",
+    "@openkarta/reference-agent-travel": "workspace:*",
+    "tsup": "^8.3.0",
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.0"
+  }
+}

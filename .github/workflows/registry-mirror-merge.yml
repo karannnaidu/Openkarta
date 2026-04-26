@@ -1,0 +1,47 @@
+name: registry-mirror auto-merge
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Sanity check — no destructive deletes vs. prior mirror
+        run: |
+          set -euo pipefail
+          if ! git ls-remote --heads origin registry-mirror | grep -q registry-mirror; then
+            echo "registry-mirror branch does not exist yet; nothing to merge."
+            exit 0
+          fi
+          git fetch origin registry-mirror
+
+          # Compare what registry-mirror would change in registry/agents.json against main.
+          # If the diff *removes* lines that look like agent entries, abort and require manual review.
+          removed=$(git diff main..origin/registry-mirror -- registry/agents.json \
+            | grep -E '^-\s+"agentId"' | wc -l)
+          if [ "$removed" -gt 0 ]; then
+            echo "Mirror would remove $removed agent(s) from registry/agents.json — manual review required."
+            exit 1
+          fi
+
+      - name: Fast-forward merge mirror into main
+        run: |
+          set -euo pipefail
+          if ! git ls-remote --heads origin registry-mirror | grep -q registry-mirror; then
+            exit 0
+          fi
+          git config user.name "openkarta-bot"
+          git config user.email "bot@openkarta.org"
+          git merge --ff-only origin/registry-mirror
+          git push origin main

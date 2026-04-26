@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const services = [
+  { id: 'registry-api', name: 'Registry API', host: 'api.openkarta.org', endpoint: 'https://api.openkarta.org/healthz' },
+  { id: 'registry-web', name: 'Registry web app', host: 'registry.openkarta.org', endpoint: 'https://registry.openkarta.org/' },
+  { id: 'landing', name: 'Marketing site', host: 'openkarta.org', endpoint: 'https://openkarta.org/' },
+  { id: 'reference-shop', name: 'Reference agent · halcyon-shop', host: 'halcyon-shop.fly.dev', endpoint: 'https://halcyon-shop.fly.dev/.well-known/openkarta-manifest' },
+];
+---
+<BaseLayout title="Status — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Status · live</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      System status.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Each row is a HEAD probe from your browser to the production endpoint. Refresh to re-run.
+    </p>
+    <div class="flex items-center gap-4 mt-12">
+      <div id="overall-dot" class="w-3 h-3 rounded-full bg-on-surface-variant"></div>
+      <span id="overall-text" class="font-h2-editorial text-on-background">Checking…</span>
+      <span id="overall-time" class="font-code-block text-code-block text-on-surface-variant"></span>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="border border-on-background/10 bg-surface-container-lowest">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-on-background/10 bg-surface-container-low">
+            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant">Service</th>
+            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Endpoint</th>
+            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Latency</th>
+            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">State</th>
+          </tr>
+        </thead>
+        <tbody class="font-body-dense text-body-dense">
+          {services.map((s) => (
+            <tr id={`row-${s.id}`} class="border-b border-on-background/10">
+              <td class="py-3 px-4">
+                <div class="font-medium">{s.name}</div>
+                <div class="font-code-block text-xs text-on-surface-variant">{s.host}</div>
+              </td>
+              <td class="py-3 px-4 border-l border-on-background/10 font-code-block text-xs">
+                <a href={s.endpoint} class="text-on-surface-variant hover:text-on-background underline-offset-4 hover:underline">{s.endpoint}</a>
+              </td>
+              <td class="py-3 px-4 border-l border-on-background/10 font-code-block" data-cell="latency">—</td>
+              <td class="py-3 px-4 border-l border-on-background/10" data-cell="state">
+                <span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-on-surface-variant"></span><span class="text-on-surface-variant">checking</span></span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div class="border-t border-on-background/10 px-6 py-4 flex items-center justify-between">
+        <span id="updated" class="font-code-block text-code-block text-on-surface-variant">—</span>
+        <button id="refresh" class="font-label-caps text-label-caps uppercase underline underline-offset-4">Refresh ↻</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Incident history</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">No incidents in the last 30 days. Past incidents are posted to the <a class="underline" href="/changelog">changelog</a> with a postmortem.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Maintenance windows</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Planned maintenance is announced 7 days in advance. None scheduled at this time.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Subscribe</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">For real-time alerts, watch the <a class="underline" href="https://github.com/karannnaidu/Openkarta">GitHub repo</a> — incident notes are posted as issues with the <span class="font-code-block">incident</span> label.</p>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ services }}>
+    (function () {
+      async function probe(s) {
+        const t0 = performance.now();
+        try {
+          await fetch(s.endpoint, { method: 'HEAD', mode: 'no-cors', cache: 'no-store' });
+          const t = Math.round(performance.now() - t0);
+          return { ok: true, ms: t };
+        } catch (e) {
+          return { ok: false, ms: null };
+        }
+      }
+      function render(s, r) {
+        const row = document.getElementById('row-' + s.id);
+        if (!row) return;
+        const lat = row.querySelector('[data-cell="latency"]');
+        const state = row.querySelector('[data-cell="state"]');
+        if (r.ok) {
+          lat.textContent = r.ms + ' ms';
+          state.innerHTML = '<span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>operational</span></span>';
+        } else {
+          lat.textContent = '—';
+          state.innerHTML = '<span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span><span>unreachable</span></span>';
+        }
+      }
+      async function runAll() {
+        document.getElementById('updated').textContent = 'Probing…';
+        const results = await Promise.all(services.map(async (s) => ({ s, r: await probe(s) })));
+        results.forEach(({ s, r }) => render(s, r));
+        const upCount = results.filter((x) => x.r.ok).length;
+        const dot = document.getElementById('overall-dot');
+        const txt = document.getElementById('overall-text');
+        const time = document.getElementById('overall-time');
+        if (upCount === services.length) {
+          dot.className = 'w-3 h-3 rounded-full bg-emerald-500 ok-pulse';
+          txt.textContent = 'All systems operational';
+        } else if (upCount > 0) {
+          dot.className = 'w-3 h-3 rounded-full bg-amber-500 ok-pulse';
+          txt.textContent = upCount + ' of ' + services.length + ' operational';
+        } else {
+          dot.className = 'w-3 h-3 rounded-full bg-red-500 ok-pulse';
+          txt.textContent = 'Major outage';
+        }
+        time.textContent = '· ' + new Date().toLocaleTimeString();
+        document.getElementById('updated').textContent = 'Last checked: ' + new Date().toISOString();
+      }
+      document.getElementById('refresh').addEventListener('click', runAll);
+      runAll();
+    })();
+  </script>
+</BaseLayout>

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import arg from 'arg';
 import chalk from 'chalk';
-import { signBadge } from './badge.js';
 import { runAll } from './runner.js';
+import { signBadge } from './badge.js';
 import type { PackName } from './types.js';
 
 const args = arg({

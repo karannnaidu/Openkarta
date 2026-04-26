@@ -1,0 +1,24 @@
+name = "registry-cron"
+main = "src/index.ts"
+compatibility_date = "2024-12-30"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "openkarta-registry"
+database_id = "REPLACE_WITH_D1_ID"
+
+[[queues.producers]]
+binding = "VERIFY_QUEUE"
+queue = "openkarta-verify"
+
+[triggers]
+crons = ["0 2 * * *", "0 3 * * *"]
+
+[vars]
+GITHUB_REPO = "karannnaidu/Openkarta"
+GIT_MIRROR_BRANCH = "registry-mirror"
+PUBLIC_BASE_URL = "https://registry.openkarta.org"
+
+# Secrets (set via `wrangler secret put`):
+#   GITHUB_BOT_PAT

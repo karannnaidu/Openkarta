@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const manifestJson = `{
+  "agentId":         "halcyon-shop",
+  "displayName":     "Halcyon Shop",
+  "protocolVersion": "0.1",
+  "tier":            "http",
+  "baseUrl":         "https://halcyon-shop.fly.dev",
+  "actions":         ["discover","search","get","quote","checkout","status","cancel","return"],
+  "supportedItemTypes": ["product"],
+  "paymentRails":    ["razorpay_routes","stripe_connect","cod"],
+  "languages":       ["en","hi"],
+  "regions":         [{ "country": "IN", "pincodes": ["560001","560002","560003"] }],
+  "inventoryVolatility": "realtime",
+  "catalogSize":     "small",
+  "priceRange":      { "minMinor": 10000, "maxMinor": 500000, "currency": "INR" },
+  "productCapabilities": {
+    "categories":    ["coffee","tea","snacks","groceries"],
+    "serviceAreas":  [{ "country": "IN", "city": "Bengaluru", "radiusKm": 8 }],
+    "deliveryModes": ["instant","same_day","scheduled","standard"],
+    "returnWindow": 7
+  }
+}`;
+
+const fields = [
+  { name: 'agentId', desc: 'Stable identifier. Lower-kebab-case, namespaced by the merchant. Used everywhere — registry rows, signed quotes, conformance badges.' },
+  { name: 'protocolVersion', desc: 'The OpenKarta wire-format version this agent implements. Currently `0.1`. The orchestrator refuses unknown majors.' },
+  { name: 'tier', desc: 'One of `lite` (hosted), `http` (custom server), or `agentic` (LLM-fronted). Determines how the registry routes traffic.' },
+  { name: 'baseUrl', desc: 'HTTPS root for verb endpoints. The registry probes `/.well-known/openkarta-manifest` here during verification.' },
+  { name: 'actions', desc: 'Which of the 8 verbs this agent implements. `return` is optional and only meaningful for product orders.' },
+  { name: 'supportedItemTypes', desc: 'Closed enum: `product`, `stay`, `flight`, `bus`, `service`. Drives auto-detection in the conformance suite.' },
+  { name: 'paymentRails', desc: 'Closed enum of rails the agent can settle on. The orchestrator filters by user-allowed rails before quoting.' },
+  { name: 'regions', desc: 'ISO-3166 country codes plus optional pincodes / cities. Registry filters listings by region for region-aware search.' },
+  { name: 'priceRange', desc: 'Hint for orchestrators. Integer minor-units only — no floats. Helps consumer agents triage agents before fanning out.' },
+  { name: 'productCapabilities', desc: 'Type-specific block. `stay`, `flight`, `bus`, `service` each have their own analogous block with closed-enum fields.' },
+];
+---
+<BaseLayout title="Example agent manifest — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Example manifest · halcyon-shop</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      One JSON document. The agent's whole shape.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Every conformant agent serves a <span class="font-code-block">CapabilitiesManifest</span> at <span class="font-code-block">/.well-known/openkarta-manifest</span>. Below is the live document for our reference product agent.
+    </p>
+  </section>
+
+  <!-- Identity strip -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Agent ID</div>
+          <div class="font-code-block text-code-block text-on-background">halcyon-shop</div>
+        </div>
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Tier</div>
+          <div class="font-code-block text-code-block text-on-background">http · custom server</div>
+        </div>
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Protocol</div>
+          <div class="font-code-block text-code-block text-on-background">v0.1</div>
+        </div>
+      </div>
+      <div class="border-t border-on-background/10 pt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Item types</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-code-block text-code-block bg-surface-container-low px-2 py-1 border border-on-background/10">product</span>
+          </div>
+        </div>
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Regions</div>
+          <div class="font-body-dense text-body-dense text-on-background">IN · Bengaluru (560001, 560002, 560003)</div>
+        </div>
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Reachability</div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span class="font-body-dense text-body-dense">live · 99.99% over 30d</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wire format -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Wire format</h2>
+    <div class="border border-on-background/10 bg-surface-container-lowest">
+      <div class="border-b border-on-background/10 px-6 py-3 flex items-center justify-between">
+        <span class="font-code-block text-code-block text-on-surface-variant">GET https://halcyon-shop.fly.dev/.well-known/openkarta-manifest</span>
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">application/json</span>
+      </div>
+      <pre class="font-code-block text-code-block text-on-background p-6 overflow-x-auto"><code>{manifestJson}</code></pre>
+    </div>
+  </section>
+
+  <!-- Verbs -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Implemented verbs</h2>
+    <div class="flex flex-wrap gap-2">
+      {['discover','search','get','quote','checkout','status','cancel','return'].map((v) => (
+        <span class="font-code-block text-code-block bg-on-background text-surface-container-lowest px-3 py-1 border border-on-background">{v}</span>
+      ))}
+    </div>
+    <p class="font-body-dense text-body-dense text-on-surface-variant mt-6 max-w-3xl">
+      All 8 verbs are implemented. The orchestrator's typed client maps each verb 1:1 to an HTTPS endpoint — no envelope, no JSON-RPC, no SOAP. Every response is Zod-checked against the wire schema before returning to the caller.
+    </p>
+  </section>
+
+  <!-- Operations telemetry -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Operations telemetry</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-on-background/10 border border-on-background/10">
+      <div class="bg-surface-container-lowest p-6">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Inventory volatility</div>
+        <div class="font-medium font-body-main">Realtime</div>
+        <div class="font-code-block text-xs text-on-surface-variant mt-1">&lt; 1s replication</div>
+      </div>
+      <div class="bg-surface-container-lowest p-6">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Catalog size</div>
+        <div class="font-medium font-body-main">Small</div>
+        <div class="font-code-block text-xs text-on-surface-variant mt-1">&lt; 1k items</div>
+      </div>
+      <div class="bg-surface-container-lowest p-6">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Price range</div>
+        <div class="font-medium font-body-main">₹100 – ₹5,000</div>
+        <div class="font-code-block text-xs text-on-surface-variant mt-1">INR · minor-units</div>
+      </div>
+      <div class="bg-surface-container-lowest p-6">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Payment rails</div>
+        <div class="flex flex-wrap gap-1">
+          <span class="font-code-block text-xs border border-on-background/10 px-1 bg-surface-container-low">razorpay_routes</span>
+          <span class="font-code-block text-xs border border-on-background/10 px-1 bg-surface-container-low">stripe_connect</span>
+          <span class="font-code-block text-xs border border-on-background/10 px-1 bg-surface-container-low">cod</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product capabilities table -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Product capabilities</h2>
+    <div class="border border-on-background/10 bg-surface-container-lowest">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-on-background/10 bg-surface-container-low">
+            <th class="py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant w-1/3">Property</th>
+            <th class="py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Value</th>
+          </tr>
+        </thead>
+        <tbody class="font-body-dense text-body-dense">
+          <tr class="border-b border-on-background/10">
+            <td class="py-3 px-4 font-code-block">categories</td>
+            <td class="py-3 px-4 border-l border-on-background/10">coffee, tea, snacks, groceries</td>
+          </tr>
+          <tr class="border-b border-on-background/10">
+            <td class="py-3 px-4 font-code-block">serviceAreas</td>
+            <td class="py-3 px-4 border-l border-on-background/10">IN · Bengaluru · 8 km radius</td>
+          </tr>
+          <tr class="border-b border-on-background/10">
+            <td class="py-3 px-4 font-code-block">deliveryModes</td>
+            <td class="py-3 px-4 border-l border-on-background/10 flex gap-2 flex-wrap">
+              <span class="border border-on-background/10 px-2 py-0.5 bg-surface-container-low">instant</span>
+              <span class="border border-on-background/10 px-2 py-0.5 bg-surface-container-low">same_day</span>
+              <span class="border border-on-background/10 px-2 py-0.5 bg-surface-container-low">scheduled</span>
+              <span class="border border-on-background/10 px-2 py-0.5 bg-surface-container-low">standard</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-code-block">returnWindow</td>
+            <td class="py-3 px-4 border-l border-on-background/10">7 days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Field reference -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Field reference</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10">
+      {fields.map((f) => (
+        <div class="border border-on-background/10 bg-surface-container-lowest p-6 hover-lift">
+          <div class="font-code-block text-code-block text-on-background mb-2">{f.name}</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">{f.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Write your manifest. Get listed.</h2>
+      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">The full Zod schema for <span class="font-code-block">CapabilitiesManifest</span> ships in <span class="font-code-block">@openkarta/spec</span>. Wrap your existing API with the SDK, validate locally, then submit at the registry.</p>
+      <div class="flex flex-wrap gap-4">
+        <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="/developers">Developer guide</a>
+        <a class="bg-transparent text-surface-container-lowest px-6 py-3 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://registry.openkarta.org/sign-in">Submit your agent ↗</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

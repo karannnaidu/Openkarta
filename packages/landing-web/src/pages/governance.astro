@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const groups = [
+  { name: 'Spec working group', remit: 'Reviews protocol RFCs. Final word on what enters the wire format.', cadence: 'Public meeting every other Wednesday on the OpenKarta Discord.' },
+  { name: 'Conformance working group', remit: 'Owns the test packs and the badge-signing key. Approves new per-type packs.', cadence: 'Async on GitHub. Sweeps reviewed weekly.' },
+  { name: 'Registry stewardship', remit: 'Operates registry.openkarta.org and the daily verification cron. Enforces neutrality covenant.', cadence: 'Quarterly transparency report on every change to listing logic.' },
+];
+
+const principles = [
+  { n: '01', title: 'Open by default', body: 'Every spec, test, RFC, and reference implementation is MIT-licensed. The wire format is documented before it is shipped.' },
+  { n: '02', title: 'No paid placement', body: 'The registry has no concept of priority placement, sponsored slots, or featured tiers. Conformance freshness is the only sort signal allowed.' },
+  { n: '03', title: 'No vendor lock-in', body: 'No backend, no SDK, no framework, no LLM is privileged. Anything that talks the 8 verbs over HTTPS is a first-class peer.' },
+  { n: '04', title: 'Reversible decisions', body: 'Major spec changes ship as a parallel package version with an 18-month deprecation window. Nothing breaks silently.' },
+  { n: '05', title: 'Public processes', body: 'RFCs, conformance changes, and registry policy edits all happen in public GitHub issues with the rfc / governance labels.' },
+  { n: '06', title: 'Conflict of interest', body: 'Working group members disclose merchant or LLM-vendor affiliations. Stewardship rotates yearly.' },
+];
+---
+<BaseLayout title="Governance — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Governance · public process</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Run in the open. Or it doesn't run.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      OpenKarta's governance is a small set of working groups, public-by-default decisions, and an inviolable neutrality covenant. Read the <a class="underline" href="/charter">charter</a> for the long form.
+    </p>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Six principles</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-on-background/10">
+      {principles.map((p) => (
+        <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+          <h3 class="font-code-block text-code-block text-on-surface-variant mb-4">{p.n}. {p.title}</h3>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">{p.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Working groups</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10">
+      {groups.map((g) => (
+        <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+          <h3 class="font-h2-editorial text-on-background mb-4">{g.name}</h3>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Remit</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant mb-4">{g.remit}</p>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Cadence</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">{g.cadence}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">RFC process</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      {[
+        { n: '01', title: 'Open issue', body: 'Tag with rfc on the GitHub repo. Include motivation, drop-in example, and a list of breaking impacts.' },
+        { n: '02', title: 'Reference impl', body: 'A working PR against @openkarta/spec — types, validators, and at least one reference agent updated.' },
+        { n: '03', title: 'Conformance update', body: 'New or amended test packs in @openkarta/conformance-tests. Failing tests must precede passing tests.' },
+        { n: '04', title: 'Working-group merge', body: 'Two-week comment window. Merge requires sign-off from two working-group members and no objections from any.' },
+      ].map((s) => (
+        <div class="border-t border-on-background pt-6">
+          <div class="font-code-block text-code-block w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">{s.n}</div>
+          <h3 class="font-medium mb-2">{s.title}</h3>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">{s.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Want a seat?</h2>
+      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">Working-group seats rotate yearly. Express interest by opening a governance-tagged issue with your background and the group you want to join.</p>
+      <div class="flex flex-wrap gap-4">
+        <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta/issues?q=label%3Agovernance">Open issues ↗</a>
+        <a class="bg-transparent text-surface-container-lowest px-6 py-3 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="/charter">Read the charter</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

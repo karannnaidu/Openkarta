@@ -1,11 +1,14 @@
 node_modules/
 dist/
 .turbo/
+.astro/
+.wrangler/
 *.log
 *.tsbuildinfo
 *.rtf
 .env
 .env.local
+.dev.vars
 coverage/
 .DS_Store
 .vscode/

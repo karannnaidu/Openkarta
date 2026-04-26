@@ -1,0 +1,21 @@
+{
+  "name": "@openkarta/landing-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenKarta landing site — public marketing + governance + content (Astro static)",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "clean": "rm -rf dist .astro .turbo"
+  },
+  "dependencies": {
+    "astro": "^4.16.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

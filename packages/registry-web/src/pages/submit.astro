@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Submit — OpenKarta Registry">
+  <h1>Submit your agent</h1>
+  <div id="auth-gate" style="display:none">
+    <p>You need an account to submit an agent. <a href="/sign-in">Sign in →</a></p>
+  </div>
+
+  <form id="form" style="display:none; max-width: 640px">
+    <p>
+      <label>Agent ID (kebab-case)<br/>
+        <input name="agentId" required pattern="[a-z0-9][a-z0-9-]{1,62}[a-z0-9]" placeholder="halcyon-shop" style="width:100%; padding:6px 8px" />
+      </label>
+    </p>
+    <p>
+      <label>Display name<br/>
+        <input name="displayName" required style="width:100%; padding:6px 8px" />
+      </label>
+    </p>
+    <p>
+      <label>Description<br/>
+        <textarea name="description" rows="2" style="width:100%; padding:6px 8px"></textarea>
+      </label>
+    </p>
+    <p>
+      <label>Public base URL (https://…)<br/>
+        <input name="baseUrl" type="url" required pattern="https://.*" placeholder="https://your-agent.example.com" style="width:100%; padding:6px 8px" />
+      </label>
+    </p>
+    <p>
+      <label>Tier<br/>
+        <select name="tier" required>
+          <option value="lite">Lite</option>
+          <option value="http" selected>HTTP</option>
+          <option value="agentic">Agentic</option>
+        </select>
+      </label>
+    </p>
+    <p>
+      <label>Item types (comma-separated)<br/>
+        <input name="supportedItemTypes" required placeholder="product, stay" style="width:100%; padding:6px 8px" />
+      </label>
+    </p>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="error" class="error" style="display:none"></div>
+  <div id="next" style="display:none">
+    <h2>Next step — verify domain ownership</h2>
+    <p>Host the file below at your agent's well-known path, then click "I've added the file".</p>
+    <p>Path: <span class="code" id="path"></span></p>
+    <p>Expected contents (single line):</p>
+    <div class="code" id="token"></div>
+    <p style="margin-top:12px">
+      <button id="verifyBtn">I've added the file — verify now</button>
+    </p>
+    <div id="verifyMsg" style="margin-top:8px"></div>
+  </div>
+
+  <script>
+    import { getMe, createAgent, verifyAgent, getAgent } from '../lib/api.ts';
+
+    const $ = (id) => document.getElementById(id);
+
+    async function init() {
+      try {
+        await getMe();
+      } catch (e) {
+        $('auth-gate').style.display = '';
+        return;
+      }
+      $('form').style.display = '';
+    }
+
+    let createdId = null;
+
+    $('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      $('error').style.display = 'none';
+      try {
+        const body = {
+          agentId: String(fd.get('agentId')),
+          displayName: String(fd.get('displayName')),
+          description: String(fd.get('description') ?? '') || undefined,
+          baseUrl: String(fd.get('baseUrl')),
+          tier: String(fd.get('tier')),
+          supportedItemTypes: String(fd.get('supportedItemTypes'))
+            .split(',').map((s) => s.trim()).filter(Boolean),
+        };
+        const out = await createAgent(body);
+        createdId = out.agent.agentId;
+        $('path').textContent = out.verificationInstructions.path;
+        $('token').textContent = out.verificationInstructions.token;
+        $('next').style.display = '';
+        $('form').style.display = 'none';
+      } catch (err) {
+        $('error').textContent = err.message ?? 'Submission failed';
+        $('error').style.display = '';
+      }
+    });
+
+    $('verifyBtn').addEventListener('click', async () => {
+      if (!createdId) return;
+      $('verifyMsg').textContent = 'Verifying…';
+      try {
+        await verifyAgent(createdId);
+        $('verifyMsg').className = 'success';
+        $('verifyMsg').textContent = 'Verified — running conformance suite. Redirecting…';
+        // Poll for verified state.
+        const t0 = Date.now();
+        const poll = async () => {
+          const a = await getAgent(createdId);
+          if (a.agent.verificationStatus === 'verified' && a.agent.healthStatus !== 'unknown') {
+            location.href = `/agent?id=${encodeURIComponent(createdId)}`;
+            return;
+          }
+          if (Date.now() - t0 > 90_000) { location.href = `/agent?id=${encodeURIComponent(createdId)}`; return; }
+          setTimeout(poll, 3000);
+        };
+        poll();
+      } catch (err) {
+        $('verifyMsg').className = 'error';
+        $('verifyMsg').textContent = err.message ?? 'Verification failed — confirm the file is reachable';
+      }
+    });
+
+    init();
+  </script>
+</BaseLayout>

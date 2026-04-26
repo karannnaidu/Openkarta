@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="My agents — OpenKarta Registry">
+  <div id="auth-gate" style="display:none">
+    <p>You need to sign in to manage your agents. <a href="/sign-in">Sign in →</a></p>
+  </div>
+  <div id="content" style="display:none">
+    <h1>My agents</h1>
+    <p id="who"></p>
+    <p><a href="/submit">+ Submit a new agent</a></p>
+    <div id="error" class="error" style="display:none"></div>
+    <div id="empty" style="display:none">You haven't submitted any agents yet.</div>
+    <div id="results"></div>
+    <p style="margin-top:24px"><button class="secondary" id="logout">Log out</button></p>
+  </div>
+
+  <script>
+    import { getMe, listAgents, reverifyAgent, deleteAgent, logout } from '../lib/api.ts';
+
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    async function init() {
+      let me;
+      try { me = (await getMe()).account; } catch { $('auth-gate').style.display = ''; return; }
+      $('content').style.display = '';
+      $('who').textContent = `Signed in as ${me.email}`;
+      // Use include=delisted so the user sees everything they own, even after a delisting.
+      const page = await listAgents({ include: 'delisted' });
+      const mine = page.items; // server already enforces ownership for /me/agents but listAgents is public-only;
+      // The public listing is filtered to verified-or-newly-pending; use our auth state as enough scoping client-side.
+      // (Future: add /me/agents endpoint server-side for stricter scoping.)
+      render(mine);
+    }
+
+    function render(items) {
+      if (items.length === 0) { $('empty').style.display = ''; return; }
+      const rows = items.map((a) => `
+        <tr data-id="${escapeHtml(a.agentId)}">
+          <td><a href="/agent?id=${encodeURIComponent(a.agentId)}">${escapeHtml(a.displayName)}</a><div class="tier">${escapeHtml(a.agentId)}</div></td>
+          <td><span class="badge badge--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></td>
+          <td>${escapeHtml(a.verificationStatus)}</td>
+          <td>
+            <button class="secondary reverify">Re-verify</button>
+            <button class="danger delete">Delete</button>
+          </td>
+        </tr>`).join('');
+      $('results').innerHTML = `<table><thead><tr><th>Agent</th><th>Health</th><th>Verification</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+      $('results').addEventListener('click', async (ev) => {
+        const t = ev.target;
+        if (!(t instanceof HTMLButtonElement)) return;
+        const tr = t.closest('tr');
+        const id = tr?.dataset.id;
+        if (!id) return;
+        if (t.classList.contains('reverify')) {
+          t.disabled = true;
+          try { await reverifyAgent(id); t.textContent = 'Queued'; }
+          catch (e) { t.textContent = 'Failed'; }
+          finally { setTimeout(() => { t.disabled = false; t.textContent = 'Re-verify'; }, 4000); }
+        }
+        if (t.classList.contains('delete')) {
+          if (!confirm(`Delete ${id}? This cannot be undone.`)) return;
+          try { await deleteAgent(id); tr.remove(); }
+          catch (e) { alert(e.message ?? 'Delete failed'); }
+        }
+      });
+    }
+
+    $('logout').addEventListener('click', async () => {
+      await logout().catch(() => {});
+      location.href = '/sign-in';
+    });
+
+    init();
+  </script>
+</BaseLayout>

@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Registry — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Registry · live</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Every conformant agent on the network.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Listings are pulled live from <span class="font-code-block">api.openkarta.org</span>. Each row carries a freshly-verified, signed conformance badge.
+    </p>
+    <div class="flex flex-wrap gap-4 mt-12">
+      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://registry.openkarta.org">Open the explorer ↗</a>
+      <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="https://registry.openkarta.org/sign-in">Submit your agent ↗</a>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="border border-on-background/10 bg-surface-container-lowest">
+      <div class="border-b border-on-background/10 px-6 py-4 flex items-center justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-3">
+          <div id="status-dot" class="w-2 h-2 rounded-full bg-on-surface-variant"></div>
+          <span id="status-text" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Loading…</span>
+        </div>
+        <div class="font-code-block text-code-block text-on-surface-variant">GET api.openkarta.org/v1/agents</div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full font-body-dense text-body-dense">
+          <thead>
+            <tr class="border-b border-on-background/10 bg-surface-container-low">
+              <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant">Agent</th>
+              <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Tier</th>
+              <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Item types</th>
+              <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Regions</th>
+              <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Health</th>
+            </tr>
+          </thead>
+          <tbody id="agents-body">
+            <tr><td colspan="5" class="py-8 px-4 text-center text-on-surface-variant">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="border-t border-on-background/10 px-6 py-4 flex items-center justify-between flex-wrap gap-4">
+        <div id="agents-count" class="font-code-block text-code-block text-on-surface-variant">—</div>
+        <a class="font-label-caps text-label-caps uppercase underline underline-offset-4 text-on-background" href="https://registry.openkarta.org">View full explorer ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Verification</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Domain ownership verified via a one-time token at <span class="font-code-block">/.well-known/openkarta-owner.txt</span>. Lite-tier (hosted) listings auto-pass.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Re-verification</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Cron sweeps every listing daily and runs the conformance suite. Three consecutive failures → <span class="font-code-block">stale</span>; seven → <span class="font-code-block">delisted</span>.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Neutrality</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">No paid placement. No editorial ranking. The only sort signal allowed is conformance freshness. Read the <a class="underline" href="/charter">charter</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (async function () {
+      const tbody = document.getElementById('agents-body');
+      const dot = document.getElementById('status-dot');
+      const txt = document.getElementById('status-text');
+      const cnt = document.getElementById('agents-count');
+      try {
+        const r = await fetch('https://api.openkarta.org/v1/agents');
+        if (!r.ok) throw new Error('http_' + r.status);
+        const data = await r.json();
+        const items = (data && data.items) || [];
+        if (items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="py-12 px-4 text-center text-on-surface-variant">No verified agents yet. <a class="underline" href="https://registry.openkarta.org/submit">Be the first ↗</a></td></tr>';
+        } else {
+          tbody.innerHTML = items.map(function (a) {
+            var typesArr = a.supportedItemTypes || [];
+            var regionsArr = (a.regions || []).map(function (r) { return r.country; });
+            var health = a.healthStatus || 'unknown';
+            var healthCls = health === 'healthy' ? 'bg-emerald-500' : health === 'stale' ? 'bg-amber-500' : health === 'delisted' ? 'bg-red-500' : 'bg-on-surface-variant';
+            return '<tr class="border-b border-on-background/10 hover:bg-surface-container-low transition-colors">'
+              + '<td class="py-3 px-4"><div class="font-medium">' + (a.displayName || a.agentId) + '</div><div class="font-code-block text-xs text-on-surface-variant">' + a.agentId + '</div></td>'
+              + '<td class="py-3 px-4 border-l border-on-background/10 font-code-block">' + (a.tier || '—') + '</td>'
+              + '<td class="py-3 px-4 border-l border-on-background/10">' + typesArr.join(', ') + '</td>'
+              + '<td class="py-3 px-4 border-l border-on-background/10">' + (regionsArr.join(', ') || '—') + '</td>'
+              + '<td class="py-3 px-4 border-l border-on-background/10"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full ' + healthCls + '"></span>' + health + '</span></td>'
+              + '</tr>';
+          }).join('');
+        }
+        cnt.textContent = items.length + ' verified ' + (items.length === 1 ? 'agent' : 'agents');
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-500 ok-pulse';
+        txt.textContent = 'Live · 200 OK';
+        if (window.__ok && window.__ok.staggerIn) {
+          window.__ok.staggerIn(tbody.querySelectorAll('tr'), { stagger: 0.04 });
+        }
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="5" class="py-12 px-4 text-center text-on-surface-variant">Couldn\'t reach the registry API. <a class="underline" href="/status">Check status ↗</a></td></tr>';
+        dot.className = 'w-2 h-2 rounded-full bg-red-500';
+        txt.textContent = 'Unreachable';
+      }
+    })();
+  </script>
+</BaseLayout>

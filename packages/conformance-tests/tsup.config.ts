@@ -2,6 +2,8 @@ import { defineConfig } from 'tsup';
 export default defineConfig({
   entry: [
     'src/cli.ts',
+    'src/index.ts',
+    'src/run-conformance.ts',
     'src/types.ts',
     'src/runner.ts',
     'src/badge.ts',

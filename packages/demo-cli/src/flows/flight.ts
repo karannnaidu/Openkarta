@@ -1,4 +1,4 @@
-import { type Client, createClient } from '@openkarta/sdk-node';
+import { type OpenKartaClient, createClient } from '@openkarta/sdk-node';
 import { type TranscriptStep, printTranscript } from '../transcript.js';
 
 interface Manifest    { agentId: string; supportedItemTypes: string[]; tier: string }
@@ -6,7 +6,7 @@ interface SearchRes   { items: Array<{ id: string; title: string }> }
 interface QuoteRes    { quoteToken: string; totalMinor: number; currency: string; expiresAt: string }
 interface OrderRes    { orderId: string; paymentStatus: string; fulfilmentStatus: { state: string } }
 
-export const executeFlightFlow = async (c: Client): Promise<TranscriptStep[]> => {
+export const executeFlightFlow = async (c: OpenKartaClient): Promise<TranscriptStep[]> => {
   const steps: TranscriptStep[] = [];
 
   const manifest = (await c.discover()) as Manifest;
@@ -33,7 +33,7 @@ export const executeFlightFlow = async (c: Client): Promise<TranscriptStep[]> =>
   const cart = {
     cartId: `c_${Math.random().toString(36).slice(2, 8)}`,
     lines: [{
-      itemType:   'flight',
+      itemType:   'flight' as const,
       itemId,
       passengers: [{ firstName: 'Karan', lastName: 'Singh' }],
     }],

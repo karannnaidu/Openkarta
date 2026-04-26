@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const articles = [
+  {
+    n: 'I',
+    title: 'On the protocol',
+    body: 'The OpenKarta protocol is a public good. The wire format, the Zod schemas, the conformance tests, and the reference agents are MIT-licensed and will remain so. No relicensing. No closed extensions in the canonical packages.',
+  },
+  {
+    n: 'II',
+    title: 'On the registry',
+    body: 'The hosted registry exists to serve agents and consumers. It accepts no money for placement, no money for ranking, no money for visibility. The only ordering signal permitted in the public listing API is conformance freshness.',
+  },
+  {
+    n: 'III',
+    title: 'On neutrality',
+    body: 'No LLM vendor, payment processor, or backend host is granted preference. The chat client treats every chat-completions endpoint as equal. The orchestrator treats every conformant agent as equal.',
+  },
+  {
+    n: 'IV',
+    title: 'On settlement',
+    body: 'OpenKarta is not a merchant of record. It does not sit on the payment path. It does not collect a percentage of GMV. Its sustainability comes from grants, infra subsidies, and optional paid SLAs for the badge service — never from buyers or sellers.',
+  },
+  {
+    n: 'V',
+    title: 'On data',
+    body: 'The registry stores manifest documents and conformance run results — nothing else about end users. No buyer-side personal data passes through OpenKarta-operated infrastructure. The orchestrator runs in the consumer agent\'s own process.',
+  },
+  {
+    n: 'VI',
+    title: 'On change',
+    body: 'Wire-format changes follow the RFC process documented at /governance. Major versions ship as parallel package versions with an 18-month deprecation window. No silent breakage; no version-skew traps.',
+  },
+  {
+    n: 'VII',
+    title: 'On succession',
+    body: 'If the foundation is dissolved, the trademarks transfer to a designated steward, the spec repositories continue under MIT, and the conformance signing key is rotated under public notice. The protocol survives any one operator.',
+  },
+];
+---
+<BaseLayout title="Neutrality charter — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Charter · seven articles · v1.0</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      The neutrality charter.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      The constraints OpenKarta operates under, in plain language. These are obligations on the foundation — not on you. They cannot be amended without 14 days of public notice and unanimous working-group sign-off.
+    </p>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <aside class="md:col-span-3 hidden md:block">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4 sticky top-24">Articles</div>
+        <ul class="space-y-2 sticky top-32">
+          {articles.map((a) => (
+            <li><a class="font-body-dense text-body-dense text-on-surface-variant hover:text-on-background underline-offset-4 hover:underline" href={`#article-${a.n.toLowerCase()}`}>{a.n}. {a.title}</a></li>
+          ))}
+        </ul>
+      </aside>
+      <article class="md:col-span-9 space-y-12">
+        {articles.map((a) => (
+          <section id={`article-${a.n.toLowerCase()}`} class="border-b border-on-background/10 pb-10">
+            <div class="font-code-block text-code-block text-on-surface-variant mb-3">Article {a.n}</div>
+            <h2 class="font-h2-editorial text-on-background mb-4">{a.title}</h2>
+            <p class="font-body-main text-body-main text-on-surface-variant">{a.body}</p>
+          </section>
+        ))}
+      </article>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="border border-on-background/10 bg-surface-container-lowest p-12">
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Signed</div>
+      <p class="font-body-main text-body-main text-on-surface-variant max-w-3xl">Adopted by the OpenKarta working groups, 2026. Reviewed annually. The full git history of this document — every word, every revision — is public at <a class="underline" href="https://github.com/karannnaidu/Openkarta/blob/main/packages/landing-web/src/pages/charter.astro">github.com/karannnaidu/Openkarta</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const tiers = [
+  {
+    name: 'Lite',
+    sub: 'No code',
+    body: 'Hand us a markdown or CSV catalogue. We host the brand agent on neutral OpenKarta infra; you receive orders by email or webhook.',
+    targets: 'Independent merchants, small D2C, marketplace sellers.',
+    next: 'Submit a catalogue file at registry.openkarta.org.',
+  },
+  {
+    name: 'HTTP',
+    sub: 'Wrap your existing API',
+    body: 'Implement 8 verbs over plain HTTPS using @openkarta/sdk-node. Quote signing, error envelopes, lifecycle handled by the SDK.',
+    targets: 'Brands with an existing order system and an engineering team.',
+    next: 'Read the integrator quickstart and run the conformance suite.',
+  },
+  {
+    name: 'Agentic',
+    sub: 'LLM-fronted',
+    body: 'Wrap an LLM-driven assistant behind the same 8 verbs. The orchestrator never knows it\'s talking to an LLM — it sees typed responses.',
+    targets: 'Concierge / personal-shopper experiences with broad inventory.',
+    next: 'See the reference agentic implementation in the monorepo.',
+  },
+];
+---
+<BaseLayout title="Merchant integration — OpenKarta" activeNav="merchant">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">For merchants</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Expose your catalogue once. Sell to every agent.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Three integration tiers, depending on how much engineering you have. Pick one. Get listed in under a day.
+    </p>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      {tiers.map((t) => (
+        <div class="border border-on-background/10 bg-surface-container-lowest p-10 hover-lift flex flex-col">
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">{t.sub}</div>
+          <h2 class="font-h2-editorial text-on-background mb-4">{t.name}</h2>
+          <p class="font-body-main text-body-main text-on-surface-variant mb-6 flex-1">{t.body}</p>
+          <div class="border-t border-on-background/10 pt-4 mt-2 space-y-3">
+            <div>
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Best for</div>
+              <div class="font-body-dense text-body-dense text-on-background">{t.targets}</div>
+            </div>
+            <div>
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Next step</div>
+              <div class="font-body-dense text-body-dense text-on-background">{t.next}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">What you get on the network</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12" data-ok-stagger=":scope > div">
+      <div>
+        <h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Discovery, free</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Every consumer agent on the network — ChatGPT, Claude, custom voice agents — can find you via the registry by item type and region. No bizdev calls. No per-agent integration.</p>
+      </div>
+      <div>
+        <h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Signed quotes</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">You sign every quote with your secret. Your prices are tamper-evident on the wire. The agent cannot lie about the price you offered.</p>
+      </div>
+      <div>
+        <h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">No merchant-of-record</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Settlement and tax compliance stay with you. OpenKarta routes data, not money. Your existing payment processor and invoicing don't change.</p>
+      </div>
+      <div>
+        <h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">A signed badge</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Run the conformance suite. Get an HMAC-signed badge. Embed it on your site or in your catalogue. Re-verified daily by the registry's cron.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Ready to list?</h2>
+      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">Submit your agent at the hosted registry. Domain verification takes a minute; conformance run takes under five.</p>
+      <div class="flex flex-wrap gap-4">
+        <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="https://registry.openkarta.org/sign-in">Get listed ↗</a>
+        <a class="bg-transparent text-surface-container-lowest px-6 py-3 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="/manifest">View example manifest</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,369 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="OpenKarta — The open contract for agentic commerce" activeNav={null}>
+  <!-- 1. Hero -->
+  <section class="relative min-h-[800px] flex flex-col justify-center px-8 md:px-16 overflow-hidden max-w-[1440px] mx-auto mb-[160px]">
+    <div aria-hidden="true" class="absolute inset-0 pointer-events-none opacity-[0.06] font-code-block text-[10vw] leading-none whitespace-nowrap overflow-hidden select-none flex flex-col justify-between py-20 text-on-background">
+      <div class="animate-marquee">discover() search() get() quote() checkout() status() cancel() return()</div>
+      <div class="animate-marquee-reverse">product · stay · flight · bus · service</div>
+      <div class="animate-marquee">discover() search() get() quote() checkout() status() cancel() return()</div>
+    </div>
+    <div class="relative z-10 max-w-5xl" data-ok-stagger=":scope > *">
+      <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,8vw,108px)] leading-[1.05] tracking-tight mb-8">
+        The open contract for agentic commerce.
+      </h1>
+      <p class="font-h2-editorial text-on-surface-variant max-w-3xl mb-12">
+        Eight verbs. Five item types. Any AI agent can buy from any merchant — without per-merchant integration code.
+      </p>
+      <div class="flex flex-wrap gap-4 items-center mb-8">
+        <a class="group bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="/merchant">Expose your catalogue <span class="ok-arrow inline-block">→</span></a>
+        <a class="group bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="/developers">Build a consumer agent <span class="ok-arrow inline-block">→</span></a>
+      </div>
+      <div class="font-code-block text-code-block text-on-surface-variant bg-surface-container-low p-4 inline-block border border-on-background/10" data-ok-typeout="60">$ npm install @openkarta/sdk-node @openkarta/spec</div>
+    </div>
+  </section>
+
+  <!-- 1b. Hero video reel -->
+  <section class="hidden md:block px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
+    <div class="border border-on-background/10 bg-surface-container-lowest overflow-hidden">
+      <video class="block w-full h-auto" autoplay muted loop playsinline preload="metadata" aria-label="OpenKarta protocol reel">
+        <source src="/hero.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </section>
+
+  <!-- 2. Two worlds -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
+    <h2 class="font-h2-editorial text-on-background mb-8 max-w-2xl">Two ways your AI assistant could buy something.</h2>
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mb-12 font-label-caps text-label-caps uppercase" data-ok-scene-tabs>
+      <span class="text-on-surface-variant">Demonstrating</span>
+      <button type="button" data-ok-scene-tab="0" class="ok-scene-tab text-on-background border-b border-on-background pb-1 transition-colors duration-240">Product</button>
+      <button type="button" data-ok-scene-tab="1" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Stay</button>
+      <button type="button" data-ok-scene-tab="2" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Flight</button>
+      <button type="button" data-ok-scene-tab="3" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Bus</button>
+      <button type="button" data-ok-scene-tab="4" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Service</button>
+    </div>
+    <div class="grid md:grid-cols-2 gap-16 md:gap-gutter" data-ok-stagger=":scope > div">
+      <div class="flex flex-col gap-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps text-on-surface-variant border-b border-on-background/10 pb-4">WORLD A · TODAY</div>
+        <div class="bg-surface-container-low p-6 border border-on-background/10">
+          <div class="flex gap-4 items-start mb-6">
+            <div class="w-8 h-8 bg-surface-variant rounded-full flex-shrink-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-on-surface-variant text-sm">smart_toy</span>
+            </div>
+            <ol class="bg-surface-container-lowest border border-on-background/10 p-4 font-body-dense text-body-dense ok-scene-text list-decimal list-outside ml-5 space-y-2" data-ok-scene-a>
+              <li>Asks Claude for a vitamin C serum from Minimalist.</li>
+              <li>Claude returns three blue links and tells her to go pick one.</li>
+              <li>She opens beminimalist.co, makes an account, types in her card.</li>
+              <li>After paying she hunts for tracking across three different emails.</li>
+              <li>Next time she just opens Swiggy Instamart and skips Claude.</li>
+            </ol>
+          </div>
+          <p class="font-body-main text-body-main text-on-surface-variant">
+            Agents act as search engines, pushing the friction of transaction, identity, and state management back to the user via traditional web UI.
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col gap-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps text-on-background border-b border-on-background pb-4">WORLD B · OPENKARTA</div>
+        <div class="bg-surface-container-lowest p-6 border border-on-background/10 hover-lift">
+          <div class="flex gap-4 items-start mb-6">
+            <div class="w-8 h-8 bg-on-background text-surface-container-lowest rounded-full flex-shrink-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-surface-container-lowest text-sm">robot_2</span>
+            </div>
+            <ol class="bg-surface-container-low border border-on-background/10 p-4 font-body-dense text-body-dense ok-scene-text list-decimal list-outside ml-5 space-y-2" data-ok-scene-b>
+              <li>Asks Claude for a vitamin C serum from Minimalist.</li>
+              <li>Claude pings the registry; Minimalist's brand agent answers in 200 ms.</li>
+              <li>Real SKU at ₹1,299 — locked for 2 minutes.</li>
+              <li>She says yes; Claude opens GPay; she taps; UPI PIN; paid.</li>
+              <li>Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.</li>
+              <li>Next week: "reorder that." One tap.</li>
+            </ol>
+          </div>
+          <p class="font-body-main text-body-main text-on-background">
+            Agents execute transactions via a standard protocol — negotiating quotes, confirming orders, tracking state — all in the background.
+          </p>
+        </div>
+        <div class="mt-4 space-y-2 border-l border-on-background/10 pl-6">
+          <div class="font-label-caps text-label-caps text-on-surface-variant mb-2">SAME EIGHT VERBS, FIVE CATEGORIES:</div>
+          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="0">
+            <span class="text-on-surface-variant">product</span><span class="text-on-background font-medium">retail / quick-commerce / grocery</span>
+          </div>
+          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="1">
+            <span class="text-on-surface-variant">stay</span><span class="text-on-background font-medium">hotels · homestays</span>
+          </div>
+          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="2">
+            <span class="text-on-surface-variant">flight</span><span class="text-on-background font-medium">domestic + international</span>
+          </div>
+          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="3">
+            <span class="text-on-surface-variant">bus</span><span class="text-on-background font-medium">intercity, sleeper, semi-sleeper</span>
+          </div>
+          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="4">
+            <span class="text-on-surface-variant">service</span><span class="text-on-background font-medium">salon · cleaning · repair</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Core execution loop -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px] bg-surface-container-low py-20">
+    <h2 class="font-h2-editorial text-on-background mb-4">The core execution loop.</h2>
+    <div class="flex flex-wrap items-center gap-3 mb-12 font-label-caps text-label-caps uppercase">
+      <span class="text-on-surface-variant">Now demonstrating</span>
+      <span class="ok-scene-chip border border-on-background/10 px-3 py-1 font-code-block text-code-block text-on-background bg-surface-container-lowest" data-ok-scene-chip>halcyon-shop · Tokai blend 250g · ₹780</span>
+    </div>
+    <div class="flex flex-col md:flex-row gap-12 items-start">
+      <div class="flex-1 space-y-6" data-ok-stagger=":scope > div">
+        {[
+          { n: 1, title: 'Registry discovery', body: 'Consumer agent queries the public registry for capable brand agents — by item type, region, tags.' },
+          { n: 2, title: 'Catalogue search', body: 'Brand agents reply via search() with priced items, stock state, and constraints.' },
+          { n: 3, title: 'Signed quote', body: 'quote() returns a server-signed quote with expiry — inventory locked for the agent.' },
+          { n: 4, title: 'Checkout', body: 'checkout() exchanges the signed quote for an order; payment intent issued out-of-band.' },
+          { n: 5, title: 'Status & lifecycle', body: 'status() polls. cancel() and return() close the loop with auditable state transitions.' },
+        ].map((s) => (
+          <div class="flex gap-4 items-start group">
+            <div class="font-code-block text-code-block text-surface-container-lowest bg-on-background w-7 h-7 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-container transition-colors">{s.n}</div>
+            <div>
+              <div class="font-medium mb-1">{s.title}</div>
+              <div class="font-body-dense text-body-dense text-on-surface-variant">{s.body}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="flex-1 w-full flex justify-center">
+        <img src="/loop-diagram.png" alt="OpenKarta core execution loop diagram" width="1024" height="1024" class="w-full max-w-md h-auto border border-on-background/10 bg-surface-container-lowest" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Stats + CTA -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 border-t border-b border-on-background/10 py-8" data-ok-stagger=":scope > div">
+      <div>
+        <div class="font-display-lg text-display-lg text-on-background" data-ok-count="10">0</div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant mt-2">PUBLISHED PACKAGES</div>
+      </div>
+      <div>
+        <div class="font-display-lg text-display-lg text-on-background" data-ok-count="3">0</div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant mt-2">REFERENCE AGENTS</div>
+      </div>
+      <div>
+        <div class="font-display-lg text-display-lg text-on-background" data-ok-count="5">0</div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant mt-2">ITEM TYPES</div>
+      </div>
+    </div>
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-center text-center">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">
+        The contract should be open. The competition should be on service.
+      </h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-2xl">
+        <div class="flex-1 bg-inverse-surface border border-surface-container-lowest/20 p-4 font-code-block text-code-block text-surface-container-lowest text-left">
+          // Brand agent (sell anything)<br />
+          npm i @openkarta/sdk-node
+        </div>
+        <div class="flex-1 bg-inverse-surface border border-surface-container-lowest/20 p-4 font-code-block text-code-block text-surface-container-lowest text-left">
+          // Consumer agent (buy anywhere)<br />
+          npm i @openkarta/orchestrator
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a class="bg-surface-container-lowest text-on-background px-8 py-4 border border-transparent hover:bg-transparent hover:text-surface-container-lowest hover:border-surface-container-lowest transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
+        <a class="bg-transparent text-surface-container-lowest px-8 py-4 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240 font-medium" href="/developers">Developer quickstart</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .ok-scene-text { transition: opacity 240ms cubic-bezier(0.2, 0, 0, 1); }
+    .ok-scene-chip { transition: opacity 240ms cubic-bezier(0.2, 0, 0, 1); display: inline-block; }
+    .ok-scene-row { background-color: transparent; }
+    .ok-scene-row.is-active {
+      background-color: rgba(27, 28, 28, 0.04);
+      border-color: rgba(27, 28, 28, 0.4);
+    }
+    .ok-scene-tab { cursor: pointer; background: none; border: 0; border-bottom-width: 1px; padding: 0 0 4px 0; font: inherit; }
+    @media (prefers-reduced-motion: reduce) {
+      .ok-scene-text, .ok-scene-chip { transition: none; }
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      const scenes = [
+        {
+          a: [
+            "Asks Claude for a vitamin C serum from Minimalist.",
+            "Claude returns three blue links and tells her to go pick one.",
+            "She opens beminimalist.co, makes an account, types in her card.",
+            "After paying she hunts for tracking across three different emails.",
+            "Next time she just opens Swiggy Instamart and skips Claude.",
+          ],
+          b: [
+            "Asks Claude for a vitamin C serum from Minimalist.",
+            "Claude pings the registry; Minimalist's brand agent answers in 200 ms.",
+            "Real SKU at \u20B91,299 \u2014 locked for 2 minutes.",
+            "She says yes; Claude opens GPay; she taps; UPI PIN; paid.",
+            "Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.",
+            "Next week: \u201Creorder that.\u201D One tap.",
+          ],
+          chip: "minimalist-shop \u00B7 vitamin C serum \u00B7 \u20B91,299",
+        },
+        {
+          a: [
+            "Asks Claude for 3 nights in Manali for two adults.",
+            "Claude lists 14 hotels and tells her to compare on her own.",
+            "She opens MakeMyTrip, signs in, picks Tamarind Tree.",
+            "Price has moved \u20B9400 since Claude quoted. She pays anyway.",
+            "Confirmation email gets buried; she copies the booking ID into her calendar by hand.",
+          ],
+          b: [
+            "Asks Claude for 3 nights in Manali for two adults.",
+            "Claude fans out to three stay agents on the registry; replies in 600 ms.",
+            "Tamarind Tree at \u20B914,400 \u2014 locked for 2 minutes.",
+            "She approves; UPI; paid in two taps.",
+            "PNR auto-added to her calendar with check-in time and address.",
+          ],
+          chip: "tamarind-stays \u00B7 Manali \u00B7 3N \u00B7 \u20B914,400",
+        },
+        {
+          a: [
+            "Asks Claude for a flight Bengaluru \u2192 Mumbai tomorrow evening.",
+            "Claude lists 27 options on a results page and steps back.",
+            "She opens IndiGo, signs in; the fare moved up \u20B9600 since Claude quoted.",
+            "Captcha. Card OTP. Confirms.",
+            "Boarding pass arrives in an app she has to remember to open.",
+          ],
+          b: [
+            "Asks Claude for a flight BLR \u2192 BOM tomorrow evening.",
+            "Claude fans out to four airline agents on the registry.",
+            "IndiGo 6E-202 at 18:40 for \u20B94,890 \u2014 locked for 2 minutes.",
+            "She approves; tokenised card; PNR returned in the same response.",
+            "Boarding pass auto-imported to her wallet. Claude pings her at gate-close minus 60.",
+          ],
+          chip: "indigo-air \u00B7 BLR\u2192BOM \u00B7 6E-202 \u00B7 \u20B94,890",
+        },
+        {
+          a: [
+            "Asks Claude for a Volvo to Hyderabad tonight.",
+            "Claude lists three operators \u2014 RedBus, KSRTC, AbhiBus \u2014 and tells her to pick.",
+            "She opens RedBus on mobile; seat picker won't render; captcha.",
+            "Books on the third try, gets a PDF ticket buried in mail.",
+            "At 22:00 she's hunting for the boarding point on Google Maps.",
+          ],
+          b: [
+            "Asks Claude for a Volvo to Hyderabad tonight.",
+            "Claude pings KSRTC's bus agent; lower-deck S-12 at \u20B91,250.",
+            "Quote locked. She approves; UPI; paid.",
+            "Boarding 22:00 from Madiwala \u2014 saved to her phone.",
+            "At 21:15 Claude pings her with the gate and walking ETA.",
+          ],
+          chip: "ksrtc-bus \u00B7 BLR\u2192HYD \u00B7 Volvo S-12 \u00B7 \u20B91,250",
+        },
+        {
+          a: [
+            "Asks Claude for a salon slot Saturday 4pm with Nisha.",
+            "Claude lists three salons nearby and tells her to call to confirm.",
+            "She rings the front desk; Nisha's free; books over the phone.",
+            "No calendar handoff \u2014 she types it in herself.",
+            "Saturday morning she's forgotten which stylist she booked.",
+          ],
+          b: [
+            "Asks Claude for a salon slot Saturday 4pm with Nisha.",
+            "Claude pings Lakm\u00E9 Indiranagar's service agent; Nisha is open.",
+            "Quote: \u20B91,400. Locked for 2 minutes.",
+            "She approves; UPI; confirmation in chat.",
+            "Auto-added to her calendar with stylist, address, and salon phone.",
+          ],
+          chip: "lakme-services \u00B7 Saturday 4pm \u00B7 Indiranagar \u00B7 \u20B91,400",
+        },
+      ];
+
+      const aSlot = document.querySelector('[data-ok-scene-a]');
+      const bSlot = document.querySelector('[data-ok-scene-b]');
+      const chip  = document.querySelector('[data-ok-scene-chip]');
+      const tabs  = Array.from(document.querySelectorAll('[data-ok-scene-tab]'));
+      const rows  = Array.from(document.querySelectorAll('[data-ok-scene-row]'));
+      const tabsContainer = document.querySelector('[data-ok-scene-tabs]');
+      if (!aSlot || !bSlot || !tabs.length) return;
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let i = 0;
+      let paused = false;
+      let intervalId = null;
+      let resumeTimer = null;
+
+      function rebuildList(el, items) {
+        el.innerHTML = '';
+        items.forEach((s) => {
+          const li = document.createElement('li');
+          li.textContent = s;
+          el.appendChild(li);
+        });
+      }
+
+      function fadeSwapList(el, items) {
+        if (!el) return;
+        if (reduced) { rebuildList(el, items); return; }
+        el.style.opacity = '0';
+        setTimeout(() => { rebuildList(el, items); el.style.opacity = '1'; }, 240);
+      }
+
+      function fadeSwapText(el, text) {
+        if (!el) return;
+        if (reduced) { el.textContent = text; return; }
+        el.style.opacity = '0';
+        setTimeout(() => { el.textContent = text; el.style.opacity = '1'; }, 240);
+      }
+
+      function setActive(idx) {
+        tabs.forEach((t, k) => {
+          if (k === idx) {
+            t.classList.add('text-on-background', 'border-on-background');
+            t.classList.remove('text-on-surface-variant', 'border-transparent');
+          } else {
+            t.classList.remove('text-on-background', 'border-on-background');
+            t.classList.add('text-on-surface-variant', 'border-transparent');
+          }
+        });
+        rows.forEach((r, k) => {
+          r.classList.toggle('is-active', k === idx);
+        });
+        const s = scenes[idx];
+        fadeSwapList(aSlot, s.a);
+        fadeSwapList(bSlot, s.b);
+        fadeSwapText(chip, s.chip);
+      }
+
+      function tick() {
+        if (paused) return;
+        i = (i + 1) % scenes.length;
+        setActive(i);
+      }
+
+      tabs.forEach((t, k) => {
+        t.addEventListener('click', () => {
+          i = k;
+          setActive(i);
+          paused = true;
+          clearTimeout(resumeTimer);
+          resumeTimer = setTimeout(() => { paused = false; }, 30000);
+        });
+      });
+
+      if (tabsContainer) {
+        tabsContainer.addEventListener('mouseenter', () => { paused = true; });
+        tabsContainer.addEventListener('mouseleave', () => { paused = false; });
+      }
+
+      setActive(0);
+      if (!reduced) intervalId = setInterval(tick, 8000);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { if (intervalId) { clearInterval(intervalId); intervalId = null; } }
+        else if (!intervalId && !reduced) { intervalId = setInterval(tick, 8000); }
+      });
+    })();
+  </script>
+</BaseLayout>
