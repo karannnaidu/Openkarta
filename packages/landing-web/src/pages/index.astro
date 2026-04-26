@@ -80,19 +80,29 @@ import CodeBlock from '../components/CodeBlock.astro';
       <div class="flex flex-col gap-8 fade-slide-up">
         <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD A · TODAY</div>
         <div class="bg-surface-container-low p-6 border border-on-background/10">
-          <div class="flex gap-4 items-start mb-6">
-            <div class="w-8 h-8 bg-surface-variant rounded-full flex-shrink-0 flex items-center justify-center">
-              <span class="material-symbols-outlined text-on-surface-variant text-sm">smart_toy</span>
+          <div class="bg-surface-container-lowest border border-on-background/10 ok-scene-text" data-ok-scene-a>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Ask</div>
+              <div class="font-body-dense text-body-dense">Asks Claude for a vitamin C serum from Minimalist.</div>
             </div>
-            <ol class="bg-surface-container-lowest border border-on-background/10 p-4 font-body-dense text-body-dense ok-scene-text list-decimal list-outside ml-5 space-y-2" data-ok-scene-a>
-              <li>Asks Claude for a vitamin C serum from Minimalist.</li>
-              <li>Claude returns three blue links and tells her to go pick one.</li>
-              <li>She opens beminimalist.co, makes an account, types in her card.</li>
-              <li>After paying she hunts for tracking across three different emails.</li>
-              <li>Next time she just opens Swiggy Instamart and skips Claude.</li>
-            </ol>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Discover</div>
+              <div class="font-body-dense text-body-dense">Claude returns three blue links and tells her to go pick one.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Decide</div>
+              <div class="font-body-dense text-body-dense">She opens beminimalist.co, makes an account, types in her card.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Track</div>
+              <div class="font-body-dense text-body-dense">After paying she hunts for tracking across three different emails.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Repeat</div>
+              <div class="font-body-dense text-body-dense">Next time she just opens Swiggy Instamart and skips Claude.</div>
+            </div>
           </div>
-          <p class="font-body-main text-body-main text-on-surface-variant">
+          <p class="font-body-main text-body-main text-on-surface-variant mt-6">
             Agents act as search engines, pushing the friction of transaction, identity, and state management back to the user via traditional web UI.
           </p>
         </div>
@@ -100,20 +110,33 @@ import CodeBlock from '../components/CodeBlock.astro';
       <div class="flex flex-col gap-8 fade-slide-up">
         <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD B · OPENKARTA</div>
         <div class="bg-surface-container-lowest p-6 border border-on-background/10 hover-lift">
-          <div class="flex gap-4 items-start mb-6">
-            <div class="w-8 h-8 bg-on-background text-surface-container-lowest rounded-full flex-shrink-0 flex items-center justify-center">
-              <span class="material-symbols-outlined text-surface-container-lowest text-sm">robot_2</span>
+          <div class="bg-surface-container-low border border-on-background/10 ok-scene-text" data-ok-scene-b>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Ask</div>
+              <div class="font-body-dense text-body-dense">Asks Claude for a vitamin C serum from Minimalist.</div>
             </div>
-            <ol class="bg-surface-container-low border border-on-background/10 p-4 font-body-dense text-body-dense ok-scene-text list-decimal list-outside ml-5 space-y-2" data-ok-scene-b>
-              <li>Asks Claude for a vitamin C serum from Minimalist.</li>
-              <li>Claude pings the registry; Minimalist's brand agent answers in 200 ms.</li>
-              <li>Real SKU at ₹1,299 — locked for 2 minutes.</li>
-              <li>She says yes; Claude opens GPay; she taps; UPI PIN; paid.</li>
-              <li>Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.</li>
-              <li>Next week: "reorder that." One tap.</li>
-            </ol>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Discover</div>
+              <div class="font-body-dense text-body-dense">Claude pings the registry; Minimalist's brand agent answers in 200 ms.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Decide</div>
+              <div class="font-body-dense text-body-dense">Real SKU at ₹1,299 — locked for 2 minutes.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Pay</div>
+              <div class="font-body-dense text-body-dense">She says yes; Claude opens GPay; she taps; UPI PIN; paid.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Track</div>
+              <div class="font-body-dense text-body-dense">Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Repeat</div>
+              <div class="font-body-dense text-body-dense">Next week: "reorder that." One tap.</div>
+            </div>
           </div>
-          <p class="font-body-main text-body-main text-on-background">
+          <p class="font-body-main text-body-main text-on-background mt-6">
             Agents execute transactions via a standard protocol — negotiating quotes, confirming orders, tracking state — all in the background.
           </p>
         </div>
@@ -221,87 +244,87 @@ import CodeBlock from '../components/CodeBlock.astro';
       const scenes = [
         {
           a: [
-            "Asks Claude for a vitamin C serum from Minimalist.",
-            "Claude returns three blue links and tells her to go pick one.",
-            "She opens beminimalist.co, makes an account, types in her card.",
-            "After paying she hunts for tracking across three different emails.",
-            "Next time she just opens Swiggy Instamart and skips Claude.",
+            { stage: "Ask",      text: "Asks Claude for a vitamin C serum from Minimalist." },
+            { stage: "Discover", text: "Claude returns three blue links and tells her to go pick one." },
+            { stage: "Decide",   text: "She opens beminimalist.co, makes an account, types in her card." },
+            { stage: "Track",    text: "After paying she hunts for tracking across three different emails." },
+            { stage: "Repeat",   text: "Next time she just opens Swiggy Instamart and skips Claude." },
           ],
           b: [
-            "Asks Claude for a vitamin C serum from Minimalist.",
-            "Claude pings the registry; Minimalist's brand agent answers in 200 ms.",
-            "Real SKU at \u20B91,299 \u2014 locked for 2 minutes.",
-            "She says yes; Claude opens GPay; she taps; UPI PIN; paid.",
-            "Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.",
-            "Next week: \u201Creorder that.\u201D One tap.",
+            { stage: "Ask",      text: "Asks Claude for a vitamin C serum from Minimalist." },
+            { stage: "Discover", text: "Claude pings the registry; Minimalist's brand agent answers in 200 ms." },
+            { stage: "Decide",   text: "Real SKU at \u20B91,299 \u2014 locked for 2 minutes." },
+            { stage: "Pay",      text: "She says yes; Claude opens GPay; she taps; UPI PIN; paid." },
+            { stage: "Track",    text: "Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast." },
+            { stage: "Repeat",   text: "Next week: \u201Creorder that.\u201D One tap." },
           ],
           chip: "minimalist-shop \u00B7 vitamin C serum \u00B7 \u20B91,299",
         },
         {
           a: [
-            "Asks Claude for 3 nights in Manali for two adults.",
-            "Claude lists 14 hotels and tells her to compare on her own.",
-            "She opens MakeMyTrip, signs in, picks Tamarind Tree.",
-            "Price has moved \u20B9400 since Claude quoted. She pays anyway.",
-            "Confirmation email gets buried; she copies the booking ID into her calendar by hand.",
+            { stage: "Ask",      text: "Asks Claude for 3 nights in Manali for two adults." },
+            { stage: "Discover", text: "Claude lists 14 hotels and tells her to compare on her own." },
+            { stage: "Decide",   text: "She opens MakeMyTrip, signs in, picks Tamarind Tree." },
+            { stage: "Pay",      text: "Price has moved \u20B9400 since Claude quoted. She pays anyway." },
+            { stage: "Track",    text: "Confirmation email gets buried; she copies the booking ID into her calendar by hand." },
           ],
           b: [
-            "Asks Claude for 3 nights in Manali for two adults.",
-            "Claude fans out to three stay agents on the registry; replies in 600 ms.",
-            "Tamarind Tree at \u20B914,400 \u2014 locked for 2 minutes.",
-            "She approves; UPI; paid in two taps.",
-            "PNR auto-added to her calendar with check-in time and address.",
+            { stage: "Ask",      text: "Asks Claude for 3 nights in Manali for two adults." },
+            { stage: "Discover", text: "Claude fans out to three stay agents on the registry; replies in 600 ms." },
+            { stage: "Decide",   text: "Tamarind Tree at \u20B914,400 \u2014 locked for 2 minutes." },
+            { stage: "Pay",      text: "She approves; UPI; paid in two taps." },
+            { stage: "Track",    text: "PNR auto-added to her calendar with check-in time and address." },
           ],
           chip: "tamarind-stays \u00B7 Manali \u00B7 3N \u00B7 \u20B914,400",
         },
         {
           a: [
-            "Asks Claude for a flight Bengaluru \u2192 Mumbai tomorrow evening.",
-            "Claude lists 27 options on a results page and steps back.",
-            "She opens IndiGo, signs in; the fare moved up \u20B9600 since Claude quoted.",
-            "Captcha. Card OTP. Confirms.",
-            "Boarding pass arrives in an app she has to remember to open.",
+            { stage: "Ask",      text: "Asks Claude for a flight Bengaluru \u2192 Mumbai tomorrow evening." },
+            { stage: "Discover", text: "Claude lists 27 options on a results page and steps back." },
+            { stage: "Decide",   text: "She opens IndiGo, signs in; the fare moved up \u20B9600 since Claude quoted." },
+            { stage: "Pay",      text: "Captcha. Card OTP. Confirms." },
+            { stage: "Track",    text: "Boarding pass arrives in an app she has to remember to open." },
           ],
           b: [
-            "Asks Claude for a flight BLR \u2192 BOM tomorrow evening.",
-            "Claude fans out to four airline agents on the registry.",
-            "IndiGo 6E-202 at 18:40 for \u20B94,890 \u2014 locked for 2 minutes.",
-            "She approves; tokenised card; PNR returned in the same response.",
-            "Boarding pass auto-imported to her wallet. Claude pings her at gate-close minus 60.",
+            { stage: "Ask",      text: "Asks Claude for a flight BLR \u2192 BOM tomorrow evening." },
+            { stage: "Discover", text: "Claude fans out to four airline agents on the registry." },
+            { stage: "Decide",   text: "IndiGo 6E-202 at 18:40 for \u20B94,890 \u2014 locked for 2 minutes." },
+            { stage: "Pay",      text: "She approves; tokenised card; PNR returned in the same response." },
+            { stage: "Track",    text: "Boarding pass auto-imported to her wallet. Claude pings her at gate-close minus 60." },
           ],
           chip: "indigo-air \u00B7 BLR\u2192BOM \u00B7 6E-202 \u00B7 \u20B94,890",
         },
         {
           a: [
-            "Asks Claude for a Volvo to Hyderabad tonight.",
-            "Claude lists three operators \u2014 RedBus, KSRTC, AbhiBus \u2014 and tells her to pick.",
-            "She opens RedBus on mobile; seat picker won't render; captcha.",
-            "Books on the third try, gets a PDF ticket buried in mail.",
-            "At 22:00 she's hunting for the boarding point on Google Maps.",
+            { stage: "Ask",      text: "Asks Claude for a Volvo to Hyderabad tonight." },
+            { stage: "Discover", text: "Claude lists three operators \u2014 RedBus, KSRTC, AbhiBus \u2014 and tells her to pick." },
+            { stage: "Decide",   text: "She opens RedBus on mobile; seat picker won't render; captcha." },
+            { stage: "Pay",      text: "Books on the third try, gets a PDF ticket buried in mail." },
+            { stage: "Track",    text: "At 22:00 she's hunting for the boarding point on Google Maps." },
           ],
           b: [
-            "Asks Claude for a Volvo to Hyderabad tonight.",
-            "Claude pings KSRTC's bus agent; lower-deck S-12 at \u20B91,250.",
-            "Quote locked. She approves; UPI; paid.",
-            "Boarding 22:00 from Madiwala \u2014 saved to her phone.",
-            "At 21:15 Claude pings her with the gate and walking ETA.",
+            { stage: "Ask",      text: "Asks Claude for a Volvo to Hyderabad tonight." },
+            { stage: "Discover", text: "Claude pings KSRTC's bus agent; lower-deck S-12 at \u20B91,250." },
+            { stage: "Pay",      text: "Quote locked. She approves; UPI; paid." },
+            { stage: "Track",    text: "Boarding 22:00 from Madiwala \u2014 saved to her phone." },
+            { stage: "Remind",   text: "At 21:15 Claude pings her with the gate and walking ETA." },
           ],
           chip: "ksrtc-bus \u00B7 BLR\u2192HYD \u00B7 Volvo S-12 \u00B7 \u20B91,250",
         },
         {
           a: [
-            "Asks Claude for a salon slot Saturday 4pm with Nisha.",
-            "Claude lists three salons nearby and tells her to call to confirm.",
-            "She rings the front desk; Nisha's free; books over the phone.",
-            "No calendar handoff \u2014 she types it in herself.",
-            "Saturday morning she's forgotten which stylist she booked.",
+            { stage: "Ask",      text: "Asks Claude for a salon slot Saturday 4pm with Nisha." },
+            { stage: "Discover", text: "Claude lists three salons nearby and tells her to call to confirm." },
+            { stage: "Decide",   text: "She rings the front desk; Nisha's free; books over the phone." },
+            { stage: "Track",    text: "No calendar handoff \u2014 she types it in herself." },
+            { stage: "Forget",   text: "Saturday morning she's forgotten which stylist she booked." },
           ],
           b: [
-            "Asks Claude for a salon slot Saturday 4pm with Nisha.",
-            "Claude pings Lakm\u00E9 Indiranagar's service agent; Nisha is open.",
-            "Quote: \u20B91,400. Locked for 2 minutes.",
-            "She approves; UPI; confirmation in chat.",
-            "Auto-added to her calendar with stylist, address, and salon phone.",
+            { stage: "Ask",      text: "Asks Claude for a salon slot Saturday 4pm with Nisha." },
+            { stage: "Discover", text: "Claude pings Lakm\u00E9 Indiranagar's service agent; Nisha is open." },
+            { stage: "Decide",   text: "Quote: \u20B91,400. Locked for 2 minutes." },
+            { stage: "Pay",      text: "She approves; UPI; confirmation in chat." },
+            { stage: "Track",    text: "Auto-added to her calendar with stylist, address, and salon phone." },
           ],
           chip: "lakme-services \u00B7 Saturday 4pm \u00B7 Indiranagar \u00B7 \u20B91,400",
         },
@@ -324,9 +347,17 @@ import CodeBlock from '../components/CodeBlock.astro';
       function rebuildList(el, items) {
         el.innerHTML = '';
         items.forEach((s) => {
-          const li = document.createElement('li');
-          li.textContent = s;
-          el.appendChild(li);
+          const row = document.createElement('div');
+          row.className = 'grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0';
+          const stage = document.createElement('div');
+          stage.className = 'font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5';
+          stage.textContent = s.stage;
+          const text = document.createElement('div');
+          text.className = 'font-body-dense text-body-dense';
+          text.textContent = s.text;
+          row.appendChild(stage);
+          row.appendChild(text);
+          el.appendChild(row);
         });
       }
 
