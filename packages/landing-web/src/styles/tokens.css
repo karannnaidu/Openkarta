@@ -45,12 +45,14 @@
   --color-error-container: #FFDAD6;
   --color-on-error-container: #93000A;
 
-  /* Surface ladder — sage-tinted */
-  --color-background: #FAFBF9;
+  /* Surface ladder — sage-tinted.
+   * Page background sits visibly sage; pure-white cards (surface-container-lowest)
+   * pop against it to give visible elevation. */
+  --color-background: #E8EEE5;
   --color-on-background: #1B1C1C;
-  --color-surface: #FAFBF9;
+  --color-surface: #E8EEE5;
   --color-on-surface: #1B1C1C;
-  --color-surface-bright: #FAFBF9;
+  --color-surface-bright: #F1F4EF;
   --color-surface-dim: #C7D2C2;
   --color-surface-container-lowest: #FFFFFF;
   --color-surface-container-low: #F1F4EF;
