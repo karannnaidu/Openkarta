@@ -195,6 +195,33 @@ The "≥ 90 across all four categories on `/`" target on the **preview deploy** 
 
 Recommend re-targeting Performance ≥ 90 to a follow-up pass that ships the compiled stylesheet, and accepting Phase 3 success at "all preventable issues fixed; structural deferrals documented".
 
+## Phase 3 final audit (2026-04-26, post-fix deploy)
+
+Re-run on `https://c51f1d93.openkarta-landing.pages.dev/` after Phase 3a + 3b commits landed.
+
+| Category | Phase 1 baseline | Phase 3 final | Δ | Target | Result |
+|---|---|---|---|---|---|
+| Performance | 56 | 56 | 0 | ≥ 90 | ❌ deferred (Tailwind Play CDN) |
+| Accessibility | 99 | **100** | +1 | ≥ 90 | ✅ |
+| Best Practices | 96 | 96 | 0 | ≥ 90 | ✅ |
+| SEO | 66 | 66 | 0 | ≥ 90 | ❌ deferred (preview-deploy `noindex`) |
+
+### Audit deltas
+
+Cleared by Phase 3 fixes:
+- `image-redundant-alt` — was 0 across all 5 pages, now passing site-wide (Header + Footer logo `alt=""`).
+- `unsized-images` — was 0.50, now passing (loop diagram intrinsic dims).
+- A11y rose from 99 → 100 — perfect score.
+
+Persistent and deferred (per spec scope):
+- `render-blocking-resources`, `unused-javascript`, `bootup-time`, `mainthread-work-breakdown`, `network-dependency-tree-insight`, `render-blocking-insight`, `third-party-summary` — all downstream of Tailwind Play CDN. Deferred to follow-up pass that ships compiled stylesheet.
+- `modern-image-formats`, `uses-responsive-images`, `image-delivery-insight`, `offscreen-images` — image pipeline. Deferred to Cloudflare Images follow-up.
+- `is-crawlable` — preview-deploy `X-Robots-Tag: noindex`. Resolves on production domain.
+- `uses-long-cache-ttl`, `cache-insight` — Cloudflare Pages default TTLs; would need `_headers` config.
+- `largest-contentful-paint-element`, `image-aspect-ratio` — flagged again on the final run because the LCP image is the (still-deferred) loop diagram. The intrinsic-dim fix improved CLS but the asset itself is unoptimized.
+
+Two of four target categories pass on the preview deploy (A11y, Best Practices). The remaining two each have one structural blocker called out in spec scope as out-of-scope for this pass. Phase 3 closes with "all preventable issues fixed".
+
 ## Success criteria
 
 1. No layout overflow or hidden content at 360px on any of the 11 primary pages.
