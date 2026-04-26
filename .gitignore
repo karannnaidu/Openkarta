@@ -8,6 +8,7 @@ dist/
 *.rtf
 .env
 .env.local
+.env.production
 .dev.vars
 coverage/
 .DS_Store
@@ -15,3 +16,7 @@ coverage/
 .idea/
 .smoke-out/
 .claude/
+docs/internal/
+docs/video/
+stitch_openkarta_protocol_landing_page/
+docs/superpowers/specs/2026-04-26-designer-page-prompts.md
