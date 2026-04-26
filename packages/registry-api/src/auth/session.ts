@@ -64,10 +64,10 @@ export function sessionCookieValue(
   id: string,
   expiresInSeconds: number = TTL_SECONDS,
 ): string {
-  return `${SESSION_COOKIE}=${id}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=${expiresInSeconds}`;
+  return `${SESSION_COOKIE}=${id}; Path=/; Secure; HttpOnly; SameSite=None; Max-Age=${expiresInSeconds}`;
 }
 
-export const SESSION_CLEAR_COOKIE = `${SESSION_COOKIE}=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0`;
+export const SESSION_CLEAR_COOKIE = `${SESSION_COOKIE}=; Path=/; Secure; HttpOnly; SameSite=None; Max-Age=0`;
 
 export function readCookieFromHeader(
   cookieHeader: string | undefined,

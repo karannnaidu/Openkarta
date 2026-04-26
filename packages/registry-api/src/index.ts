@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { magicLinkRouter } from './auth/magic-link.js';
 import { meRouter } from './auth/me.js';
 import { githubRouter } from './auth/github.js';
@@ -36,6 +37,23 @@ export function setEmailClientFactory(f: (env: Bindings) => EmailClient): void {
 }
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
+
+app.use(
+  '*',
+  cors({
+    origin: (origin) => {
+      if (!origin) return origin;
+      if (/^https:\/\/([a-z0-9-]+\.)?openkarta-registry\.pages\.dev$/.test(origin)) return origin;
+      if (/^https:\/\/([a-z0-9-]+\.)?openkarta\.org$/.test(origin)) return origin;
+      if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return origin;
+      return null;
+    },
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 600,
+  }),
+);
 
 app.get('/health', (c) => c.json({ ok: true }));
 
