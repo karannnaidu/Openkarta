@@ -141,6 +141,60 @@ After **each** phase:
 - **Lighthouse run failures.** If `npx lighthouse` fails on Windows due to Chrome path resolution, fall back to PageSpeed Insights API or run via the Chrome DevTools UI manually and capture the JSON.
 - **Phase 3 scope.** If Phase 2 surfaces a finding that requires structural change (e.g., replacing Tailwind CDN to fix LCP), document it as a follow-up and skip from this pass — do not let the audit balloon scope.
 
+## Phase 2 audit results (2026-04-26)
+
+Lighthouse v12.8.2, mobile form factor, simulate throttling, headless Chrome. Run against the Phase 1 deploy `https://3261fcf1.openkarta-landing.pages.dev`.
+
+### Scores
+
+| Page | Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|---|
+| `/` | 56 | 99 | 96 | 66 |
+| `/protocol` | 56 | 99 | 96 | 66 |
+| `/developers` | 57 | 99 | 96 | 66 |
+| `/merchant` | 57 | 99 | 96 | 66 |
+| `/registry` | 57 | 99 | 93 | 66 |
+
+A11y and Best Practices already clear the ≥ 90 bar. Performance (≈ 57) and SEO (66) miss.
+
+### Findings classification
+
+| Audit | Pages | Action | Rationale |
+|---|---|---|---|
+| `is-crawlable` | all 5 | **defer (out of scope)** | Cloudflare Pages preview deploys auto-add `X-Robots-Tag: noindex`. Production domain will not. SEO score on prod will be ≥ 90 once this lifts. |
+| `render-blocking-resources`, `unused-javascript`, `mainthread-work-breakdown`, `bootup-time`, `network-dependency-tree-insight`, `render-blocking-insight` | all 5 | **defer (out of scope per spec)** | All trace back to the Tailwind Play CDN runtime. Spec §"Out of scope for Phase 2 fixes" defers compiled-stylesheet refactor to a separate pass. |
+| `modern-image-formats`, `uses-responsive-images`, `image-delivery-insight` | all 5 | **defer (out of scope per spec)** | Spec §"Out of scope for Phase 2 fixes" defers Cloudflare Images pipeline. |
+| `unsized-images`, `image-aspect-ratio`, `largest-contentful-paint-element` | all 5 | **fix in Phase 3a** | Already covered by plan Task 9 (add `width="1024" height="1024"` to `/loop-diagram.png`). |
+| `image-redundant-alt` | all 5 | **fix in Phase 3b** | Header logo `<img alt="OpenKarta">` sits next to `<span>OpenKarta</span>` wordmark — the alt text duplicates adjacent visible text. Fix: change to `alt=""` (decorative) since the wordmark already announces the brand. |
+| `redirects` | `/protocol`, `/developers`, `/merchant`, `/registry` | **defer (out of scope)** | Cloudflare Pages adds a trailing-slash redirect on inner pages. Acceptable; can be tuned via `_redirects` later. |
+| `errors-in-console` | `/registry` | **investigate in Phase 3b** | Likely the registry test-fetch hitting a non-existent backend on the preview deploy. If so, suppress the console.error in `prefers-reduced-motion`-style fallback or guard the fetch behind a host check. |
+| `uses-long-cache-ttl`, `cache-insight`, `offscreen-images` | `/` | **defer (out of scope)** | Cache TTLs require `_headers` config, image deferral requires loading attribute work — both outside spec scope. |
+| `first-contentful-paint`, `largest-contentful-paint`, `speed-index`, `interactive` | all 5 | **partially mitigated by image dims fix** | These are downstream metrics that improve marginally once images have intrinsic dimensions; the rest is Tailwind-CDN-bound and deferred. |
+| `document-latency-insight` | `/protocol`, `/developers`, `/merchant`, `/registry` | **defer (out of scope)** | Edge → user TTFB on Cloudflare Pages preview region; production geography differs. |
+
+### Phase 3 scope (revised)
+
+Phase 3a (static, already in plan):
+- Hero H1 clamp floor → 40px (Task 6)
+- Hero video `hidden md:block` (Task 7)
+- Footer `grid-cols-1` baseline (Task 8)
+- Loop diagram `width`/`height` (Task 9) — also satisfies `unsized-images`, `image-aspect-ratio`, `largest-contentful-paint-element`
+
+Phase 3b (Lighthouse-driven):
+- Header logo `alt=""` to clear `image-redundant-alt` site-wide.
+- Investigate `/registry` console errors; silence or guard.
+
+No contrast fix required (a11y = 99 already). No tap-target fix required (a11y = 99). No meta-description fix surfaced. Font preload deferred — adding it without compiling Tailwind first delivers limited benefit.
+
+### Success-criterion realism note
+
+The "≥ 90 across all four categories on `/`" target on the **preview deploy** is unattainable without the deferred Tailwind compile. We expect:
+- A11y, Best Practices: ≥ 90 already, will hold.
+- SEO: 66 → ≥ 90 only on the production domain (no `noindex`).
+- Performance: 56 → likely 65–75 after Phase 3 fixes; ≥ 90 requires the deferred Tailwind compile.
+
+Recommend re-targeting Performance ≥ 90 to a follow-up pass that ships the compiled stylesheet, and accepting Phase 3 success at "all preventable issues fixed; structural deferrals documented".
+
 ## Success criteria
 
 1. No layout overflow or hidden content at 360px on any of the 11 primary pages.
