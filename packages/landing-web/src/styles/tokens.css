@@ -48,18 +48,18 @@
   /* Surface ladder — sage-tinted.
    * Page background sits visibly sage; pure-white cards (surface-container-lowest)
    * pop against it to give visible elevation. */
-  --color-background: #E8EEE5;
+  --color-background: #C8D9C2;
   --color-on-background: #1B1C1C;
-  --color-surface: #E8EEE5;
+  --color-surface: #C8D9C2;
   --color-on-surface: #1B1C1C;
-  --color-surface-bright: #F1F4EF;
-  --color-surface-dim: #C7D2C2;
+  --color-surface-bright: #DCE7D6;
+  --color-surface-dim: #A8BFA1;
   --color-surface-container-lowest: #FFFFFF;
-  --color-surface-container-low: #F1F4EF;
-  --color-surface-container: #E8EEE5;
-  --color-surface-container-high: #DCE5D8;
-  --color-surface-container-highest: #CDDAC8;
-  --color-surface-variant: #DCE5D8;
+  --color-surface-container-low: #DCE7D6;
+  --color-surface-container: #C8D9C2;
+  --color-surface-container-high: #B5C9AE;
+  --color-surface-container-highest: #A1BA98;
+  --color-surface-variant: #B5C9AE;
   --color-on-surface-variant: #434656;
   --color-inverse-surface: #303031;
   --color-inverse-on-surface: #F2F0F0;

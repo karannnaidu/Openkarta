@@ -181,7 +181,7 @@ const {
   }
 </style>
 </head>
-<body class="bg-surface-container-lowest text-on-background font-body-main antialiased selection:bg-primary-container selection:text-on-primary">
+<body class="bg-background text-on-background font-body-main antialiased selection:bg-primary-container selection:text-on-primary">
 <Header activeNav={activeNav} />
 <main class="pt-20"><slot /></main>
 <Footer />
@@ -295,6 +295,39 @@ const {
       document.querySelectorAll('[data-ok-typeout]').forEach((el) => {
         const speed = parseInt(el.getAttribute('data-ok-typeout') || '200', 10);
         ok.typeOut(el, { charsPerSec: speed });
+      });
+      document.querySelectorAll('.ok-codeblock').forEach((root) => {
+        if (root.__okCopyWired) return;
+        root.__okCopyWired = true;
+        const btn = root.querySelector('.ok-copy');
+        const code = root.querySelector('pre code');
+        if (!btn || !code) return;
+        btn.addEventListener('click', async () => {
+          const text = (code.textContent || '').replace(/^\s+|\s+$/g, '');
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch (_) {
+            const ta = document.createElement('textarea');
+            ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
+          }
+          const label = btn.querySelector('.ok-copy-label');
+          if (label) {
+            const prev = label.textContent;
+            label.textContent = 'Copied';
+            label.classList.remove('sr-only');
+            setTimeout(() => {
+              label.textContent = prev;
+              if ((prev || '').toLowerCase() === 'copy' && btn.classList.contains('absolute')) {
+                label.classList.add('sr-only');
+              }
+            }, 1400);
+          }
+          btn.classList.add('text-primary');
+          setTimeout(() => btn.classList.remove('text-primary'), 1400);
+        });
       });
     };
 
