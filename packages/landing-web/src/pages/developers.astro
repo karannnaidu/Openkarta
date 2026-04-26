@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const packages = [
+  { name: '@openkarta/spec',                desc: 'Zod-typed schemas: manifests, items, search, cart, quotes, orders, errors.' },
+  { name: '@openkarta/sdk-node',            desc: 'Typed Fastify server helpers + HTTP client wrapping all 8 verbs. Sign and verify quotes.' },
+  { name: '@openkarta/orchestrator',        desc: 'Consumer-side library: registry → search → cart → quote → checkout → orders.' },
+  { name: '@openkarta/cli',                 desc: 'Vendor-neutral chat REPL — runs against any chat-completions endpoint (OpenAI, OpenRouter, Together, Groq, local).' },
+  { name: '@openkarta/conformance-tests',   desc: 'Auto-detects supported item types, runs core + per-type packs, emits a signed badge.' },
+  { name: '@openkarta/registry-shared',     desc: 'Shared types and helpers used by the registry-api + verifier + cron workers.' },
+  { name: '@openkarta/reference-agent-shop',  desc: 'Reference brand agent for products. Fastify, in-memory fixtures, full lifecycle.' },
+  { name: '@openkarta/reference-agent-stays', desc: 'Reference brand agent for stays — check-in / check-out, occupancy.' },
+  { name: '@openkarta/reference-agent-travel',desc: 'Reference brand agent for flight + bus — IATA codes, seat classes.' },
+  { name: '@openkarta/demo-cli',            desc: 'Scripted end-to-end flows against any conformant agent for demos.' },
+];
+---
+<BaseLayout title="Developers — OpenKarta" activeNav="developers">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Developers</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Your agent can transact, today.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Ten MIT-licensed packages. Three reference agents. A conformance harness that signs your badge. Pick a track and ship.
+    </p>
+  </section>
+
+  <!-- Two tracks -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid md:grid-cols-2 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-12 hover-lift">
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">Track A · Brand agent</div>
+        <h2 class="font-h2-editorial text-on-background mb-4">Sell anything, in any category.</h2>
+        <p class="font-body-main text-body-main text-on-surface-variant mb-8">
+          Wrap your existing catalogue and order system in 8 typed verbs. Get listed in the registry. Pass conformance. Receive orders from any consumer agent on the network.
+        </p>
+        <div id="install" class="font-code-block text-code-block text-on-surface-variant bg-surface-container-low p-4 border border-on-background/10 mb-6" data-ok-typeout="60">$ npm install @openkarta/sdk-node @openkarta/spec</div>
+        <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240 inline-block" href="/merchant">Merchant integration ↗</a>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-12 hover-lift">
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">Track B · Consumer agent</div>
+        <h2 class="font-h2-editorial text-on-background mb-4">Buy anywhere, in one orchestrator.</h2>
+        <p class="font-body-main text-body-main text-on-surface-variant mb-8">
+          The orchestrator queries the registry, runs parallel quotes, locks signed prices, and exchanges them for orders — all behind a single typed API your agent calls.
+        </p>
+        <div class="font-code-block text-code-block text-on-surface-variant bg-surface-container-low p-4 border border-on-background/10 mb-6" data-ok-typeout="60">$ npm install @openkarta/orchestrator @openkarta/cli</div>
+        <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240 inline-block" href="https://github.com/karannnaidu/Openkarta/blob/main/docs/quickstart-integrator.md">Integrator quickstart ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick start -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">A brand agent in 30 lines</h2>
+    <div class="border border-on-background/10 bg-surface-container-lowest">
+      <div class="border-b border-on-background/10 px-6 py-3 flex items-center justify-between">
+        <span class="font-code-block text-code-block text-on-surface-variant">brand-agent.ts</span>
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">@openkarta/sdk-node</span>
+      </div>
+      <pre class="font-code-block text-code-block text-on-background p-6 overflow-x-auto"><code>{`import { createServer } from '@openkarta/sdk-node';
+import { z } from 'zod';
+
+const inventory = [
+  { id: 'tokai-blend-250g', priceMinor: 78000, currency: 'INR', stock: 47 },
+];
+
+const app = createServer({
+  secret: process.env.QUOTE_SECRET!,
+  handlers: {
+    discover: async () => ({
+      agentId: 'halcyon-shop',
+      protocolVersion: '0.1',
+      tier: 'http',
+      actions: ['discover','search','get','quote','checkout','status','cancel','return'],
+      supportedItemTypes: ['product'],
+      paymentRails: ['razorpay_routes','cod'],
+      regions: [{ country: 'IN' }],
+    }),
+    search:   async (q) => ({ items: inventory.filter(i => i.stock > 0) }),
+    quote:    async ({ itemId }) => ({ itemId, totalMinor: 78000, currency: 'INR', ttlMs: 180000 }),
+    checkout: async ({ quote, userToken }) => ({ orderId: 'ord_' + Date.now(), state: 'placed' }),
+    status:   async ({ orderId }) => ({ orderId, state: 'placed' }),
+    cancel:   async ({ orderId }) => ({ orderId, state: 'cancelled' }),
+    return:   async ({ orderId }) => ({ orderId, state: 'returning' }),
+    get:      async ({ id }) => inventory.find(i => i.id === id),
+  },
+});
+
+await app.listen({ port: 3000, host: '0.0.0.0' });`}</code></pre>
+    </div>
+  </section>
+
+  <!-- Package list -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Published packages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10" data-ok-stagger=":scope > a">
+      {packages.map((p) => (
+        <a href={`https://www.npmjs.com/package/${p.name}`} class="border border-on-background/10 bg-surface-container-lowest p-6 hover-lift block">
+          <div class="font-code-block text-code-block text-on-background mb-2">{p.name}</div>
+          <div class="font-body-dense text-body-dense text-on-surface-variant">{p.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Reference agents -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Reference agents</h2>
+    <div class="grid md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">PRODUCT</div>
+        <h3 class="font-h2-editorial text-on-background mb-2">halcyon-shop</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mb-4">Coffee + retail. Live at halcyon-shop.fly.dev — every verb, full order lifecycle, in-memory inventory you can poke.</p>
+        <a class="font-label-caps text-label-caps uppercase underline underline-offset-4" href="https://halcyon-shop.fly.dev/.well-known/openkarta-manifest">manifest ↗</a>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">STAY</div>
+        <h3 class="font-h2-editorial text-on-background mb-2">reference-agent-stays</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mb-4">Hotels and homestays. Demonstrates check_in / check_out / occupancy semantics and stay-specific lifecycle.</p>
+        <a class="font-label-caps text-label-caps uppercase underline underline-offset-4" href="https://github.com/karannnaidu/Openkarta/tree/main/packages/reference-agent-stays">source ↗</a>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">FLIGHT + BUS</div>
+        <h3 class="font-h2-editorial text-on-background mb-2">reference-agent-travel</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mb-4">Airline + intercity bus. IATA validation, fare classes, seat-class enums, passenger manifest objects.</p>
+        <a class="font-label-caps text-label-caps uppercase underline underline-offset-4" href="https://github.com/karannnaidu/Openkarta/tree/main/packages/reference-agent-travel">source ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Run the conformance suite. Sign your badge. Get listed.</h2>
+      <div class="flex flex-wrap gap-4">
+        <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="/conformance">Conformance suite</a>
+        <a class="bg-transparent text-surface-container-lowest px-6 py-3 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://registry.openkarta.org">Submit your agent ↗</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

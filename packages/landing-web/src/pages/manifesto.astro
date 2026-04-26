@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Manifesto — OpenKarta" activeNav="manifesto">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">MANIFESTO · v0.1</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,7vw,96px)] leading-[1.05] tracking-tight max-w-5xl">
+      The contract should be open. The competition should be on service.
+    </h1>
+  </section>
+
+  <article class="max-w-3xl mx-auto px-8 md:px-16 mb-32 prose-style">
+    <div class="space-y-12">
+      <div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">I.</div>
+        <p class="font-h2-editorial text-on-background mb-6">Agents are not search engines.</p>
+        <p class="font-body-main text-body-main text-on-surface-variant">
+          For thirty years, the web shaped itself around a query box and a list of blue links. Agents inherit none of that grammar. An agent that finds a product but cannot quote it, lock it, or pay for it is a glorified search engine — and the friction it pushes back to the user is precisely the friction the agent was meant to remove.
+        </p>
+      </div>
+
+      <div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">II.</div>
+        <p class="font-h2-editorial text-on-background mb-6">Per-merchant integration is a tax on the future.</p>
+        <p class="font-body-main text-body-main text-on-surface-variant">
+          A world where every agent must hand-integrate with every merchant is a world where two or three players control all of agentic commerce — because only they can afford the integration tax. Open protocols turn N×M into N+M. That is not a technical preference. That is the difference between a network and a moat.
+        </p>
+      </div>
+
+      <div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">III.</div>
+        <p class="font-h2-editorial text-on-background mb-6">Eight verbs is enough.</p>
+        <p class="font-body-main text-body-main text-on-surface-variant">
+          discover, search, get, quote, checkout, status, cancel, return. Across five item types — product, stay, flight, bus, service — these eight verbs cover the full lifecycle of any commercial transaction we have observed. The protocol stays small on purpose. Surface area is liability.
+        </p>
+      </div>
+
+      <div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">IV.</div>
+        <p class="font-h2-editorial text-on-background mb-6">Signed quotes, not screen-scrapes.</p>
+        <p class="font-body-main text-body-main text-on-surface-variant">
+          Every quote is HMAC-signed and time-bounded. Every checkout exchanges a quote for an order with auditable state. Trust is a property of the wire format, not of the operator running the registry. A protocol that depends on goodwill cannot be neutral.
+        </p>
+      </div>
+
+      <div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">V.</div>
+        <p class="font-h2-editorial text-on-background mb-6">Neutrality is a covenant, not a marketing claim.</p>
+        <p class="font-body-main text-body-main text-on-surface-variant">
+          The registry must remain operator-neutral. Listings must not be ranked by who pays, who's friends with the operator, or who shipped first. Conformance — measurable, signed, time-bounded — is the only ranking signal allowed. Read the <a class="underline hover:text-primary-container" href="/charter">neutrality charter</a>.
+        </p>
+      </div>
+
+      <div>
+        <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">VI.</div>
+        <p class="font-h2-editorial text-on-background mb-6">MIT, not BSL.</p>
+        <p class="font-body-main text-body-main text-on-surface-variant">
+          The spec, the SDK, the conformance harness, the reference agents, the registry implementation — all MIT-licensed. Forks should be encouraged, not punished. A protocol's strength is the diversity of implementations that speak it.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-24 border-t border-on-background/10 pt-12">
+      <p class="font-body-main text-on-surface-variant italic">
+        Protocols win when they are shorter than the README of any single implementation. We will keep this one shorter than that.
+      </p>
+    </div>
+  </article>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Read the spec. Run the conformance suite. Ship an agent.</h2>
+      <div class="flex flex-wrap gap-4">
+        <a class="bg-surface-container-lowest text-on-background px-6 py-3 hover:bg-transparent hover:text-surface-container-lowest border border-surface-container-lowest transition-colors duration-240" href="/protocol">Read the specification</a>
+        <a class="bg-transparent text-surface-container-lowest px-6 py-3 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="/developers">Developer quickstart</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

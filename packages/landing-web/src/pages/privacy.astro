@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Privacy policy — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Privacy · effective 2026-04-26</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Privacy policy.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      OpenKarta routes data, not money. We touch as little personal data as possible, and we say what we touch.
+    </p>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <aside class="md:col-span-3 hidden md:block">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4 sticky top-24">On this page</div>
+        <ul class="space-y-2 sticky top-32">
+          <li><a class="font-body-dense text-body-dense text-on-surface-variant hover:text-on-background" href="#what-we-store">What we store</a></li>
+          <li><a class="font-body-dense text-body-dense text-on-surface-variant hover:text-on-background" href="#what-we-dont">What we don't</a></li>
+          <li><a class="font-body-dense text-body-dense text-on-surface-variant hover:text-on-background" href="#cookies">Cookies</a></li>
+          <li><a class="font-body-dense text-body-dense text-on-surface-variant hover:text-on-background" href="#third-parties">Third parties</a></li>
+          <li><a class="font-body-dense text-body-dense text-on-surface-variant hover:text-on-background" href="#rights">Your rights</a></li>
+          <li><a class="font-body-dense text-body-dense text-on-surface-variant hover:text-on-background" href="#contact">Contact</a></li>
+        </ul>
+      </aside>
+      <article class="md:col-span-9 space-y-12">
+        <section id="what-we-store" class="border-b border-on-background/10 pb-8">
+          <h2 class="font-h2-editorial text-on-background mb-4">What we store</h2>
+          <p class="font-body-main text-body-main text-on-surface-variant mb-4">
+            On the registry: a public manifest document (declared by the agent operator), domain-verification tokens, conformance run results, and a signed-badge ledger. On the merchant submission flow: an email address used for magic-link sign-in.
+          </p>
+          <p class="font-body-main text-body-main text-on-surface-variant">
+            On the marketing site (this domain): no analytics, no fingerprinting, no third-party JavaScript. Server-side request logs are kept 7 days for abuse prevention then deleted.
+          </p>
+        </section>
+
+        <section id="what-we-dont" class="border-b border-on-background/10 pb-8">
+          <h2 class="font-h2-editorial text-on-background mb-4">What we don't store</h2>
+          <p class="font-body-main text-body-main text-on-surface-variant mb-4">
+            Buyer identities. Buyer payment instruments. Buyer addresses. Buyer order history. None of this transits our infrastructure. The orchestrator runs in the consumer agent's process; the merchant agent runs on the merchant's infrastructure; OpenKarta routes neither.
+          </p>
+          <p class="font-body-main text-body-main text-on-surface-variant">
+            We will never silently begin storing buyer-side data. Any change to that posture would require amending the <a class="underline" href="/charter">charter</a> with public notice.
+          </p>
+        </section>
+
+        <section id="cookies" class="border-b border-on-background/10 pb-8">
+          <h2 class="font-h2-editorial text-on-background mb-4">Cookies</h2>
+          <p class="font-body-main text-body-main text-on-surface-variant">
+            The marketing site sets no cookies. The registry web app sets a single signed session cookie when you sign in. No third-party cookies. No tracking pixels.
+          </p>
+        </section>
+
+        <section id="third-parties" class="border-b border-on-background/10 pb-8">
+          <h2 class="font-h2-editorial text-on-background mb-4">Third parties</h2>
+          <p class="font-body-main text-body-main text-on-surface-variant mb-4">
+            Hosting: Cloudflare Pages and Cloudflare Workers. Email delivery for magic links: Resend. Source repository: GitHub. Each third party sees only the data necessary for its function — Cloudflare sees TLS-terminated requests, Resend sees email addresses on send, GitHub sees contributors.
+          </p>
+          <p class="font-body-main text-body-main text-on-surface-variant">
+            We pick vendors with comparable privacy postures and consolidate them when feasible.
+          </p>
+        </section>
+
+        <section id="rights" class="border-b border-on-background/10 pb-8">
+          <h2 class="font-h2-editorial text-on-background mb-4">Your rights</h2>
+          <p class="font-body-main text-body-main text-on-surface-variant">
+            Under GDPR and CCPA-equivalent regimes you may request access, correction, or deletion of any data we hold about you. Email <a class="underline" href="mailto:privacy@openkarta.org">privacy@openkarta.org</a>. We respond within 30 days.
+          </p>
+        </section>
+
+        <section id="contact">
+          <h2 class="font-h2-editorial text-on-background mb-4">Contact</h2>
+          <p class="font-body-main text-body-main text-on-surface-variant">
+            Questions, complaints, or formal requests: <a class="underline" href="mailto:privacy@openkarta.org">privacy@openkarta.org</a>. Security issues: <a class="underline" href="/security">/security</a>.
+          </p>
+        </section>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

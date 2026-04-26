@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const packs = [
+  { name: 'core', desc: 'Required for every agent. Verifies discover, search, get, quote, checkout, status, cancel — including signature checks, error envelope shape, and TTL enforcement.' },
+  { name: 'product', desc: 'Physical goods specifics: address validation, delivery modes, return-window correctness, return verb lifecycle.' },
+  { name: 'stay', desc: 'check_in / check_out coherence, occupancy validation, multi-night quotes, no-overlap on inventory.' },
+  { name: 'flight', desc: 'IATA code validation, fare class enums, passenger manifest required at checkout, refund / cancellation windows.' },
+  { name: 'bus', desc: 'Operator + region pairing, seat-class enums, intercity route coherence, lifecycle through boarding.' },
+  { name: 'service', desc: 'Slot-based availability, location mode (at-customer / at-provider / online / venue), reschedule via cancel + new quote.' },
+];
+---
+<BaseLayout title="Conformance — Signed badges — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Conformance · signed badges</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Pass the suite. Sign the badge. Get listed.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Every agent in the registry carries an HMAC-signed badge attesting to a recent conformance run. Auto-detected packs, closed enums, no manual review.
+    </p>
+    <div class="flex flex-wrap gap-4 mt-12">
+      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://www.npmjs.com/package/@openkarta/conformance-tests">npm i @openkarta/conformance-tests ↗</a>
+      <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="https://registry.openkarta.org">View live badges ↗</a>
+    </div>
+  </section>
+
+  <!-- How a run works -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32 bg-surface-container-low py-20">
+    <h2 class="font-h2-editorial text-on-background mb-16">How a run works.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-ok-stagger=":scope > div">
+      <div class="border-t border-on-background pt-6">
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">1</div>
+        <h3 class="font-medium mb-2">Detect</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">discover() returns the agent's <span class="font-code-block">supportedItemTypes</span>. The runner picks core + matching per-type packs automatically.</p>
+      </div>
+      <div class="border-t border-on-background pt-6">
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">2</div>
+        <h3 class="font-medium mb-2">Execute</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Every test exercises the wire format directly — closed-enum errors, TTL clamping, signature verification, lifecycle transitions.</p>
+      </div>
+      <div class="border-t border-on-background pt-6">
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">3</div>
+        <h3 class="font-medium mb-2">Sign</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">A pass emits an HMAC-signed badge bound to the agentId, suite version, packs run, and timestamp. Tamper-evident.</p>
+      </div>
+      <div class="border-t border-on-background pt-6">
+        <div class="font-code-block text-code-block text-on-background w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">4</div>
+        <h3 class="font-medium mb-2">Re-verify</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Cron re-runs the suite daily against every listed agent. Stale badges auto-degrade; seven failures → delisted.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Packs -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Test packs</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      {packs.map((p) => (
+        <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+          <div class="flex items-baseline gap-4 mb-3">
+            <span class="font-code-block text-code-block bg-surface-container-low px-2 py-1 border border-on-background/10">{p.name}</span>
+            <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">{p.name === 'core' ? 'required' : 'auto-detected'}</span>
+          </div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">{p.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Badge anatomy -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Badge anatomy</h2>
+    <div class="grid md:grid-cols-2 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Wire format</div>
+        <pre class="font-code-block text-code-block text-on-background overflow-x-auto"><code>{`{
+  "agentId":      "halcyon-shop",
+  "suiteVersion": "0.3.0",
+  "packs":        ["core","product"],
+  "passed":       true,
+  "testsPassed":  12,
+  "testsFailed":  0,
+  "ranAt":        "2026-04-26T14:00:00Z",
+  "signature":    "hmac-sha256:..."
+}`}</code></pre>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">State machine</div>
+        <ul class="space-y-3 font-body-dense text-body-dense">
+          <li class="flex items-start gap-4"><span class="w-2 h-2 rounded-full bg-emerald-500 mt-2"></span><div><span class="font-code-block">healthy</span> — last sweep passed within 24h</div></li>
+          <li class="flex items-start gap-4"><span class="w-2 h-2 rounded-full bg-amber-500 mt-2"></span><div><span class="font-code-block">stale</span> — 3 consecutive failures, agent flagged for review</div></li>
+          <li class="flex items-start gap-4"><span class="w-2 h-2 rounded-full bg-red-500 mt-2"></span><div><span class="font-code-block">delisted</span> — 7 consecutive failures, removed from public listing</div></li>
+          <li class="flex items-start gap-4"><span class="w-2 h-2 rounded-full bg-on-surface-variant mt-2"></span><div><span class="font-code-block">unknown</span> — newly verified, awaiting first sweep</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Run it -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="border border-on-background/10 bg-surface-container-lowest">
+      <div class="border-b border-on-background/10 px-6 py-3 flex items-center justify-between">
+        <span class="font-code-block text-code-block text-on-surface-variant">Run the suite</span>
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">@openkarta/conformance-tests</span>
+      </div>
+      <pre class="font-code-block text-code-block text-on-background p-6 overflow-x-auto"><code>{`$ npx @openkarta/conformance-tests --base-url https://halcyon-shop.fly.dev
+
+[discover] OK
+[search ] 3 fixtures returned
+[quote   ] signed token verified, ttl 180000ms
+[checkout] order placed: ord_01J4...
+[status  ] state=placed → in_transit
+[cancel  ] receipt verified
+[return  ] flow exercised
+
+PASS  12/12  packs=[core, product]  suite=0.3.0
+badge: hmac-sha256:a1b2c3...`}</code></pre>
+    </div>
+  </section>
+</BaseLayout>

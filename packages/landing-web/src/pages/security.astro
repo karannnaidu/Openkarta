@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const inScope = [
+  'api.openkarta.org — registry API',
+  'registry.openkarta.org — registry web app',
+  'openkarta.org — landing site',
+  'Reference agents at *.fly.dev that are operated under the OpenKarta umbrella',
+  '@openkarta/* npm packages on the public registry',
+];
+
+const outOfScope = [
+  'Third-party merchant agents listed in the registry — report to the merchant directly',
+  'LLM-vendor endpoints (OpenRouter, OpenAI, Anthropic, etc.)',
+  'Self-XSS, social engineering, physical attacks, or DoS without a working exploit',
+  'Issues that require a privileged position on the user\'s device or network',
+];
+
+const safeHarbor = [
+  'Make a good-faith effort to avoid privacy violations, data destruction, and service disruption.',
+  'Do not access more data than is necessary to demonstrate the issue.',
+  'Give us a reasonable time to respond before public disclosure (typically 90 days).',
+  'Do not exploit findings beyond proof of concept.',
+];
+---
+<BaseLayout title="Security disclosure — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Security · responsible disclosure</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Found something? Tell us first.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      We respond to security reports within 24 hours. Coordinate disclosure, get a CVE if applicable, and you stay anonymous unless you want credit.
+    </p>
+    <div class="flex flex-wrap gap-4 mt-12">
+      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="mailto:security@openkarta.org">security@openkarta.org</a>
+      <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="/.well-known/security.txt">security.txt</a>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">How to report</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {[
+        { n: '01', title: 'Email', body: 'Send to security@openkarta.org. Encrypt with our PGP key (fingerprint published in security.txt) for sensitive details.' },
+        { n: '02', title: 'Include', body: 'Reproduction steps, affected version, your environment, and impact. Proof-of-concept code or HTTP traces are very welcome.' },
+        { n: '03', title: 'We respond', body: 'Acknowledge in 24 hours. Triage and a fix-by date in 72 hours. Public advisory once a patch is available.' },
+      ].map((s) => (
+        <div class="border-t border-on-background pt-6">
+          <div class="font-code-block text-code-block w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">{s.n}</div>
+          <h3 class="font-medium mb-2">{s.title}</h3>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">{s.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Scope</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">In scope</div>
+        <ul class="space-y-3">
+          {inScope.map((s) => (
+            <li class="flex items-start gap-3 font-body-dense text-body-dense">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 mt-2 shrink-0"></span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Out of scope</div>
+        <ul class="space-y-3">
+          {outOfScope.map((s) => (
+            <li class="flex items-start gap-3 font-body-dense text-body-dense">
+              <span class="w-2 h-2 rounded-full bg-on-surface-variant mt-2 shrink-0"></span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Safe-harbor</h2>
+    <div class="border border-on-background/10 bg-surface-container-lowest p-10 max-w-4xl">
+      <p class="font-body-main text-body-main text-on-surface-variant mb-6">
+        We will not pursue legal action against good-faith security research, provided you:
+      </p>
+      <ul class="space-y-3">
+        {safeHarbor.map((s) => (
+          <li class="flex items-start gap-3 font-body-dense text-body-dense">
+            <span class="font-code-block text-code-block text-on-surface-variant shrink-0">→</span>
+            <span class="text-on-background">{s}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Reading the wire-format spec for free is the best bug-hunting prep.</h2>
+      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">Closed enums, signed quotes, and the user-token delegation system are the highest-leverage areas for review. We particularly value reports against signature handling and quote replay.</p>
+      <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="/protocol">Read the spec</a>
+    </div>
+  </section>
+</BaseLayout>

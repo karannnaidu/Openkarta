@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const facts = [
+  { label: 'Founded', value: '2026' },
+  { label: 'License', value: 'MIT, every package' },
+  { label: 'Wire-format version', value: 'v0.1' },
+  { label: 'Reference agents', value: '3 (product, stay, travel)' },
+  { label: 'Item types supported', value: '5 (product, stay, flight, bus, service)' },
+  { label: 'Verbs', value: '8' },
+];
+
+const quotes = [
+  {
+    speaker: 'OpenKarta team',
+    body: '"OpenKarta is the public, neutral layer for agent-to-merchant transactions. We route data, not money. We add a contract, not a fee."',
+  },
+  {
+    speaker: 'OpenKarta team',
+    body: '"Every conformance run is signed. Every quote is signed. Nothing about an agent\'s claim is taken on faith."',
+  },
+];
+---
+<BaseLayout title="Press kit — OpenKarta" activeNav={null}>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Press kit · for journalists</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Press &amp; media.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Logos, factsheet, quotable lines. For interviews and on-the-record statements: <a class="underline" href="mailto:press@openkarta.org">press@openkarta.org</a>.
+    </p>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Boilerplate</h2>
+    <div class="border border-on-background/10 bg-surface-container-lowest p-10 max-w-4xl">
+      <p class="font-body-main text-body-main text-on-surface-variant mb-6">
+        OpenKarta is a public, MIT-licensed protocol that lets autonomous agents transact with merchants over a uniform 8-verb HTTP API. The wire format is closed-enum, every quote is HMAC-signed, and the registry rejects paid placement by charter.
+      </p>
+      <p class="font-body-main text-body-main text-on-surface-variant">
+        OpenKarta routes data, not money. Settlement and tax compliance stay with the merchant. The protocol is currently at v0.1 with 8 verbs, 5 item types, three reference agents, and a daily-verified conformance suite.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Factsheet</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-px bg-on-background/10 border border-on-background/10">
+      {facts.map((f) => (
+        <div class="bg-surface-container-lowest p-6">
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">{f.label}</div>
+          <div class="font-h2-editorial text-on-background text-2xl">{f.value}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Quotable</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10">
+      {quotes.map((q) => (
+        <div class="border border-on-background/10 bg-surface-container-lowest p-10 hover-lift">
+          <div class="font-h2-editorial text-on-background mb-6 leading-tight">{q.body}</div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant">— {q.speaker}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Assets</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Logo</div>
+        <div class="bg-surface-container-low border border-on-background/10 aspect-square flex items-center justify-center mb-4">
+          <img src="/logo.png" alt="OpenKarta logo" class="w-24 h-24 object-contain" />
+        </div>
+        <a class="font-label-caps text-label-caps uppercase underline underline-offset-4" href="/logo.png" download>Download PNG ↗</a>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Wordmark</div>
+        <div class="bg-surface-container-low border border-on-background/10 aspect-square flex items-center justify-center mb-4">
+          <span class="font-hero-h1 text-3xl text-on-background">OpenKarta</span>
+        </div>
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Noto Serif Regular</span>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Color</div>
+        <div class="aspect-square grid grid-cols-2 gap-px bg-on-background/10 mb-4">
+          <div class="bg-on-background flex items-end p-2"><span class="font-code-block text-xs text-surface-container-lowest">#1B1C1C</span></div>
+          <div class="bg-surface-container-lowest flex items-end p-2"><span class="font-code-block text-xs text-on-background">#FFFFFF</span></div>
+          <div class="bg-surface-container-low flex items-end p-2"><span class="font-code-block text-xs text-on-background">#F5F3F3</span></div>
+          <div class="bg-on-surface-variant flex items-end p-2"><span class="font-code-block text-xs text-surface-container-lowest">#434656</span></div>
+        </div>
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Monochrome only</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Need an interview, briefing, or comment?</h2>
+      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">We respond to journalist requests within 48 hours. For embargo requests, please include a draft and a target publish date.</p>
+      <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="mailto:press@openkarta.org">press@openkarta.org</a>
+    </div>
+  </section>
+</BaseLayout>
