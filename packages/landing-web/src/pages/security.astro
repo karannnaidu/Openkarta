@@ -25,7 +25,7 @@ const safeHarbor = [
 ---
 <BaseLayout title="Security disclosure — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Security · responsible disclosure</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 bg-primary text-on-primary inline-block px-3 py-1">Security · responsible disclosure</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Found something? Tell us first.
     </h1>
@@ -34,7 +34,7 @@ const safeHarbor = [
     </p>
     <div class="flex flex-wrap gap-4 mt-12">
       <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="mailto:security@openkarta.org">security@openkarta.org</a>
-      <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="/.well-known/security.txt">security.txt</a>
+      <a class="bg-transparent text-primary px-6 py-3 border-2 border-primary hover:bg-primary hover:text-on-primary transition-colors duration-240" href="/.well-known/security.txt">security.txt</a>
     </div>
   </section>
 
@@ -101,10 +101,10 @@ const safeHarbor = [
   </section>
 
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
-    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
-      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Reading the wire-format spec for free is the best bug-hunting prep.</h2>
+    <div class="bg-primary text-on-primary p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-on-primary max-w-2xl mb-8">Reading the wire-format spec for free is the best bug-hunting prep.</h2>
       <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">Closed enums, signed quotes, and the user-token delegation system are the highest-leverage areas for review. We particularly value reports against signature handling and quote replay.</p>
-      <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="/protocol">Read the spec</a>
+      <a class="bg-on-primary text-primary px-6 py-3 border border-on-primary hover:bg-transparent hover:text-on-primary transition-colors duration-240" href="/protocol">Read the spec</a>
     </div>
   </section>
 </BaseLayout>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from '../components/CodeBlock.astro';
 ---
 <BaseLayout title="OpenKarta — The open contract for agentic commerce" activeNav={null}>
   <!-- 1. Hero -->
@@ -18,9 +19,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
       <div class="flex flex-wrap gap-4 items-center mb-8">
         <a class="group bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/merchant">Expose your catalogue <span class="ok-arrow inline-block">→</span></a>
-        <a class="group bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="/developers">Build a consumer agent <span class="ok-arrow inline-block">→</span></a>
+        <a class="group bg-transparent text-primary px-6 py-3 border-2 border-primary hover:bg-primary hover:text-on-primary transition-colors duration-240" href="/developers">Build a consumer agent <span class="ok-arrow inline-block">→</span></a>
       </div>
-      <div class="font-code-block text-code-block text-on-surface-variant bg-surface-container-low p-4 inline-block border border-on-background/10" data-ok-typeout="60">$ npm install @openkarta/sdk-node @openkarta/spec</div>
+      <CodeBlock lang="bash" class="inline-block max-w-full">$ npm install @openkarta/sdk-node @openkarta/spec</CodeBlock>
     </div>
   </section>
 
@@ -154,8 +155,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="font-label-caps text-label-caps text-on-surface-variant mt-2">ITEM TYPES</div>
       </div>
     </div>
-    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-center text-center">
-      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">
+    <div class="bg-primary text-on-primary p-12 md:p-20 flex flex-col items-center text-center">
+      <h2 class="font-h2-editorial text-on-primary max-w-2xl mb-8">
         The contract should be open. The competition should be on service.
       </h2>
       <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-2xl">

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from '../components/CodeBlock.astro';
 
 const manifestJson = `{
   "agentId":         "halcyon-shop",
@@ -38,12 +39,12 @@ const fields = [
 ---
 <BaseLayout title="Example agent manifest — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Example manifest · halcyon-shop</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 bg-primary text-on-primary inline-block px-3 py-1">Example manifest · halcyon-shop</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       One JSON document. The agent's whole shape.
     </h1>
     <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
-      Every conformant agent serves a <span class="font-code-block">CapabilitiesManifest</span> at <span class="font-code-block">/.well-known/openkarta-manifest</span>. Below is the live document for our reference product agent.
+      Every conformant agent serves a <CodeBlock inline>CapabilitiesManifest</CodeBlock> at <CodeBlock inline>/.well-known/openkarta-manifest</CodeBlock>. Below is the live document for our reference product agent.
     </p>
   </section>
 
@@ -89,13 +90,7 @@ const fields = [
   <!-- Wire format -->
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
     <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Wire format</h2>
-    <div class="border border-on-background/10 bg-surface-container-lowest">
-      <div class="border-b border-on-background/10 px-6 py-3 flex items-center justify-between">
-        <span class="font-code-block text-code-block text-on-surface-variant">GET https://halcyon-shop.fly.dev/.well-known/openkarta-manifest</span>
-        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">application/json</span>
-      </div>
-      <pre class="font-code-block text-code-block text-on-background p-6 overflow-x-auto"><code>{manifestJson}</code></pre>
-    </div>
+    <CodeBlock filename="GET https://halcyon-shop.fly.dev/.well-known/openkarta-manifest" lang="application/json">{manifestJson}</CodeBlock>
   </section>
 
   <!-- Verbs -->
@@ -194,12 +189,12 @@ const fields = [
 
   <!-- CTA -->
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
-    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
-      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Write your manifest. Get listed.</h2>
-      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">The full Zod schema for <span class="font-code-block">CapabilitiesManifest</span> ships in <span class="font-code-block">@openkarta/spec</span>. Wrap your existing API with the SDK, validate locally, then submit at the registry.</p>
+    <div class="bg-primary text-on-primary p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-on-primary max-w-2xl mb-8">Write your manifest. Get listed.</h2>
+      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">The full Zod schema for <CodeBlock inline class="!bg-surface-container-lowest/10 !border-surface-container-lowest/20 !text-surface-container-lowest">CapabilitiesManifest</CodeBlock> ships in <CodeBlock inline class="!bg-surface-container-lowest/10 !border-surface-container-lowest/20 !text-surface-container-lowest">@openkarta/spec</CodeBlock>. Wrap your existing API with the SDK, validate locally, then submit at the registry.</p>
       <div class="flex flex-wrap gap-4">
-        <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="/developers">Developer guide</a>
-        <a class="bg-transparent text-surface-container-lowest px-6 py-3 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://registry.openkarta.org/sign-in">Submit your agent ↗</a>
+        <a class="bg-on-primary text-primary px-6 py-3 border border-on-primary hover:bg-transparent hover:text-on-primary transition-colors duration-240" href="/developers">Developer guide</a>
+        <a class="bg-transparent text-on-primary px-6 py-3 border border-on-primary hover:bg-on-primary hover:text-primary transition-colors duration-240" href="https://registry.openkarta.org/sign-in">Submit your agent ↗</a>
       </div>
     </div>
   </section>
