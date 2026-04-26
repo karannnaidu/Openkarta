@@ -102,7 +102,17 @@ export const makeHandlers = (fx: AgentFixtures, secret: string): Handlers => ({
   },
 });
 
-export const bootAgent = async (fx: AgentFixtures, port: number, secret: string): Promise<string> => {
+export const bootAgent = async (
+  fx: AgentFixtures,
+  port: number,
+  secret: string,
+  ownerToken?: string,
+): Promise<string> => {
   const app = createServer({ handlers: makeHandlers(fx, secret), secret });
+  if (ownerToken) {
+    app.get('/.well-known/openkarta-owner.txt', async (_req, reply) => {
+      reply.type('text/plain').send(ownerToken);
+    });
+  }
   return app.listen({ port, host: '0.0.0.0' });
 };

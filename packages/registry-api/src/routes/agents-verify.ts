@@ -69,11 +69,10 @@ export function agentsVerifyRouter() {
       return c.json({ status: 'verified' });
     }
 
-    await c.env.DB.prepare(
-      "UPDATE verifications SET status='failed', completed_at=? WHERE agent_id=? AND token=?",
-    )
-      .bind(now, id, challenge.token)
-      .run();
+    // Don't burn the challenge on a single fetch failure — the well-known file
+    // may not be hosted yet. The challenge stays 'pending' so the user can retry
+    // after fixing their hosting. The challenge itself is one-time-use; cron's
+    // 24h TTL on `pending` rows handles long-stale tokens.
     return c.json(
       new RegistryError('domain_verification_pending', 'token mismatch or unreachable').toJSON(),
       409,
