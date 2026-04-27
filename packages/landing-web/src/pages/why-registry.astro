@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+
+const compare = [
+  { dim: 'Discovery', spec: 'Consumer agents must know merchant domains a priori. No list.', reg: 'Single API call returns every conformant agent, filtered by item type and region.' },
+  { dim: 'Trust signal', spec: '"Claims to be conformant" — anyone can put the file on disk.', reg: 'Domain-verified, signed by the registry, time-bounded badge.' },
+  { dim: 'Conformance freshness', spec: 'Write-once, drift forever. No re-test.', reg: 'Cron re-runs the test suite daily. 3 fails → stale; 7 → delisted.' },
+  { dim: 'Defensibility', spec: 'Forkable in a weekend. Spec is a giveaway.', reg: 'Catalogue of N verified merchants takes years to replicate.' },
+  { dim: 'Revenue surface', spec: 'You cannot charge for a spec.', reg: 'Listing fees, badge SLAs, priority placement, white-glove onboarding.' },
+  { dim: 'Feedback loop', spec: 'You do not know who is implementing.', reg: 'You see who is listed, who is healthy, who is drifting.' },
+  { dim: 'Liability if money disappears', spec: 'Zero — not your problem.', reg: 'Real — but with audit trail, signed quotes, and recourse.' },
+  { dim: 'Brand asset', spec: 'Spec authors are forgotten. (Who wrote OAuth 2.1?)', reg: 'Registries become household names. (npm, App Store, Docker Hub.)' },
+];
+
+const personas = [
+  {
+    chip: '01 · Merchant',
+    name: 'Priya',
+    role: 'Founder, D2C beauty brand',
+    without: 'I added the manifest file. Now what? Nobody finds me. If an agent ghosts a half-finished checkout, my support team eats it. I will buy more Instagram ads.',
+    withReg: 'OpenKarta verified my domain, runs my conformance test nightly, and gives me a green badge. Last month Claude bought 47 orders, Perplexity bought 12. I show up in the list. The list is the channel.',
+  },
+  {
+    chip: '02 · Consumer agent',
+    name: 'Aman',
+    role: 'Engineer, Krutrim shopping assistant',
+    without: 'OK… buy from where? Crawl the entire web for .well-known files? Write my own verifier per domain? Half the manifests are stale, half are phishing. Forget it — I will hand-wire 5 partnerships and ship.',
+    withReg: 'GET /v1/agents?itemType=product&country=IN. 200 verified merchants, all signed, all tested last night. I wire OpenKarta once and have 200 sellers. It is npm install for commerce.',
+  },
+  {
+    chip: '03 · Investor',
+    name: 'Karthik',
+    role: 'Partner, Series-A VC',
+    without: 'You wrote a spec. So did MCP, A2A, AP2, ACP, OAuth, and 14 others. Specs are not defensible. I cannot put a spec on a P&L. Pass.',
+    withReg: '500 verified merchants, ₹2,000Cr GMV flowing through your signed quotes. That is the rails for agent commerce in India. Anyone shipping a shopping agent has to come through you. What is the round?',
+  },
+  {
+    chip: '04 · Frontier-lab partner',
+    name: 'Meera',
+    role: 'Head of partnerships, frontier model',
+    without: 'I would have to do 500 individual merchant deals. My team is six. We launch with three exclusives and call the rest "coming soon" for 18 months.',
+    withReg: 'OpenKarta hands us 500 merchants on day one. Our agent learns the spec once, works with all of them. I sign one deal, not 500. Six people become a 500-merchant team overnight.',
+  },
+  {
+    chip: '05 · Internal',
+    name: 'Rohan',
+    role: 'CTO, OpenKarta',
+    without: 'No infra, no abuse moderation, no on-call, no legal exposure. And no business. We give away the spec and become a footnote in someone else\'s case study.',
+    withReg: 'Yes ops costs and abuse handling. But every verified merchant is a row someone else has to replicate to compete. The cost is the moat. Painful infra is what stops eight clones from launching by Friday.',
+  },
+  {
+    chip: '06 · Regulator',
+    name: 'Anjali',
+    role: 'Compliance counsel, RBI-regulated bank',
+    without: 'Some merchant claimed to support OpenKarta. Anyone could. There is no authority. The spec authors are an open-source project — no throat to choke. I cannot approve our card on this rail. Block.',
+    withReg: 'OpenKarta verified the domain, ran conformance, signed the quote, time-bounded the order. There is an audit trail, an entity, a phone number. Recommendation: pilot with verified-only.',
+  },
+];
+---
+<BaseLayout title="Why a registry — OpenKarta" activeNav={null} description="The technical and strategic case for OpenKarta's registry: why a spec alone is not enough for agent commerce.">
+  <!-- 1. Hero -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Strategy · why a registry</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      A spec is a giveaway. A registry is a business.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      The eight verbs are commodity — anyone can implement them. What makes an agent willing to send <span class="font-code-block">checkout()</span> to <span class="font-code-block">halcyon-shop.com</span> is somebody attesting halcyon-shop is real, runs the spec correctly, and won&rsquo;t disappear with the money. That somebody is the registry.
+    </p>
+    <div class="flex flex-wrap gap-4 mt-12">
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/registry">See the live registry ↗</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/protocol">Read the protocol →</a>
+    </div>
+  </section>
+
+  <!-- 2. Two-sided problem (chicken-and-egg) -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">01 · The cold-start problem</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">An agent commerce protocol is a two-sided market. Without a trust authority, neither side moves.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Spec only</div>
+        <h3 class="font-h2-editorial text-on-background mb-6">Deadlock.</h3>
+        <ol class="space-y-4 font-body-dense text-body-dense">
+          <li class="grid grid-cols-[28px_1fr] gap-4"><span class="font-code-block text-on-background border border-on-background w-7 h-7 inline-flex items-center justify-center">1</span><span>Merchant won&rsquo;t implement until consumer agents query somewhere.</span></li>
+          <li class="grid grid-cols-[28px_1fr] gap-4"><span class="font-code-block text-on-background border border-on-background w-7 h-7 inline-flex items-center justify-center">2</span><span>Consumer agent won&rsquo;t implement until merchants are reachable.</span></li>
+          <li class="grid grid-cols-[28px_1fr] gap-4"><span class="font-code-block text-on-background border border-on-background w-7 h-7 inline-flex items-center justify-center">3</span><span>Neither will move first. The PDF gathers dust. The protocol dies in the gap between v1 and v2.</span></li>
+        </ol>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Spec + registry</div>
+        <h3 class="font-h2-editorial text-on-background mb-6">Forcing function.</h3>
+        <ol class="space-y-4 font-body-dense text-body-dense">
+          <li class="grid grid-cols-[28px_1fr] gap-4"><span class="font-code-block text-on-primary bg-primary border border-primary w-7 h-7 inline-flex items-center justify-center">1</span><span>Registry hand-onboards the first 10 merchants. Verifies them. Lights up the index.</span></li>
+          <li class="grid grid-cols-[28px_1fr] gap-4"><span class="font-code-block text-on-primary bg-primary border border-primary w-7 h-7 inline-flex items-center justify-center">2</span><span>Consumer agent has a non-empty list to query. Wires once, gets 10 sellers.</span></li>
+          <li class="grid grid-cols-[28px_1fr] gap-4"><span class="font-code-block text-on-primary bg-primary border border-primary w-7 h-7 inline-flex items-center justify-center">3</span><span>Now merchants 11&ndash;500 self-serve, because the demand exists. Network effect compounds.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Capability comparison -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">02 · Capability gap</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">Eight dimensions where a registry buys you something a spec cannot.</h2>
+    <div class="border border-on-background/10 bg-surface-container-lowest overflow-hidden">
+      <div class="hidden md:grid md:grid-cols-[200px_1fr_1fr] bg-surface-container-low border-b border-on-background/10">
+        <div class="px-6 py-4 font-label-caps text-label-caps uppercase text-on-surface-variant">Dimension</div>
+        <div class="px-6 py-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Spec only</div>
+        <div class="px-6 py-4 font-label-caps text-label-caps uppercase text-on-surface-variant border-l border-on-background/10">Spec + registry</div>
+      </div>
+      {compare.map((row) => (
+        <div class="grid grid-cols-1 md:grid-cols-[200px_1fr_1fr] border-b border-on-background/10 last:border-b-0">
+          <div class="px-6 py-4 font-label-caps text-label-caps uppercase text-on-background bg-surface-container-low/40 md:bg-transparent">{row.dim}</div>
+          <div class="px-6 py-4 font-body-dense text-body-dense text-on-surface-variant md:border-l md:border-on-background/10 border-t border-on-background/10 md:border-t-0">
+            <div class="md:hidden font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Spec only</div>
+            {row.spec}
+          </div>
+          <div class="px-6 py-4 font-body-dense text-body-dense text-on-background md:border-l md:border-on-background/10 border-t border-on-background/10 md:border-t-0">
+            <div class="md:hidden font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Spec + registry</div>
+            {row.reg}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 4. Decisive question -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32 bg-surface-container-low py-12 md:py-20">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">03 · The decisive question</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">Does your protocol move money between parties who have never met?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">If no</div>
+        <h3 class="font-h2-editorial text-on-background mb-4">Spec wins.</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mb-4">Cheaper. Faster. Truly open. HTTP, JSON, OAuth, gRPC, GraphQL all won this way. No registry attached.</p>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Distribution beats curation when the cost of being wrong is low.</p>
+      </div>
+      <div class="border border-primary/40 bg-primary p-8 md:p-10">
+        <div class="font-label-caps text-label-caps uppercase text-primary-container/80 mb-3">If yes &mdash; and OpenKarta is yes</div>
+        <h3 class="font-h2-editorial text-on-primary mb-4">Registry wins.</h3>
+        <p class="font-body-dense text-body-dense text-primary-fixed mb-4">Trust is the product. Eight verbs are commodity. <span class="font-code-block">checkout()</span> only works if a third party vouches for the merchant.</p>
+        <p class="font-body-dense text-body-dense text-primary-fixed">No spec-only commerce protocol has ever scaled. Every payment rail in history has had an authority.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Personas -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">04 · Six people on the network</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">What the registry feels like for each side.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10" data-ok-stagger=":scope > article">
+      {personas.map((p) => (
+        <article class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10 fade-slide-up flex flex-col">
+          <div class="flex items-baseline justify-between mb-4">
+            <div class="font-label-caps text-label-caps uppercase text-on-surface-variant">{p.chip}</div>
+          </div>
+          <h3 class="font-h2-editorial text-on-background mb-1">{p.name}</h3>
+          <div class="font-body-dense text-body-dense text-on-surface-variant mb-6 italic">{p.role}</div>
+          <div class="grid grid-cols-1 gap-4 flex-1">
+            <div class="border-l-2 border-on-background/20 pl-4">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Without registry</div>
+              <p class="font-body-dense text-body-dense text-on-surface-variant">&ldquo;{p.without}&rdquo;</p>
+            </div>
+            <div class="border-l-2 border-primary pl-4">
+              <div class="font-label-caps text-label-caps uppercase text-primary mb-2">With registry</div>
+              <p class="font-body-dense text-body-dense text-on-background">&ldquo;{p.withReg}&rdquo;</p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 6. Architecture diagram -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">05 · Where the registry sits</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">The registry is the trust layer between discovery and transaction.</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-start">
+      <CodeBlock lang="text" class="block w-full">{`┌──────────────────┐    1. discover()      ┌────────────────────────┐
+│                  │ ────────────────────▶ │                        │
+│  Consumer agent  │    2. /v1/agents      │   OpenKarta registry   │
+│  (Claude, GPT,   │ ◀──── verified list ─ │   - domain verified    │
+│   Krutrim, …)    │                       │   - conformance tested │
+│                  │                       │   - signed badge       │
+└────────┬─────────┘                       │   - daily re-verify    │
+         │                                 └───────────┬────────────┘
+         │ 3. search()                                 │
+         │    quote()                                  │ verifies + signs
+         │    checkout()                               ▼
+         │                                 ┌────────────────────────┐
+         └───────────────────────────────▶ │                        │
+                                           │     Brand agent        │
+                                           │  (halcyon-shop.com)    │
+                                           │                        │
+                                           │  /.well-known/         │
+                                           │   openkarta-owner.txt  │
+                                           └────────────────────────┘`}</CodeBlock>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-6 md:p-8 space-y-5">
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">What the registry signs</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">Conformance badge: HMAC over <span class="font-code-block">{`{agentId, ranAt, packs, passed}`}</span> with the registry secret. Tamper-evident.</p>
+        </div>
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">What the merchant signs</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">Every quote, with their own secret. The agent cannot forge a price; the merchant cannot deny it.</p>
+        </div>
+        <div>
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">What the registry never sees</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">Money, PII, payment instruments. The registry is a directory and a notary &mdash; not a payment processor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Open vs commercial -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">06 · The split</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">The spec is fully open. The registry is the business. (Linux + Red Hat, agent commerce edition.)</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Open &middot; free forever</div>
+        <h3 class="font-h2-editorial text-on-background mb-6">OpenKarta Protocol</h3>
+        <ul class="space-y-3 font-body-dense text-body-dense text-on-surface-variant">
+          <li>&middot; MIT-licensed spec, RFC2119 normative language</li>
+          <li>&middot; <span class="font-code-block">@openkarta/sdk-node</span>, <span class="font-code-block">@openkarta/spec</span> — npm-published</li>
+          <li>&middot; Conformance test suite — runnable locally</li>
+          <li>&middot; Anyone can fork, vendor, ship a competing registry</li>
+          <li>&middot; <a class="underline" href="https://github.com/karannnaidu/Openkarta">Source on GitHub</a></li>
+        </ul>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Commercial &middot; paid</div>
+        <h3 class="font-h2-editorial text-on-background mb-6">OpenKarta Registry</h3>
+        <ul class="space-y-3 font-body-dense text-body-dense text-on-surface-variant">
+          <li>&middot; Verified merchant directory at <span class="font-code-block">api.openkarta.org</span></li>
+          <li>&middot; Domain ownership verification &middot; daily conformance cron</li>
+          <li>&middot; HMAC-signed conformance badge with audit trail</li>
+          <li>&middot; White-glove merchant onboarding &middot; SLA</li>
+          <li>&middot; Frontier-lab partnership pipe &middot; verified-only routing</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CTA -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="bg-primary text-on-primary p-12 md:p-20 flex flex-col items-start">
+      <div class="font-label-caps text-label-caps uppercase text-primary-container/80 mb-4">In one line</div>
+      <h2 class="font-h2-editorial text-on-primary max-w-3xl mb-8 [font-size:clamp(28px,4vw,48px)] leading-[1.15]">
+        The spec is what we give away. The registry is how we eat.
+      </h2>
+      <div class="flex flex-wrap gap-4">
+        <a class="bg-on-primary text-primary px-6 py-3 border border-on-primary hover:bg-transparent hover:text-on-primary transition-colors duration-240" href="/registry">See the live registry ↗</a>
+        <a class="bg-transparent text-on-primary px-6 py-3 border border-on-primary hover:bg-on-primary hover:text-primary transition-colors duration-240" href="/protocol">Read the protocol</a>
+        <a class="bg-transparent text-on-primary px-6 py-3 border border-on-primary hover:bg-on-primary hover:text-primary transition-colors duration-240" href="https://registry.openkarta.org/sign-in">List your agent</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
