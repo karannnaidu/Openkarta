@@ -4,7 +4,7 @@ import CodeBlock from '../components/CodeBlock.astro';
 ---
 <BaseLayout title="OpenKarta — The open contract for agentic commerce" activeNav={null}>
   <!-- 1. Hero -->
-  <section class="relative min-h-[800px] flex flex-col justify-center px-8 md:px-16 overflow-hidden max-w-[1440px] mx-auto mb-[160px]">
+  <section class="relative min-h-[560px] md:min-h-[800px] flex flex-col justify-center px-8 md:px-16 overflow-hidden max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
     <div aria-hidden="true" class="absolute inset-0 pointer-events-none opacity-[0.06] font-code-block text-[10vw] leading-none whitespace-nowrap overflow-hidden select-none flex flex-col justify-between py-20 text-on-background">
       <div class="animate-marquee">discover() search() get() quote() checkout() status() cancel() return()</div>
       <div class="animate-marquee-reverse">product · stay · flight · bus · service</div>
@@ -26,7 +26,7 @@ import CodeBlock from '../components/CodeBlock.astro';
   </section>
 
   <!-- 1b. OpenKarta protocol reel — poster only, video fetched on click anywhere -->
-  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[120px] md:mb-[160px]">
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
     <div
       id="ok-video"
       class="relative border border-on-background/10 bg-surface-container-lowest overflow-hidden cursor-pointer group"
@@ -64,7 +64,7 @@ import CodeBlock from '../components/CodeBlock.astro';
   </script>
 
   <!-- 2. Two worlds -->
-  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
     <h2 class="font-h2-editorial text-on-background mb-8 max-w-2xl">Two ways your AI assistant could buy something.</h2>
     <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-12 font-label-caps text-label-caps uppercase" data-ok-scene-tabs>
       <span class="text-on-surface-variant">Pick a category</span>
@@ -142,28 +142,28 @@ import CodeBlock from '../components/CodeBlock.astro';
         </div>
         <div class="mt-4 space-y-2 border-l border-on-background/10 pl-6">
           <div class="font-label-caps text-label-caps text-on-surface-variant mb-2">SAME EIGHT VERBS, FIVE CATEGORIES:</div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="0">
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="0">
             <span class="text-on-surface-variant">product</span><span class="text-on-background font-medium">retail / quick-commerce / grocery</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="1">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="1">
             <span class="text-on-surface-variant">stay</span><span class="text-on-background font-medium">hotels · homestays</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="2">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="2">
             <span class="text-on-surface-variant">flight</span><span class="text-on-background font-medium">domestic + international</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="3">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="3">
             <span class="text-on-surface-variant">bus</span><span class="text-on-background font-medium">intercity, sleeper, semi-sleeper</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="4">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="4">
             <span class="text-on-surface-variant">service</span><span class="text-on-background font-medium">salon · cleaning · repair</span>
-          </div>
+          </button>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 3. Core execution loop -->
-  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px] bg-surface-container-low py-20">
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px] bg-surface-container-low py-12 md:py-20">
     <h2 class="font-h2-editorial text-on-background mb-4">The core execution loop.</h2>
     <div class="flex flex-wrap items-center gap-3 mb-12 font-label-caps text-label-caps uppercase">
       <span class="text-on-surface-variant">Now demonstrating</span>
@@ -402,15 +402,15 @@ import CodeBlock from '../components/CodeBlock.astro';
         setActive(i);
       }
 
-      tabs.forEach((t, k) => {
-        t.addEventListener('click', () => {
-          i = k;
-          setActive(i);
-          paused = true;
-          clearTimeout(resumeTimer);
-          resumeTimer = setTimeout(() => { paused = false; }, 30000);
-        });
-      });
+      const select = (k) => {
+        i = k;
+        setActive(i);
+        paused = true;
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => { paused = false; }, 30000);
+      };
+      tabs.forEach((t, k) => t.addEventListener('click', () => select(k)));
+      rows.forEach((r, k) => r.addEventListener('click', () => select(k)));
 
       if (tabsContainer) {
         tabsContainer.addEventListener('mouseenter', () => { paused = true; });
