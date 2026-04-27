@@ -6,39 +6,44 @@ const reasons = [
   {
     chip: '01',
     title: 'Transport ≠ trust framework.',
-    body: 'OpenKarta is not "another way to call a tool." It is eight behavioural commitments — signed quote tokens, idempotent checkout, closed-enum errors, conformance badges, registry-of-merchants. MCP gives you none of those. Building on MCP means re-implementing every primitive on top of tools/list + tools/call — JSON-RPC-over-stdio with extra steps, coupled to a still-moving protocol surface.',
+    plain: 'Building on MCP means rebuilding every safety guarantee OpenKarta cares about — on top of someone else’s tool-calling format.',
+    body: 'OpenKarta is not "another way to call a tool." It is eight behavioural commitments — signed quote tokens, idempotent checkout, closed-enum errors, conformance badges, a registry of verified merchants. MCP gives you none of those. Building on MCP means re-implementing every primitive on top of its tool-calling format — coupled to a still-moving protocol surface owned by someone else.',
   },
   {
     chip: '02',
     title: 'MCP is LLM-client-bound. Your audience isn\u2019t.',
-    body: 'OpenKarta v1 has four consumer surfaces: web app, mobile, server-side automation, and LLM agents. MCP only serves the last one. HTTP is the universal substrate every other surface speaks natively. Reverse-layering ("MCP everywhere, HTTP via shim") makes the web app speak JSON-RPC over stdio to fetch a product list. Absurd.',
+    plain: 'MCP only works inside AI assistants. Most of the internet — websites, mobile apps, server jobs — speaks HTTP.',
+    body: 'OpenKarta v1 serves four consumer surfaces: web app, mobile, server-side automation, and LLM agents. MCP only reaches the last one. HTTP is the universal layer every other surface speaks natively. Forcing a website to talk MCP just to fetch a product list would be absurd; HTTP-first means every surface is a first-class citizen.',
   },
   {
     chip: '03',
     title: 'Server-per-merchant. Commerce needs a many-merchant registry.',
-    body: 'MCP discovery is "the user/host has configured this server." There is no neutral registry, no fan-out search, no signed badge re-verified weekly. A pure-MCP world looks like every Claude Desktop user pasting JSON config for each brand they want to shop from. That is not a protocol — that is a directory problem.',
+    plain: 'MCP has no shared address book. Every shopper would have to manually configure every shop they want to buy from.',
+    body: 'MCP discovery is "the user already configured this server." There is no neutral registry, no fan-out search, no signed badge re-verified weekly. A pure-MCP world means every Claude Desktop user pasting a separate JSON config for each brand they want to shop from. That is not a protocol — that is a directory problem.',
   },
   {
     chip: '04',
-    title: 'You already decoupled from one vendor\u2019s roadmap.',
-    body: 'OpenKarta dropped @anthropic-ai/sdk for chat/completions explicitly to escape vendor lock-in. Adopting MCP-as-substrate re-couples to the same ecosystem through a different door. Same vendor\u2019s tail, opposite end.',
+    title: 'AI is a moving target. We refuse to bet on one vendor.',
+    plain: 'OpenKarta is deliberately model-agnostic — works with OpenAI, Anthropic, Mistral, local models. Building on MCP would lock us back into one ecosystem.',
+    body: 'OpenKarta keeps its core decoupled from any single AI vendor — bring your own model. Adopting MCP as the foundation would re-couple us to a roadmap and governance owned by one company. We would rather ship an adapter for that ecosystem than make it the load-bearing layer of agent commerce.',
   },
   {
     chip: '05',
     title: 'Merchant adoption math doesn\u2019t favor MCP.',
-    body: '"Add a few HTTPS routes to your existing API" is easier than "stand up an MCP server" for a hotel chain or D2C brand whose ops team already runs HTTP services. MCP is easier for LLM tool authors, not for merchants. The spec target is the merchant.',
+    plain: 'Merchants already run HTTP servers. Asking them to stand up an MCP server is asking them to do new ops work for a small audience.',
+    body: '"Add a few HTTPS routes to your existing API" is something every hotel chain, airline, or D2C brand can already do — their ops team runs HTTP services for breakfast. "Stand up an MCP server" is a foreign deployment shape with a smaller payoff. MCP is easier for LLM tool authors. HTTP is easier for the people we actually need to ship: the merchants.',
   },
 ];
 ---
-<BaseLayout title="Why not MCP — OpenKarta" activeNav={null} description="The technical case for why OpenKarta uses HTTP as its substrate and MCP as a first-class adapter — not the other way around.">
+<BaseLayout title="Why not MCP — OpenKarta" activeNav={null} description="OpenKarta uses HTTP as its foundation and MCP as a first-class adapter into AI assistants. Same registry, two doors.">
   <!-- 1. Hero -->
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16 md:mb-32">
     <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Architecture · why not MCP</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
-      MCP is the right adapter. Not the right substrate.
+      MCP is the right adapter. Not the right foundation.
     </h1>
     <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
-      OpenKarta runs on plain HTTP — eight verbs, signed quotes, a registry of verified merchants. MCP is a brilliant transport for LLM tool calls, but it is not a trust framework, not a many-merchant directory, and not what most consumer surfaces speak. So we build the bridge, not the foundation.
+      OpenKarta runs on plain HTTP — eight verbs, signed quotes, a registry of verified merchants. MCP is a brilliant way for AI assistants to call tools, but it is not a trust framework, not a shared directory of merchants, and not what most websites or apps speak. So we ship MCP as the bridge — not the floor.
     </p>
     <div class="flex flex-wrap gap-4 mt-12">
       <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="#architecture">See the architecture →</a>
@@ -46,9 +51,22 @@ const reasons = [
     </div>
   </section>
 
+  <!-- 1b. Bottom line · golden egg -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="border border-primary/40 bg-primary p-8 md:p-12">
+      <div class="font-label-caps text-label-caps uppercase text-primary-container/80 mb-3">The bottom line</div>
+      <h2 class="font-h2-editorial text-on-primary mb-6 max-w-4xl [font-size:clamp(24px,3.4vw,38px)] leading-snug">
+        You don’t pick HTTP or MCP. OpenKarta gives you both.
+      </h2>
+      <p class="font-body-main text-primary-fixed max-w-3xl">
+        HTTP for everyone — websites, mobile apps, server jobs, any agent. MCP as the adapter that lets Claude, Cursor, and ChatGPT shop the same registry. <span class="text-on-primary font-medium">One protocol. Two doors. No rewrite.</span>
+      </p>
+    </div>
+  </section>
+
   <!-- 2. Five reasons -->
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
-    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">01 · Why not the substrate</div>
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">01 · Why not the foundation</div>
     <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">Five reasons MCP isn’t the layer to build commerce on.</h2>
     <div class="space-y-px bg-on-background/10" data-ok-stagger=":scope > article">
       {reasons.map((r) => (
@@ -56,7 +74,15 @@ const reasons = [
           <div class="font-display-lg text-display-lg text-on-background/15 leading-none">{r.chip}</div>
           <div>
             <h3 class="font-h2-editorial text-on-background mb-4">{r.title}</h3>
-            <p class="font-body-main text-on-surface-variant max-w-3xl">{r.body}</p>
+            <p class="font-body-main text-on-background mb-4 max-w-3xl">{r.plain}</p>
+            <details class="group">
+              <summary class="font-label-caps text-label-caps uppercase text-on-surface-variant cursor-pointer hover:text-on-background transition-colors duration-240 select-none inline-flex items-center gap-2">
+                <span class="group-open:hidden">Read the technical detail</span>
+                <span class="hidden group-open:inline">Hide technical detail</span>
+                <span class="font-code-block transition-transform duration-240 group-open:rotate-180">▾</span>
+              </summary>
+              <p class="font-body-dense text-body-dense text-on-surface-variant max-w-3xl mt-4 pt-4 border-t border-on-background/10">{r.body}</p>
+            </details>
           </div>
         </article>
       ))}
@@ -77,7 +103,7 @@ const reasons = [
   <!-- 4. The architecture -->
   <section id="architecture" class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32 scroll-mt-32">
     <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">03 · The right architecture</div>
-    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">HTTP is the substrate. MCP is the bridge.</h2>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">HTTP is the foundation. MCP is the bridge.</h2>
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 items-start">
       <div class="border border-on-background/10 bg-surface-container-lowest p-6 md:p-8 overflow-x-auto">
         <CodeBlock lang="text" filename="reception agents · 8 verbs · HTTP">{`                     ┌─ Web app                           (HTTP)
@@ -116,7 +142,7 @@ Reception agents ────┼─ Server automation                 (HTTP)
     <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">HTTP first. MCP next. Convergence later, maybe.</h2>
     <div class="border border-on-background/15 bg-surface-container-lowest p-10 md:p-16">
       <blockquote class="font-h2-editorial text-on-background max-w-4xl mb-10 [font-size:clamp(22px,3vw,34px)] leading-snug">
-        “HTTP is the right substrate. MCP is the right first-class adapter — and probably the highest-leverage missing piece for the developer track right now.”
+        “HTTP is the right foundation. MCP is the right first-class adapter — and probably the highest-leverage missing piece for developer adoption right now.”
       </blockquote>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10">
         <div class="border border-on-background/10 bg-surface-container-lowest p-6 md:p-8">
@@ -134,7 +160,7 @@ Reception agents ────┼─ Server automation                 (HTTP)
   <!-- 6. CTA -->
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
     <div class="border border-on-background/15 bg-surface-container-lowest p-10 md:p-16 flex flex-col items-center text-center">
-      <h2 class="font-h2-editorial text-on-background max-w-3xl mb-8">Build on the substrate that already won. Bridge into the one users live in.</h2>
+      <h2 class="font-h2-editorial text-on-background max-w-3xl mb-8">Build on the foundation that already won. Bridge into the AI tools your users already live in.</h2>
       <div class="flex flex-wrap gap-4 justify-center">
         <a class="bg-primary text-on-primary px-8 py-4 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
         <a class="border border-on-background/25 bg-transparent text-on-background px-8 py-4 hover:bg-on-background/5 transition-colors duration-240 font-medium" href="/why-registry">Why a registry</a>
