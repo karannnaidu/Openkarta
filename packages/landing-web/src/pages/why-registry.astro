@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CodeBlock from '../components/CodeBlock.astro';
 
 const compare = [
-  { dim: 'Discovery', spec: 'Consumer agents must know merchant domains a priori. No list.', reg: 'Single API call returns every conformant agent, filtered by item type and region.' },
+  { dim: 'Discovery', spec: 'Consumer agents must know merchant domains in advance. No list.', reg: 'Single API call returns every conformant agent, filtered by item type and region.' },
   { dim: 'Trust signal', spec: '"Claims to be conformant" — anyone can put the file on disk.', reg: 'Domain-verified, signed by the registry, time-bounded badge.' },
   { dim: 'Conformance freshness', spec: 'Write-once, drift forever. No re-test.', reg: 'Cron re-runs the test suite daily. 3 fails → stale; 7 → delisted.' },
   { dim: 'Defensibility', spec: 'Forkable in a weekend. Spec is a giveaway.', reg: 'Catalogue of N verified merchants takes years to replicate.' },

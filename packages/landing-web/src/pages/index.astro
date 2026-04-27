@@ -2,27 +2,86 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CodeBlock from '../components/CodeBlock.astro';
 ---
-<BaseLayout title="OpenKarta — The open contract for agentic commerce" activeNav={null}>
+<BaseLayout title="OpenKarta — The trust layer for AI commerce" activeNav={null}>
   <!-- 1. Hero -->
   <section class="relative min-h-[560px] md:min-h-[800px] flex flex-col justify-center px-8 md:px-16 overflow-hidden max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
     <div aria-hidden="true" class="absolute inset-0 pointer-events-none opacity-[0.06] font-code-block text-[10vw] leading-none whitespace-nowrap overflow-hidden select-none flex flex-col justify-between py-20 text-on-background">
-      <div class="animate-marquee">discover() search() get() quote() checkout() status() cancel() return()</div>
-      <div class="animate-marquee-reverse">product · stay · flight · bus · service</div>
-      <div class="animate-marquee">discover() search() get() quote() checkout() status() cancel() return()</div>
+      <div class="animate-marquee">signed.quote() verified.merchant() audit.trail() no.hallucinations()</div>
+      <div class="animate-marquee-reverse">quote · checkout · status · cancel · return · dispute</div>
+      <div class="animate-marquee">signed.quote() verified.merchant() audit.trail() no.hallucinations()</div>
     </div>
     <div class="relative z-10 max-w-5xl" data-ok-stagger=":scope > *">
+      <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">The trust layer for AI commerce</div>
       <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,8vw,108px)] leading-[1.05] tracking-tight mb-8">
-        The open contract for agentic commerce.
+        Your AI can talk. Now it can transact.
       </h1>
       <p class="font-h2-editorial text-on-surface-variant max-w-3xl mb-12">
-        Eight verbs. Five item types. Any AI agent can buy from any merchant — without per-merchant integration code.
+        Signed quotes. Verified merchants. Full audit trail. The open protocol that makes AI agents legally safe to buy with — no hallucinated prices, no invented SKUs, no liability fog.
       </p>
       <div class="flex flex-wrap gap-4 items-center mb-8">
-        <a class="group bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/merchant">Expose your catalogue <span class="ok-arrow inline-block">→</span></a>
-        <a class="group border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/developers">Build a consumer agent <span class="ok-arrow inline-block">→</span></a>
+        <a class="group bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/developers">Build a buying agent <span class="ok-arrow inline-block">→</span></a>
+        <a class="group border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/merchant">Make your catalogue agent-safe <span class="ok-arrow inline-block">→</span></a>
       </div>
       <CodeBlock lang="bash" class="inline-block max-w-full">$ npm install @openkarta/sdk-node @openkarta/spec</CodeBlock>
     </div>
+  </section>
+
+  <!-- 1a. The problem -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">01 · The problem</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">
+      Every AI today can <em class="not-italic text-on-background/60 italic">talk</em> about buying. None of them can <em class="not-italic">actually</em> buy without a human babysitter.
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Failure mode 01</div>
+        <div class="font-h2-editorial text-on-background mb-3">Hallucinated prices.</div>
+        <p class="font-body-main text-on-surface-variant">The model promises ₹40,000 off. The merchant didn't authorise it. No CFO signs that order.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Failure mode 02</div>
+        <div class="font-h2-editorial text-on-background mb-3">Invented SKUs.</div>
+        <p class="font-body-main text-on-surface-variant">The agent confidently quotes a product that doesn't exist. The user clicks buy. The flow breaks at checkout.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Failure mode 03</div>
+        <div class="font-h2-editorial text-on-background mb-3">No audit trail.</div>
+        <p class="font-body-main text-on-surface-variant">When something goes wrong, there's no signed record. Just "the AI said something." Disputes have nowhere to land.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1b. Three trust primitives -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">02 · The fix</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">
+      Three primitives. That's the entire trust layer.
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up flex flex-col">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Primitive 01</div>
+        <div class="font-h2-editorial text-on-background mb-3">Signed quote.</div>
+        <p class="font-body-main text-on-surface-variant mb-6 flex-1">The price the agent quoted is the price the merchant honors. Cryptographically bound, time-locked, non-negotiable.</p>
+        <CodeBlock lang="json" class="text-xs">{`{ "quoteId": "qt_8f2…", "price": 1299, "expiresAt": "...", "sig": "ed25519:…" }`}</CodeBlock>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up flex flex-col">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Primitive 02</div>
+        <div class="font-h2-editorial text-on-background mb-3">Verified merchant.</div>
+        <p class="font-body-main text-on-surface-variant mb-6 flex-1">Domain ownership proven. Conformance badge issued by the registry. Re-checked daily. Expires if they break the contract.</p>
+        <CodeBlock lang="bash" class="text-xs">{`GET /.well-known/openkarta-owner.txt
+→ verification: PASSED · badge: HEALTHY`}</CodeBlock>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up flex flex-col">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Primitive 03</div>
+        <div class="font-h2-editorial text-on-background mb-3">Auditable trail.</div>
+        <p class="font-body-main text-on-surface-variant mb-6 flex-1">Every call timestamped and signed. Disputes resolve against receipts, not chat logs. The agent stops being a liability.</p>
+        <CodeBlock lang="bash" class="text-xs">{`quote → checkout → status
+each call: timestamp + sig + state`}</CodeBlock>
+      </div>
+    </div>
+    <p class="font-body-main text-on-surface-variant mt-12 max-w-3xl">
+      No hallucinations. No liability fog. Real commerce, by AI, with receipts. <a class="text-on-background underline hover:text-primary" href="/why-registry">Why a registry &rarr;</a>
+    </p>
   </section>
 
   <!-- 1b. OpenKarta protocol reel — poster only, video fetched on click anywhere -->
@@ -65,7 +124,8 @@ import CodeBlock from '../components/CodeBlock.astro';
 
   <!-- 2. Two worlds -->
   <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
-    <h2 class="font-h2-editorial text-on-background mb-8 max-w-2xl">Two ways your AI assistant could buy something.</h2>
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">03 · Same shopper, two worlds</div>
+    <h2 class="font-h2-editorial text-on-background mb-8 max-w-3xl">One world the AI guesses. The other, it transacts — signed, verified, logged.</h2>
     <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-12 font-label-caps text-label-caps uppercase" data-ok-scene-tabs>
       <span class="text-on-surface-variant">Pick a category</span>
       <div role="tablist" aria-label="Demo category" class="flex flex-wrap gap-2">
@@ -78,7 +138,7 @@ import CodeBlock from '../components/CodeBlock.astro';
     </div>
     <div class="grid md:grid-cols-2 gap-16 md:gap-gutter" data-ok-stagger=":scope > div">
       <div class="flex flex-col gap-8 fade-slide-up">
-        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD A · TODAY</div>
+        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD A · AGENT GUESSES</div>
         <div class="bg-surface-container-low p-6 border border-on-background/10">
           <div class="bg-surface-container-lowest border border-on-background/10 ok-scene-text" data-ok-scene-a>
             <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
@@ -108,7 +168,7 @@ import CodeBlock from '../components/CodeBlock.astro';
         </div>
       </div>
       <div class="flex flex-col gap-8 fade-slide-up">
-        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD B · OPENKARTA</div>
+        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD B · AGENT TRANSACTS</div>
         <div class="bg-surface-container-lowest p-6 border border-on-background/10 hover-lift">
           <div class="bg-surface-container-low border border-on-background/10 ok-scene-text" data-ok-scene-b>
             <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
@@ -164,7 +224,9 @@ import CodeBlock from '../components/CodeBlock.astro';
 
   <!-- 3. Core execution loop -->
   <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px] bg-surface-container-low py-12 md:py-20">
-    <h2 class="font-h2-editorial text-on-background mb-4">The core execution loop.</h2>
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">04 · The execution loop</div>
+    <h2 class="font-h2-editorial text-on-background mb-4 max-w-3xl">Every step is signed. Every state is logged.</h2>
+    <p class="font-body-main text-on-surface-variant max-w-3xl mb-8">Discovery, quote, checkout, status — all under the same trust contract. The LLM speaks; the protocol guarantees.</p>
     <div class="flex flex-wrap items-center gap-3 mb-12 font-label-caps text-label-caps uppercase">
       <span class="text-on-surface-variant">Now demonstrating</span>
       <span class="ok-scene-chip border border-on-background/10 px-3 py-1 font-code-block text-code-block text-on-background bg-surface-container-lowest" data-ok-scene-chip>halcyon-shop · Tokai blend 250g · ₹780</span>
@@ -193,7 +255,30 @@ import CodeBlock from '../components/CodeBlock.astro';
     </div>
   </section>
 
-  <!-- 4. Stats + CTA -->
+  <!-- 4a. Who's listening -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">05 · Who this is for</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">Built for the people who already feel the pain.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Audience 01</div>
+        <div class="font-h2-editorial text-on-background mb-3">Agent builders.</div>
+        <p class="font-body-main text-on-surface-variant">Perplexity, ChatGPT, Claude, Gemini — every assistant wants to ship commerce. None can do it safely without a trust layer.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Audience 02</div>
+        <div class="font-h2-editorial text-on-background mb-3">Voice commerce.</div>
+        <p class="font-body-main text-on-surface-variant">Voice-first checkout has zero tolerance for misquotes. Signed quotes and audit trails are non-negotiable infrastructure.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Audience 03</div>
+        <div class="font-h2-editorial text-on-background mb-3">Sovereign platforms.</div>
+        <p class="font-body-main text-on-surface-variant">India-rooted, ONDC-friendly, UPI-native, neutral. The alternative is being a thin wrapper on a US protocol.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4b. Stats + CTA -->
   <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 border-t border-b border-on-background/10 py-8" data-ok-stagger=":scope > div">
       <div>
@@ -210,16 +295,17 @@ import CodeBlock from '../components/CodeBlock.astro';
       </div>
     </div>
     <div class="border border-on-background/15 bg-surface-container-lowest p-12 md:p-20 flex flex-col items-center text-center">
-      <h2 class="font-h2-editorial text-on-background max-w-2xl mb-8">
-        The contract should be open. The competition should be on service.
-      </h2>
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">The pitch in one breath</div>
+      <blockquote class="font-h2-editorial text-on-background max-w-3xl mb-12 [font-size:clamp(22px,3.2vw,36px)] leading-snug">
+        "Your AI can talk to customers. Ours lets it transact with them — signed, verified, no hallucinations, full audit trail. The trust layer between any agent and any merchant. India-rooted, neutral, open."
+      </blockquote>
       <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-2xl text-left">
         <CodeBlock class="flex-1" filename="Brand agent (sell anything)" lang="bash">{`npm i @openkarta/sdk-node`}</CodeBlock>
         <CodeBlock class="flex-1" filename="Consumer agent (buy anywhere)" lang="bash">{`npm i @openkarta/orchestrator`}</CodeBlock>
       </div>
       <div class="flex flex-wrap gap-4 justify-center">
-        <a class="bg-primary text-on-primary px-8 py-4 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
-        <a class="border border-on-background/25 bg-transparent text-on-background px-8 py-4 hover:bg-on-background/5 transition-colors duration-240 font-medium" href="/developers">Developer quickstart</a>
+        <a class="bg-primary text-on-primary px-8 py-4 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 font-medium" href="/developers">Build a buying agent</a>
+        <a class="border border-on-background/25 bg-transparent text-on-background px-8 py-4 hover:bg-on-background/5 transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
       </div>
     </div>
   </section>
