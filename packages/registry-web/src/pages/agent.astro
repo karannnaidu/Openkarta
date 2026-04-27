@@ -1,50 +1,109 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Agent — OpenKarta Registry">
-  <div id="loading">Loading…</div>
-  <div id="error" class="error" style="display:none"></div>
-  <div id="content" style="display:none"></div>
+<BaseLayout title="Agent — OpenKarta Registry" activeNav="browse">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
+    <a href="/" class="font-code-block text-code-block text-on-surface-variant hover:text-on-background ok-link inline-block mb-8">← Back to registry</a>
+
+    <div id="loading" class="border border-on-background/10 bg-surface-container-lowest p-10 font-body-dense text-on-surface-variant">Loading agent…</div>
+    <div id="error" class="border border-error/40 bg-error-container/40 text-on-error-container p-6 font-body-dense" style="display:none"></div>
+    <div id="content" style="display:none"></div>
+  </section>
 
   <script>
     import { getAgent, API_BASE } from '../lib/api.ts';
 
     const $ = (id) => document.getElementById(id);
     const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const fmtDate = (d) => d ? new Date(d).toLocaleString(undefined, { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '—';
 
     function strip(history) {
-      // Build a 30-day pass/fail strip; missing days show as neutral.
       const byDate = new Map(history.map((d) => [d.date, d.passed]));
       const days = [];
       for (let i = 29; i >= 0; i--) {
         const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
         const passed = byDate.get(d);
-        days.push(`<div class="day ${passed === true ? 'pass' : passed === false ? 'fail' : ''}" title="${d}"></div>`);
+        days.push(`<div class="day ${passed === true ? 'pass' : passed === false ? 'fail' : ''}" title="${d}${passed === true ? ' — passed' : passed === false ? ' — failed' : ' — no run'}"></div>`);
       }
-      return `<div class="history-strip">${days.join('')}</div>`;
+      return `<div class="ok-history">${days.join('')}</div>`;
     }
 
     async function load() {
       const id = new URLSearchParams(location.search).get('id');
-      if (!id) { $('error').textContent = 'Missing ?id'; $('error').style.display = ''; $('loading').style.display = 'none'; return; }
+      if (!id) {
+        $('error').textContent = 'Missing agent id (?id=…) in the URL';
+        $('error').style.display = '';
+        $('loading').style.display = 'none';
+        return;
+      }
       try {
         const detail = await getAgent(id);
         const a = detail.agent;
         const badge = detail.lastBadgeRun;
         const embedUrl = `${API_BASE}/v1/agents/${encodeURIComponent(a.agentId)}/badge`;
+        const embedHtml = `<a href="${embedUrl}"><img src="${embedUrl}" alt="OpenKarta-conformant" /></a>`;
+
         $('content').innerHTML = `
-          <h1>${escapeHtml(a.displayName)} <span class="badge badge--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></h1>
-          <p class="tier">${escapeHtml(a.agentId)} • ${escapeHtml(a.tier)} • <a href="${escapeHtml(a.baseUrl)}" target="_blank" rel="noopener">${escapeHtml(a.baseUrl)}</a></p>
-          ${a.description ? `<p>${escapeHtml(a.description)}</p>` : ''}
-          <h2>Capabilities</h2>
-          <p>Item types: ${a.supportedItemTypes.map(escapeHtml).join(', ')}</p>
-          <p>Regions: ${(a.regions ?? []).map((r) => escapeHtml(r.country) + (r.city ? ' / ' + escapeHtml(r.city) : '')).join(', ') || '—'}</p>
-          <h2>Last conformance run</h2>
-          ${badge ? `<p>${badge.passed ? 'Passed' : 'Failed'} — ${badge.testsPassed} passed, ${badge.testsFailed} failed (${escapeHtml(new Date(badge.ranAt).toLocaleString())})</p>${badge.errorSummary ? `<div class="code">${escapeHtml(badge.errorSummary)}</div>` : ''}` : '<p>—</p>'}
-          <h2>30-day history</h2>
-          ${strip(detail.history)}
-          <h2>Embed badge</h2>
-          <div class="code">&lt;a href="${escapeHtml(embedUrl)}"&gt;OpenKarta-conformant&lt;/a&gt;</div>
+          <div class="font-label-caps text-label-caps uppercase mb-6 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Agent · ${escapeHtml(a.tier)} · ${escapeHtml(a.verificationStatus)}</div>
+          <div class="flex flex-wrap items-baseline gap-4 mb-2">
+            <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,6vw,72px)] leading-[1.05] tracking-tight">${escapeHtml(a.displayName)}</h1>
+            <span class="ok-pill ok-pill--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span>
+          </div>
+          <div class="font-code-block text-code-block text-on-surface-variant mb-6">${escapeHtml(a.agentId)}</div>
+          ${a.description ? `<p class="font-h2-editorial text-on-surface-variant max-w-3xl mb-12">${escapeHtml(a.description)}</p>` : '<div class="mb-12"></div>'}
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10 mb-16">
+            <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Base URL</div>
+              <a class="font-code-block text-code-block text-on-background break-all underline hover:text-primary-container" href="${escapeHtml(a.baseUrl)}" target="_blank" rel="noopener">${escapeHtml(a.baseUrl)}</a>
+            </div>
+            <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Manifest URL</div>
+              <a class="font-code-block text-code-block text-on-background break-all underline hover:text-primary-container" href="${escapeHtml(a.manifestUrl)}" target="_blank" rel="noopener">${escapeHtml(a.manifestUrl)}</a>
+            </div>
+            <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Item types</div>
+              <div class="flex flex-wrap gap-2">
+                ${a.supportedItemTypes.map((t) => `<span class="font-code-block text-xs px-2 py-1 border border-on-background/20 bg-on-background/5 text-on-background">${escapeHtml(t)}</span>`).join('')}
+              </div>
+            </div>
+            <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Regions</div>
+              <div class="font-body-dense text-body-dense text-on-background">${(a.regions ?? []).map((r) => escapeHtml(r.country) + (r.city ? ' / ' + escapeHtml(r.city) : '')).join(', ') || '—'}</div>
+            </div>
+          </div>
+
+          <h2 class="font-h2-editorial text-on-background mb-6 border-b border-on-background/10 pb-3">Last conformance run</h2>
+          <div class="border border-on-background/10 bg-surface-container-lowest p-8 mb-16">
+            ${badge ? `
+              <div class="flex flex-wrap items-baseline gap-4 mb-4">
+                <span class="ok-pill ok-pill--${badge.passed ? 'healthy' : 'delisted'}">${badge.passed ? 'Passed' : 'Failed'}</span>
+                <span class="font-code-block text-code-block text-on-surface-variant">${badge.testsPassed} passed · ${badge.testsFailed} failed</span>
+                <span class="font-code-block text-code-block text-on-surface-variant ml-auto">${escapeHtml(fmtDate(badge.ranAt))}</span>
+              </div>
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Packs</div>
+              <div class="flex flex-wrap gap-2 mb-${badge.errorSummary ? '6' : '0'}">
+                ${(badge.packs ?? []).map((p) => `<span class="font-code-block text-xs px-2 py-1 border border-on-background/20 bg-on-background/5 text-on-background">${escapeHtml(p)}</span>`).join('') || '<span class="font-body-dense text-on-surface-variant">—</span>'}
+              </div>
+              ${badge.errorSummary ? `<div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Error summary</div><pre class="ok-code">${escapeHtml(badge.errorSummary)}</pre>` : ''}
+            ` : '<p class="font-body-dense text-on-surface-variant">No conformance runs yet.</p>'}
+          </div>
+
+          <h2 class="font-h2-editorial text-on-background mb-6 border-b border-on-background/10 pb-3">30-day history</h2>
+          <div class="border border-on-background/10 bg-surface-container-lowest p-8 mb-16">
+            ${strip(detail.history)}
+            <div class="mt-4 flex flex-wrap gap-6 font-code-block text-xs text-on-surface-variant">
+              <span class="inline-flex items-center gap-2"><span class="w-3 h-3 bg-emerald-500"></span>Pass</span>
+              <span class="inline-flex items-center gap-2"><span class="w-3 h-3 bg-red-500"></span>Fail</span>
+              <span class="inline-flex items-center gap-2"><span class="w-3 h-3 bg-on-background/10"></span>No run</span>
+            </div>
+          </div>
+
+          <h2 class="font-h2-editorial text-on-background mb-6 border-b border-on-background/10 pb-3">Embed badge</h2>
+          <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+            <p class="font-body-dense text-body-dense text-on-surface-variant mb-4">Drop this HTML into your site to display the live OpenKarta-conformant badge.</p>
+            <pre class="ok-code">${escapeHtml(embedHtml)}</pre>
+          </div>
         `;
         $('content').style.display = '';
       } catch (err) {

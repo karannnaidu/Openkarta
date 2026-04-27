@@ -1,0 +1,70 @@
+/*
+ * OpenKarta landing site — color tokens.
+ *
+ * IMPORTANT: Tailwind's Play CDN can't reliably resolve color values that
+ * reference these variables (no <alpha-value>, no functions survive its
+ * config-cloning step). So Tailwind utility classes use hex literals
+ * directly in BaseLayout.astro's `colors` config; this file stays for raw
+ * CSS uses — color-mix() in .hover-lift, var() in border-color, etc.
+ *
+ * Keep the hex values here in sync with BaseLayout.astro.
+ */
+
+:root {
+  /* Brand accent — Teal Lagoon (Tailwind teal-600) */
+  --color-primary: #0D9488;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #115E59;
+  --color-on-primary-container: #CCFBF1;
+  --color-inverse-primary: #5EEAD4;
+  --color-primary-fixed: #CCFBF1;
+  --color-primary-fixed-dim: #5EEAD4;
+  --color-on-primary-fixed: #042F2E;
+  --color-on-primary-fixed-variant: #115E59;
+  --color-surface-tint: #0D9488;
+
+  /* Secondary — neutral */
+  --color-secondary: #5F5E5E;
+  --color-on-secondary: #FFFFFF;
+  --color-secondary-container: #E5E2E1;
+  --color-on-secondary-container: #656464;
+  --color-secondary-fixed: #E5E2E1;
+  --color-secondary-fixed-dim: #C9C6C5;
+  --color-on-secondary-fixed: #1C1B1B;
+  --color-on-secondary-fixed-variant: #474646;
+
+  /* Tertiary — warm coral (Tailwind orange-500) */
+  --color-tertiary: #F97316;
+  --color-on-tertiary: #FFFFFF;
+  --color-tertiary-container: #FFEDD5;
+  --color-on-tertiary-container: #7C2D12;
+  --color-tertiary-fixed: #FFEDD5;
+  --color-tertiary-fixed-dim: #FDBA74;
+  --color-on-tertiary-fixed: #431407;
+  --color-on-tertiary-fixed-variant: #9A3412;
+
+  /* Error */
+  --color-error: #BA1A1A;
+  --color-on-error: #FFFFFF;
+  --color-error-container: #FFDAD6;
+  --color-on-error-container: #93000A;
+
+  /* Surface ladder — teal-tinted */
+  --color-background: #D0DEE0;
+  --color-on-background: #0F2326;
+  --color-surface: #D0DEE0;
+  --color-on-surface: #0F2326;
+  --color-surface-bright: #FFFFFF;
+  --color-surface-dim: #88AAB0;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #88BFC2;
+  --color-surface-container: #BDD0D2;
+  --color-surface-container-high: #88AAB0;
+  --color-surface-container-highest: #5F8D93;
+  --color-surface-variant: #BDD0D2;
+  --color-on-surface-variant: #2F4045;
+  --color-inverse-surface: #0A0A0A;
+  --color-inverse-on-surface: #F4F4F5;
+  --color-outline: #5A7479;
+  --color-outline-variant: #A8C5C8;
+}

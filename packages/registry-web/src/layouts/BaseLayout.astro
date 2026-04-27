@@ -1,29 +1,247 @@
 ---
-interface Props { title: string }
-const { title } = Astro.props;
-const apiBase = import.meta.env.PUBLIC_API_BASE ?? 'https://registry.openkarta.org';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/tokens.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  activeNav?: 'browse' | 'submit' | 'me' | 'sign-in' | null;
+}
+
+const {
+  title,
+  description = 'OpenKarta Registry — discover conformant agents for transactable AI commerce.',
+  activeNav = null,
+} = Astro.props;
+
+const apiBase = import.meta.env.PUBLIC_API_BASE ?? 'https://api.openkarta.org';
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <link rel="stylesheet" href="/styles.css" />
-    <script is:inline define:vars={{ apiBase }}>
-      window.__OPENKARTA_API__ = apiBase;
-    </script>
-  </head>
-  <body>
-    <header class="site">
-      <a href="/" class="brand">OpenKarta Registry</a>
-      <nav>
-        <a href="/">Browse</a>
-        <a href="/submit">Submit</a>
-        <a href="/me">My agents</a>
-        <a href="/sign-in">Sign in</a>
-      </nav>
-    </header>
-    <main><slot /></main>
-    <footer class="site">Open standard for transactable AI agents.</footer>
-  </body>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="icon" type="image/png" href="/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script is:inline src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script is:inline>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+          colors: {
+            primary: '#0D9488',
+            'on-primary': '#FFFFFF',
+            'primary-container': '#115E59',
+            'on-primary-container': '#CCFBF1',
+            'inverse-primary': '#5EEAD4',
+            'primary-fixed': '#CCFBF1',
+            'primary-fixed-dim': '#5EEAD4',
+            'on-primary-fixed': '#042F2E',
+            'on-primary-fixed-variant': '#115E59',
+            secondary: '#5F5E5E',
+            'on-secondary': '#FFFFFF',
+            'secondary-container': '#E5E2E1',
+            'on-secondary-container': '#656464',
+            tertiary: '#F97316',
+            'on-tertiary': '#FFFFFF',
+            'tertiary-container': '#FFEDD5',
+            'on-tertiary-container': '#7C2D12',
+            error: '#BA1A1A',
+            'on-error': '#FFFFFF',
+            'error-container': '#FFDAD6',
+            'on-error-container': '#93000A',
+            background: '#D0DEE0',
+            'on-background': '#0F2326',
+            surface: '#D0DEE0',
+            'on-surface': '#0F2326',
+            'surface-dim': '#88AAB0',
+            'surface-bright': '#FFFFFF',
+            'surface-container-lowest': '#FFFFFF',
+            'surface-container-low': '#88BFC2',
+            'surface-container': '#BDD0D2',
+            'surface-container-high': '#88AAB0',
+            'surface-container-highest': '#5F8D93',
+            'surface-variant': '#BDD0D2',
+            'on-surface-variant': '#2F4045',
+            'surface-tint': '#0D9488',
+            'inverse-surface': '#0A0A0A',
+            'inverse-on-surface': '#F4F4F5',
+            outline: '#5A7479',
+            'outline-variant': '#A8C5C8',
+          },
+          spacing: {
+            'margin-page': '64px',
+            'container-max': '1440px',
+            'section-gap': '160px',
+            unit: '4px',
+            gutter: '24px',
+          },
+          fontFamily: {
+            'hero-h1': ['"Noto Serif"', 'serif'],
+            'display-lg': ['Inter', 'sans-serif'],
+            'h2-editorial': ['Inter', 'sans-serif'],
+            'body-main': ['Inter', 'sans-serif'],
+            'body-dense': ['Inter', 'sans-serif'],
+            'label-caps': ['Inter', 'sans-serif'],
+            'code-block': ['"JetBrains Mono"', 'monospace'],
+          },
+          fontSize: {
+            'hero-h1': ['120px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '400' }],
+            'display-lg': ['64px', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '600' }],
+            'h2-editorial': ['32px', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '500' }],
+            'body-main': ['16px', { lineHeight: '1.6', letterSpacing: '0em', fontWeight: '400' }],
+            'body-dense': ['14px', { lineHeight: '1.4', letterSpacing: '0em', fontWeight: '400' }],
+            'label-caps': ['11px', { lineHeight: '1.0', letterSpacing: '0.1em', fontWeight: '600' }],
+            'code-block': ['13px', { lineHeight: '1.5', letterSpacing: '0em', fontWeight: '400' }],
+          },
+          borderRadius: { DEFAULT: '0', sm: '0', md: '0', lg: '0', xl: '0', full: '9999px' },
+        },
+      },
+  };
+</script>
+<script is:inline define:vars={{ apiBase }}>
+  window.__OPENKARTA_API__ = apiBase;
+</script>
+<style is:global>
+  body { font-family: Inter, system-ui, sans-serif; }
+  pre { white-space: pre; }
+  pre code { display: block; white-space: pre; font-family: 'JetBrains Mono', monospace; }
+  .hover-lift {
+    transition: transform 240ms cubic-bezier(0.2, 0, 0, 1),
+                border-color 240ms cubic-bezier(0.2, 0, 0, 1),
+                background-color 240ms cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 240ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+    background-color: color-mix(in oklab, var(--color-primary) 6%, transparent);
+    box-shadow: 0 10px 30px -16px color-mix(in oklab, var(--color-primary) 60%, transparent);
+  }
+  .fade-slide-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 240ms cubic-bezier(0.2, 0, 0, 1),
+                transform 240ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .fade-slide-up.visible { opacity: 1; transform: translateY(0); }
+  .ok-link { position: relative; }
+  .ok-link::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -2px;
+    height: 1px; background: currentColor;
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .ok-link:hover::after { transform: scaleX(1); }
+  .ok-arrow { display: inline-block; transition: transform 240ms cubic-bezier(0.2,0,0,1); }
+  .ok-arrow-host:hover .ok-arrow { transform: translate(2px, -2px); }
+  .header-shrunk {
+    height: 64px !important;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 6px 24px -12px rgba(15, 35, 38, 0.25), 0 2px 6px -2px rgba(15, 35, 38, 0.08);
+    border-bottom-color: rgba(15, 35, 38, 0.16);
+  }
+  .header-shrunk .ok-logo-img { height: 32px; width: 32px; }
+  .ok-logo-img { transition: height 240ms cubic-bezier(0.2,0,0,1), width 240ms cubic-bezier(0.2,0,0,1); }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* Health-status pills — registry-specific */
+  .ok-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; }
+  .ok-pill::before { content: ''; width: 6px; height: 6px; border-radius: 9999px; background: currentColor; }
+  .ok-pill--healthy  { color: #047857; border-color: rgb(4 120 87 / 0.5); background: rgb(4 120 87 / 0.08); }
+  .ok-pill--stale    { color: #B45309; border-color: rgb(180 83 9 / 0.5); background: rgb(180 83 9 / 0.08); }
+  .ok-pill--delisted { color: #B91C1C; border-color: rgb(185 28 28 / 0.5); background: rgb(185 28 28 / 0.08); }
+  .ok-pill--unknown  { color: #2F4045; border-color: rgb(47 64 69 / 0.4); background: rgb(47 64 69 / 0.06); }
+  .ok-pill--pending  { color: #B45309; border-color: rgb(180 83 9 / 0.5); background: rgb(180 83 9 / 0.08); }
+  .ok-pill--verified { color: #047857; border-color: rgb(4 120 87 / 0.5); background: rgb(4 120 87 / 0.08); }
+
+  /* History strip */
+  .ok-history { display: inline-flex; gap: 2px; }
+  .ok-history .day { width: 12px; height: 24px; background: rgb(15 35 38 / 0.08); border: 1px solid rgb(15 35 38 / 0.06); }
+  .ok-history .day.pass { background: #10B981; border-color: rgb(16 185 129 / 0.6); }
+  .ok-history .day.fail { background: #EF4444; border-color: rgb(239 68 68 / 0.6); }
+
+  /* Native form styling — match the editorial card aesthetic */
+  .ok-input,
+  .ok-select,
+  .ok-textarea {
+    width: 100%;
+    background: var(--color-surface-container-lowest);
+    border: 1px solid rgb(15 35 38 / 0.2);
+    color: var(--color-on-background);
+    padding: 10px 12px;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: border-color 240ms cubic-bezier(0.2,0,0,1), background-color 240ms cubic-bezier(0.2,0,0,1);
+  }
+  .ok-input:focus,
+  .ok-select:focus,
+  .ok-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: color-mix(in oklab, var(--color-primary) 4%, var(--color-surface-container-lowest));
+  }
+  .ok-input::placeholder, .ok-textarea::placeholder { color: rgb(47 64 69 / 0.6); }
+  .ok-textarea { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  /* Code surface */
+  .ok-code {
+    display: block;
+    background: rgb(15 35 38 / 0.04);
+    border: 1px solid rgb(15 35 38 / 0.12);
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-on-background);
+    overflow-x: auto;
+    word-break: break-all;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-slide-up { opacity: 1; transform: none; }
+    .ok-link::after { transition: none; }
+  }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-main antialiased selection:bg-primary-container selection:text-on-primary">
+<Header activeNav={activeNav} />
+<main class="pt-28"><slot /></main>
+<Footer />
+<script is:inline>
+  (function () {
+    if (typeof window === 'undefined') return;
+
+    // Baseline reveal — IntersectionObserver, no Motion One required.
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      }
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-slide-up').forEach((el) => io.observe(el));
+
+    // Header shrink-on-scroll
+    const header = document.querySelector('header[data-ok-header]');
+    if (header) {
+      const onScroll = () => {
+        if (window.scrollY > 24) header.classList.add('header-shrunk');
+        else header.classList.remove('header-shrunk');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+  })();
+</script>
+</body>
 </html>

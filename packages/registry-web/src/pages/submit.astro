@@ -1,62 +1,91 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Submit — OpenKarta Registry">
-  <h1>Submit your agent</h1>
-  <div id="auth-gate" style="display:none">
-    <p>You need an account to submit an agent. <a href="/sign-in">Sign in →</a></p>
-  </div>
+<BaseLayout title="Submit an agent — OpenKarta Registry" activeNav="submit">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Submit · domain-verified</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,7vw,88px)] leading-[1.05] tracking-tight max-w-4xl">
+      List your agent in the registry.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Three steps: describe the agent, prove domain ownership with a one-line file, then the daily cron picks it up. Every listing is conformance-tested, signed, and time-bounded.
+    </p>
+  </section>
 
-  <form id="form" style="display:none; max-width: 640px">
-    <p>
-      <label>Agent ID (kebab-case)<br/>
-        <input name="agentId" required pattern="[a-z0-9][a-z0-9-]{1,62}[a-z0-9]" placeholder="halcyon-shop" style="width:100%; padding:6px 8px" />
-      </label>
-    </p>
-    <p>
-      <label>Display name<br/>
-        <input name="displayName" required style="width:100%; padding:6px 8px" />
-      </label>
-    </p>
-    <p>
-      <label>Description<br/>
-        <textarea name="description" rows="2" style="width:100%; padding:6px 8px"></textarea>
-      </label>
-    </p>
-    <p>
-      <label>Public base URL (https://…)<br/>
-        <input name="baseUrl" type="url" required pattern="https://.*" placeholder="https://your-agent.example.com" style="width:100%; padding:6px 8px" />
-      </label>
-    </p>
-    <p>
-      <label>Tier<br/>
-        <select name="tier" required>
-          <option value="lite">Lite</option>
-          <option value="http" selected>HTTP</option>
-          <option value="agentic">Agentic</option>
-        </select>
-      </label>
-    </p>
-    <p>
-      <label>Item types (comma-separated)<br/>
-        <input name="supportedItemTypes" required placeholder="product, stay" style="width:100%; padding:6px 8px" />
-      </label>
-    </p>
-    <button type="submit">Submit</button>
-  </form>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div id="auth-gate" class="border border-on-background/10 bg-surface-container-lowest p-10 max-w-3xl" style="display:none">
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">01 · Sign in required</div>
+      <h2 class="font-h2-editorial text-on-background mb-4">You need an account first.</h2>
+      <p class="font-body-main text-on-surface-variant mb-6">Sign in with a magic link or GitHub. Then come back here to submit.</p>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 inline-block" href="/sign-in">Sign in →</a>
+    </div>
 
-  <div id="error" class="error" style="display:none"></div>
-  <div id="next" style="display:none">
-    <h2>Next step — verify domain ownership</h2>
-    <p>Host the file below at your agent's well-known path, then click "I've added the file".</p>
-    <p>Path: <span class="code" id="path"></span></p>
-    <p>Expected contents (single line):</p>
-    <div class="code" id="token"></div>
-    <p style="margin-top:12px">
-      <button id="verifyBtn">I've added the file — verify now</button>
-    </p>
-    <div id="verifyMsg" style="margin-top:8px"></div>
-  </div>
+    <form id="form" class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10 max-w-3xl flex flex-col gap-6" style="display:none">
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant">Step 01 · Describe your agent</div>
+
+      <div class="flex flex-col gap-2">
+        <label for="agentId" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Agent ID</label>
+        <input id="agentId" name="agentId" required pattern="[a-z0-9][a-z0-9-]{1,62}[a-z0-9]" placeholder="halcyon-shop" class="ok-input" />
+        <span class="font-body-dense text-body-dense text-on-surface-variant">Lowercase, kebab-case. 3–64 chars. Will appear in your URLs.</span>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="displayName" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Display name</label>
+        <input id="displayName" name="displayName" required placeholder="Halcyon Shop" class="ok-input" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="description" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Description (optional)</label>
+        <textarea id="description" name="description" rows="3" placeholder="One-line summary — what does this agent sell or do?" class="ok-textarea"></textarea>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="baseUrl" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Public base URL</label>
+        <input id="baseUrl" name="baseUrl" type="url" required pattern="https://.*" placeholder="https://your-agent.example.com" class="ok-input" />
+        <span class="font-body-dense text-body-dense text-on-surface-variant">Must be HTTPS. Verification looks for the well-known token here.</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+          <label for="tier" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Tier</label>
+          <select id="tier" name="tier" required class="ok-select">
+            <option value="lite">Lite — manifest only</option>
+            <option value="http" selected>HTTP — full 8 verbs</option>
+            <option value="agentic">Agentic — chat + verbs</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="supportedItemTypes" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Item types</label>
+          <input id="supportedItemTypes" name="supportedItemTypes" required placeholder="product, stay" class="ok-input" />
+          <span class="font-body-dense text-body-dense text-on-surface-variant">Comma-separated: product · stay · flight · bus · service</span>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-on-background/10 flex flex-wrap items-center gap-4">
+        <button type="submit" class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240">Submit for verification →</button>
+        <span class="font-code-block text-code-block text-on-surface-variant">Next: domain ownership check.</span>
+      </div>
+    </form>
+
+    <div id="error" class="border border-error/40 bg-error-container/40 text-on-error-container p-6 font-body-dense max-w-3xl mt-6" style="display:none"></div>
+
+    <div id="next" class="border border-primary/40 bg-surface-container-lowest p-8 md:p-10 max-w-3xl mt-8" style="display:none">
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Step 02 · Verify domain ownership</div>
+      <h2 class="font-h2-editorial text-on-background mb-4">Host this file at your agent's well-known path.</h2>
+      <p class="font-body-main text-on-surface-variant mb-6">When the file is reachable, click verify. We'll fetch it, then queue your agent for the conformance suite.</p>
+
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Path</div>
+      <pre class="ok-code mb-6"><code id="path"></code></pre>
+
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Expected contents (single line)</div>
+      <pre class="ok-code mb-6"><code id="token"></code></pre>
+
+      <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-on-background/10">
+        <button id="verifyBtn" class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240">I've added the file — verify now</button>
+      </div>
+      <div id="verifyMsg" class="mt-4 font-body-dense"></div>
+    </div>
+  </section>
 
   <script>
     import { getMe, createAgent, verifyAgent, getAgent } from '../lib/api.ts';
@@ -95,6 +124,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         $('token').textContent = out.verificationInstructions.token;
         $('next').style.display = '';
         $('form').style.display = 'none';
+        $('next').scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (err) {
         $('error').textContent = err.message ?? 'Submission failed';
         $('error').style.display = '';
@@ -103,12 +133,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     $('verifyBtn').addEventListener('click', async () => {
       if (!createdId) return;
-      $('verifyMsg').textContent = 'Verifying…';
+      const msg = $('verifyMsg');
+      msg.className = 'mt-4 font-body-dense text-on-surface-variant';
+      msg.textContent = 'Verifying…';
       try {
         await verifyAgent(createdId);
-        $('verifyMsg').className = 'success';
-        $('verifyMsg').textContent = 'Verified — running conformance suite. Redirecting…';
-        // Poll for verified state.
+        msg.className = 'mt-4 font-body-dense text-on-background';
+        msg.innerHTML = '<span class="ok-pill ok-pill--healthy">Verified</span> &nbsp; Running conformance suite. Redirecting…';
         const t0 = Date.now();
         const poll = async () => {
           const a = await getAgent(createdId);
@@ -121,8 +152,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         };
         poll();
       } catch (err) {
-        $('verifyMsg').className = 'error';
-        $('verifyMsg').textContent = err.message ?? 'Verification failed — confirm the file is reachable';
+        msg.className = 'mt-4 font-body-dense text-on-error-container';
+        msg.textContent = err.message ?? 'Verification failed — confirm the file is reachable';
       }
     });
 
