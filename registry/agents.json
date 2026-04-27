@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "version": "0.1",
-  "updated": "2026-04-26",
+  "updated": "2026-04-27",
   "agents": [
     {
       "agentId": "halcyon-shop",
@@ -13,11 +13,11 @@
         "product"
       ],
       "publicKey": null,
-      "badgeUrl": "https://registry-api.naiduc332.workers.dev/v1/agents/halcyon-shop/badge",
+      "badgeUrl": "https://api.openkarta.org/v1/agents/halcyon-shop/badge",
       "addedAt": "2026-04-25",
       "verified": true,
       "health": "healthy",
-      "lastVerifiedAt": "2026-04-26T02:01:05.000Z",
+      "lastVerifiedAt": "2026-04-27T02:01:12.000Z",
       "description": "Reference shop agent (Bengaluru). Demo only — orders reset on restart"
     }
   ]
