@@ -1,6 +1,6 @@
 {
   "name": "@openkarta/spec",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "OpenKarta protocol schemas, types, and narrowing helpers",
   "license": "MIT",
   "type": "module",

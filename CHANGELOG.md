@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0 — 2026-04-28
+
+### Added
+- **`@openkarta/mcp-bridge`** — stdio MCP server that exposes OpenKarta's 8 verbs as tools to any MCP-aware host (Claude Desktop, MCP-aware editors). Pure transport adapter: no LLM, no state, no auth, no env-driven registry override. Install via `npx @openkarta/mcp-bridge`.
+- **`@openkarta/orchestrator`**: `createStatelessDispatcher()` + `buildStatelessToolDefs()` — cart and quote threaded through tool I/O, parallel-conversation safe. Existing stateful `createDispatcher()` is preserved for the CLI REPL.
+- **`@openkarta/spec`**: `errorHintFor()` and `ERROR_HINTS` — LLM-targeted recovery hint per closed-enum error code.
+
+### Why
+v1.0 Track C of the roadmap calls for native MCP-host distribution so users can transact via OpenKarta from any MCP-capable assistant — no OpenKarta-specific install, no Anthropic-specific UI. The bridge is the safe-by-default consumer surface; developers who need custom registry behavior continue to use the orchestrator package directly.
+
 ## 0.4.0 — 2026-04-26
 
 ### Added
