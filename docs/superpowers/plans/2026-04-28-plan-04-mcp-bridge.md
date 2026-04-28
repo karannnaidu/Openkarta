@@ -16,12 +16,12 @@
 
 **Files:**
 - Create: `packages/spec/src/error-hints.ts`
-- Test: `packages/spec/test/error-hints.test.ts`
+- Test: `packages/spec/tests/error-hints.test.ts`
 - Modify: `packages/spec/src/index.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/spec/test/error-hints.test.ts`:
+Create `packages/spec/tests/error-hints.test.ts`:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -120,7 +120,7 @@ Expected: PASS — 4 tests pass.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add packages/spec/src/error-hints.ts packages/spec/src/index.ts packages/spec/test/error-hints.test.ts
+git add packages/spec/src/error-hints.ts packages/spec/src/index.ts packages/spec/tests/error-hints.test.ts
 git commit -m "feat(spec): add errorHintFor lookup for closed-enum error codes"
 ```
 
@@ -130,12 +130,12 @@ git commit -m "feat(spec): add errorHintFor lookup for closed-enum error codes"
 
 **Files:**
 - Create: `packages/orchestrator/src/llm/stateless-tool-defs.ts`
-- Test: `packages/orchestrator/test/stateless-tool-defs.test.ts`
+- Test: `packages/orchestrator/tests/stateless-tool-defs.test.ts`
 - Modify: `packages/orchestrator/src/index.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/orchestrator/test/stateless-tool-defs.test.ts`:
+Create `packages/orchestrator/tests/stateless-tool-defs.test.ts`:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -298,7 +298,7 @@ Expected: PASS — 5 tests pass for stateless-tool-defs (existing tests still pa
 - [ ] **Step 6: Commit**
 
 ```bash
-git add packages/orchestrator/src/llm/stateless-tool-defs.ts packages/orchestrator/src/index.ts packages/orchestrator/test/stateless-tool-defs.test.ts
+git add packages/orchestrator/src/llm/stateless-tool-defs.ts packages/orchestrator/src/index.ts packages/orchestrator/tests/stateless-tool-defs.test.ts
 git commit -m "feat(orchestrator): add stateless tool-defs with cart/quote in I/O"
 ```
 
@@ -308,12 +308,12 @@ git commit -m "feat(orchestrator): add stateless tool-defs with cart/quote in I/
 
 **Files:**
 - Create: `packages/orchestrator/src/llm/stateless-dispatcher.ts`
-- Test: `packages/orchestrator/test/stateless-dispatcher.test.ts`
+- Test: `packages/orchestrator/tests/stateless-dispatcher.test.ts`
 - Modify: `packages/orchestrator/src/index.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/orchestrator/test/stateless-dispatcher.test.ts`:
+Create `packages/orchestrator/tests/stateless-dispatcher.test.ts`:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -569,7 +569,7 @@ Expected: PASS — 6 stateless-dispatcher tests pass; existing tests still pass.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add packages/orchestrator/src/llm/stateless-dispatcher.ts packages/orchestrator/src/index.ts packages/orchestrator/test/stateless-dispatcher.test.ts
+git add packages/orchestrator/src/llm/stateless-dispatcher.ts packages/orchestrator/src/index.ts packages/orchestrator/tests/stateless-dispatcher.test.ts
 git commit -m "feat(orchestrator): add createStatelessDispatcher for MCP bridge"
 ```
 
@@ -683,11 +683,11 @@ git commit -m "feat(mcp-bridge): scaffold package with @modelcontextprotocol/sdk
 
 **Files:**
 - Create: `packages/mcp-bridge/src/registry.ts`
-- Test: `packages/mcp-bridge/test/registry.test.ts`
+- Test: `packages/mcp-bridge/tests/registry.test.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/mcp-bridge/test/registry.test.ts`:
+Create `packages/mcp-bridge/tests/registry.test.ts`:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -769,7 +769,7 @@ Expected: PASS — 2 tests pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/mcp-bridge/src/registry.ts packages/mcp-bridge/test/registry.test.ts
+git add packages/mcp-bridge/src/registry.ts packages/mcp-bridge/tests/registry.test.ts
 git commit -m "feat(mcp-bridge): registry loader pinned to DEFAULT_REGISTRY_URL"
 ```
 
@@ -779,11 +779,11 @@ git commit -m "feat(mcp-bridge): registry loader pinned to DEFAULT_REGISTRY_URL"
 
 **Files:**
 - Create: `packages/mcp-bridge/src/errors.ts`
-- Test: `packages/mcp-bridge/test/errors.test.ts`
+- Test: `packages/mcp-bridge/tests/errors.test.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/mcp-bridge/test/errors.test.ts`:
+Create `packages/mcp-bridge/tests/errors.test.ts`:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -941,7 +941,7 @@ Expected: PASS — 7 bridge tests total (2 from Task 5 registry + 5 new errors t
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/mcp-bridge/src/errors.ts packages/mcp-bridge/test/errors.test.ts
+git add packages/mcp-bridge/src/errors.ts packages/mcp-bridge/tests/errors.test.ts
 git commit -m "feat(mcp-bridge): toMcpError shapes OpenKarta + bridge errors with hints"
 ```
 
@@ -951,11 +951,11 @@ git commit -m "feat(mcp-bridge): toMcpError shapes OpenKarta + bridge errors wit
 
 **Files:**
 - Create: `packages/mcp-bridge/src/tools.ts`
-- Test: `packages/mcp-bridge/test/tools.test.ts`
+- Test: `packages/mcp-bridge/tests/tools.test.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/mcp-bridge/test/tools.test.ts`:
+Create `packages/mcp-bridge/tests/tools.test.ts`:
 
 ```typescript
 import { describe, it, expect, vi } from 'vitest';
@@ -1036,7 +1036,7 @@ Expected: PASS — 3 tools tests pass (10 total bridge tests: 2 registry + 5 err
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/mcp-bridge/src/tools.ts packages/mcp-bridge/test/tools.test.ts
+git add packages/mcp-bridge/src/tools.ts packages/mcp-bridge/tests/tools.test.ts
 git commit -m "feat(mcp-bridge): runTool wraps dispatch with success/error envelopes"
 ```
 
@@ -1046,11 +1046,11 @@ git commit -m "feat(mcp-bridge): runTool wraps dispatch with success/error envel
 
 **Files:**
 - Create: `packages/mcp-bridge/src/server.ts`
-- Test: `packages/mcp-bridge/test/server.test.ts`
+- Test: `packages/mcp-bridge/tests/server.test.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/mcp-bridge/test/server.test.ts`:
+Create `packages/mcp-bridge/tests/server.test.ts`:
 
 ```typescript
 import { describe, it, expect, vi } from 'vitest';
@@ -1201,7 +1201,7 @@ Expected: PASS — 3 server tests pass; 13 bridge tests total.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/mcp-bridge/src/server.ts packages/mcp-bridge/test/server.test.ts
+git add packages/mcp-bridge/src/server.ts packages/mcp-bridge/tests/server.test.ts
 git commit -m "feat(mcp-bridge): MCP server with tools/list + tools/call"
 ```
 
@@ -1215,7 +1215,7 @@ git commit -m "feat(mcp-bridge): MCP server with tools/list + tools/call"
 
 - [ ] **Step 1: Write the failing test (smoke test for the bootstrap function)**
 
-Add to `packages/mcp-bridge/test/server.test.ts` (append a new describe block):
+Add to `packages/mcp-bridge/tests/server.test.ts` (append a new describe block):
 
 ```typescript
 import { bootstrap } from '../src/bin.js';
@@ -1323,7 +1323,7 @@ Expected: PASS — bootstrap test passes; 14 total tests.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add packages/mcp-bridge/src/bin.ts packages/mcp-bridge/src/index.ts packages/mcp-bridge/test/server.test.ts
+git add packages/mcp-bridge/src/bin.ts packages/mcp-bridge/src/index.ts packages/mcp-bridge/tests/server.test.ts
 git commit -m "feat(mcp-bridge): bootstrap + bin.ts stdio entry point"
 ```
 
@@ -1343,7 +1343,7 @@ Expected: No errors.
 
 - [ ] **Step 3: Smoke-run as a subprocess and confirm `tools/list` works**
 
-Create `packages/mcp-bridge/test/smoke.test.ts`:
+Create `packages/mcp-bridge/tests/smoke.test.ts`:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -1382,7 +1382,7 @@ Expected: All tests pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/mcp-bridge/test/smoke.test.ts
+git add packages/mcp-bridge/tests/smoke.test.ts
 git commit -m "test(mcp-bridge): subprocess smoke test for tools/list"
 ```
 
