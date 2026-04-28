@@ -1,7 +1,7 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { describe, expect, it, vi } from "vitest";
-import { bootstrap } from "../src/bin.js";
+import { bootstrap } from "../src/bootstrap.js";
 import { buildServer } from "../src/server.js";
 
 const fakeRegistry = {
@@ -103,5 +103,23 @@ describe("bootstrap", () => {
     });
     expect(result.server).toBeDefined();
     expect(result.startedAt).toBeInstanceOf(Date);
+  });
+});
+
+describe("bootstrap module purity", () => {
+  it("importing bootstrap does not touch process.argv", async () => {
+    // Snapshot argv before, dynamic-import bootstrap, ensure argv unchanged
+    // and no exception is thrown for missing/odd argv[1].
+    const before = [...process.argv];
+    // Sabotage argv[1] so any pathToFileURL(argv[1]) call would throw.
+    const sabotaged = [...process.argv];
+    sabotaged[1] = "\0"; // pathToFileURL("\0") throws ERR_INVALID_ARG_VALUE
+    process.argv = sabotaged;
+    try {
+      await import("../src/bootstrap.js");
+      // If we get here, the import did not call pathToFileURL on argv[1].
+    } finally {
+      process.argv = before;
+    }
   });
 });
