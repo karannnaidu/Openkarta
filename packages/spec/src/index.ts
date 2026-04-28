@@ -17,3 +17,4 @@ export * from "./refund.js";
 export * from "./errors.js";
 export * from "./manifest.js";
 export * from "./auth.js";
+export * from "./error-hints.js";
