@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { z, ZodError } from "zod";
 import { runTool } from "../src/tools.js";
 
 describe("runTool", () => {
@@ -39,5 +40,40 @@ describe("runTool", () => {
     expect(result.isError).toBeUndefined();
     expect(result.content).toHaveLength(1);
     expect(result.content[0]!.text).toBe("null");
+  });
+
+  it("shapes a thrown ZodError as bridge_invalid_args with issues in details", async () => {
+    let zodErr: ZodError;
+    try {
+      z.object({ itemType: z.enum(["product"]) }).parse({ itemType: "bogus" });
+      throw new Error("zod did not throw");
+    } catch (e) {
+      zodErr = e as ZodError;
+    }
+    const dispatch = vi.fn().mockRejectedValue(zodErr);
+    const result = await runTool(dispatch, "search", { itemType: "bogus" });
+    expect(result.isError).toBe(true);
+    const parsed = JSON.parse(result.content[0]!.text);
+    expect(parsed.code).toBe("bridge_invalid_args");
+    expect(parsed.hint).toContain("did not validate");
+    expect(parsed.details.issues).toBeInstanceOf(Array);
+    expect(parsed.details.issues.length).toBeGreaterThan(0);
+  });
+
+  it("shapes a TypeError(\"fetch failed\") as bridge_network_error", async () => {
+    const dispatch = vi.fn().mockRejectedValue(new TypeError("fetch failed"));
+    const result = await runTool(dispatch, "search", { itemType: "product" });
+    expect(result.isError).toBe(true);
+    const parsed = JSON.parse(result.content[0]!.text);
+    expect(parsed.code).toBe("bridge_network_error");
+    expect(parsed.hint).toContain("Merchant unreachable");
+  });
+
+  it("does not misroute non-fetch TypeError to bridge_network_error", async () => {
+    const dispatch = vi.fn().mockRejectedValue(new TypeError("not a function"));
+    const result = await runTool(dispatch, "search", { itemType: "product" });
+    expect(result.isError).toBe(true);
+    const parsed = JSON.parse(result.content[0]!.text);
+    expect(parsed.code).toBe("internal");
   });
 });

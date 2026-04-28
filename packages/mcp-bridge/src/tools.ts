@@ -1,5 +1,6 @@
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type { DispatchFn } from "@openkarta/orchestrator";
+import { ZodError } from "zod";
 import { type McpErrorResult, toMcpError } from "./errors.js";
 
 export interface McpSuccessResult {
@@ -28,6 +29,19 @@ export async function runTool(
       content: [{ type: "text", text: JSON.stringify(result ?? null) }],
     };
   } catch (err) {
+    if (err instanceof ZodError) {
+      return toMcpError({
+        bridgeCode: "bridge_invalid_args",
+        message: "tool arguments failed validation",
+        details: { issues: err.issues },
+      });
+    }
+    if (err instanceof TypeError && /fetch/i.test(err.message)) {
+      return toMcpError({
+        bridgeCode: "bridge_network_error",
+        message: err.message,
+      });
+    }
     return toMcpError(err);
   }
 }

@@ -150,6 +150,9 @@ importers:
       '@openkarta/spec':
         specifier: workspace:*
         version: link:../spec
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
     devDependencies:
       '@types/node':
         specifier: ^25.6.0
