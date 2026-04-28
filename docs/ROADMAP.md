@@ -24,13 +24,14 @@ The full acceptance checklist is in Section 6.
 
 ## 2. Current state — what's already shipped
 
-Three plans have shipped end-to-end. In capability terms (not package names — those will evolve):
+Four plans have shipped end-to-end. In capability terms (not package names — those will evolve):
 
 - **The protocol.** Eight verbs over five item types (product, stay, flight, bus, service), Zod-typed schemas, HMAC-signed quote tokens, closed-enum errors, user-token delegation. MIT-licensed at protocol version 0.1.
 - **A Node SDK.** Typed Fastify server helpers + typed HTTP client wrapping all 8 verbs. Published as `@openkarta/sdk-node@0.2.0`.
 - **Three reference reception agents** running every item type, with seeded fixtures and per-vertical state machines. Halcyon Shop is deployed at `halcyon-shop.fly.dev`.
 - **A conformance harness** that auto-detects supported types, runs a core pack + per-type packs, and emits a signed badge. Self-serve for any merchant. Now also exposed as a `runConformance()` library API consumed by the verifier worker.
 - **A consumer-side library and CLI.** `@openkarta/orchestrator@0.4.0` (registry → search → cart → quote → checkout → orders, hosted-registry default with cursor pagination) and `@openkarta/cli@0.4.0` with a vendor-neutral chat REPL. Works against any chat-completions endpoint (OpenRouter, OpenAI, Together, Groq, local Ollama / llama.cpp / vLLM).
+- `@openkarta/mcp-bridge` 0.5.0 — stdio MCP server, ships OpenKarta's 8 verbs into any MCP-capable host.
 - **A hosted registry.** `api.openkarta.org` (Cloudflare Worker + D1 + Queues), `registry.openkarta.org` (Astro dashboard for browse / submit / manage). Magic-link + GitHub OAuth auth. Daily cron re-enqueues every listed agent for conformance re-verification; verifier worker consumes the queue and updates health + signed badges. Daily JSON mirror snapshot to the `registry-mirror` branch.
 - **A landing page** at `openkarta.org` (Cloudflare Pages, no build step).
 - **Governance scaffolding.** Foundation, registry-operator, and neutrality-covenant docs plus a security threat model. Not yet a legal entity.
@@ -106,7 +107,7 @@ Plans are sized for ~2-4 weeks each. They are sequenced by dependency, not by au
 | 01 | Protocol & Node SDK | Spec, sdk-node, 3 reference agents, conformance harness, demo CLI | A, B | — | ✅ Shipped |
 | 02 | Orchestrator & CLI | Consumer-side library, CLI, vendor-neutral chat | B | 01 | ✅ Shipped |
 | 03 | Hosted registry & badge service | Registry API, self-serve submission flow, automated badge re-verification, public dashboard | A, B | 02 | ✅ Shipped |
-| **04** | **MCP bridge** | `@openkarta/mcp-bridge` — exposes the 8 orchestrator verbs as MCP tools over a thin protocol shell. The LLM lives in the MCP host (Claude Desktop / Cursor / ChatGPT MCP); the bridge is pure tool-execution, no LLM key on our side. One-click distribution into any MCP host. | B | 02, 03 | 🟢 Next |
+| 04 | MCP bridge | `@openkarta/mcp-bridge` — exposes the 8 orchestrator verbs as MCP tools over a thin protocol shell. The LLM lives in the MCP host (Claude Desktop / Cursor / ChatGPT MCP); the bridge is pure tool-execution, no LLM key on our side. One-click distribution into any MCP host. | B | 02, 03 | ✅ Shipped |
 | 05 | Lite tier ingestor | Markdown/CSV catalogue → hosted reception agent for non-eng merchants | A | 03 | Planned |
 | 06 | Payments live | Razorpay Routes + Stripe Connect + GST invoicing + settlement webhooks | A, C | 02 | Planned |
 | 07 | Web consumer app | `app.openkarta.org` — search / cart / checkout / orders + BYO-key chat | C | 03, 06 | Planned |
@@ -139,7 +140,7 @@ Tick this checklist when every box is true. Until then we are pre-v1.0 and shoul
 
 **Track C — End users**
 - [ ] `app.openkarta.org` live; end-to-end checkout against listed agents working for all 5 item types
-- [ ] `@openkarta/mcp-bridge` published, listed in at least one public MCP directory, end-to-end checkout demoed inside Claude Desktop or Cursor
+- [x] `@openkarta/mcp-bridge` published, listed in at least one public MCP directory, end-to-end checkout demoed inside Claude Desktop or Cursor
 - [ ] Razorpay Routes live for INR transactions (settlement working)
 - [ ] Stripe Connect live for USD transactions
 - [ ] GST-compliant invoicing for INR
