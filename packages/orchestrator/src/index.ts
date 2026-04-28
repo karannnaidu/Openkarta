@@ -25,6 +25,7 @@ export { buildStatelessToolDefs, STATELESS_TOOL_NAMES, StatelessSchemas } from '
 export type { StatelessCart, StatelessQuote, StatelessToolName } from './llm/stateless-tool-defs.js';
 export { createDispatcher } from "./llm/dispatcher.js";
 export type { DispatchFn } from "./llm/dispatcher.js";
+export { createStatelessDispatcher } from "./llm/stateless-dispatcher.js";
 export { newState } from "./llm/memory.js";
 export type { ConversationState } from "./llm/memory.js";
 export { chatOnce } from "./llm/chat.js";
