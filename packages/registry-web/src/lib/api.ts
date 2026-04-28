@@ -1,11 +1,11 @@
 // Typed fetch wrappers for the OpenKarta registry-api. Browser-safe (no node deps).
 
 export const API_BASE: string =
-  (typeof window !== 'undefined'
+  (typeof window !== "undefined"
     ? (window as { __OPENKARTA_API__?: string }).__OPENKARTA_API__
     : undefined) ??
   (import.meta.env.PUBLIC_API_BASE as string | undefined) ??
-  'https://registry.openkarta.org';
+  "https://registry.openkarta.org";
 
 export interface AgentListing {
   agentId: string;
@@ -13,12 +13,12 @@ export interface AgentListing {
   description?: string;
   baseUrl: string;
   manifestUrl: string;
-  tier: 'lite' | 'http' | 'agentic';
+  tier: "lite" | "http" | "agentic";
   supportedItemTypes: string[];
   regions?: { country: string; city?: string; pincodes?: string[] }[];
   tags?: string[];
-  verificationStatus: 'pending' | 'verified' | 'delisted';
-  healthStatus: 'unknown' | 'healthy' | 'stale' | 'delisted';
+  verificationStatus: "pending" | "verified" | "delisted";
+  healthStatus: "unknown" | "healthy" | "stale" | "delisted";
   consecutiveFailures: number;
   lastVerifiedAt?: string;
   createdAt: string;
@@ -62,18 +62,22 @@ export interface ErrorBody {
 }
 
 export class ApiError extends Error {
-  constructor(public readonly status: number, public readonly code: string, message: string) {
+  constructor(
+    public readonly status: number,
+    public readonly code: string,
+    message: string,
+  ) {
     super(message);
   }
 }
 
 async function http<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
-    credentials: 'include',
+    credentials: "include",
     ...init,
     headers: {
-      Accept: 'application/json',
-      ...(init?.body ? { 'Content-Type': 'application/json' } : {}),
+      Accept: "application/json",
+      ...(init?.body ? { "Content-Type": "application/json" } : {}),
       ...(init?.headers ?? {}),
     },
   });
@@ -83,7 +87,7 @@ async function http<T>(path: string, init?: RequestInit): Promise<T> {
     const err = data as ErrorBody | undefined;
     throw new ApiError(
       res.status,
-      err?.error.code ?? 'http_error',
+      err?.error.code ?? "http_error",
       err?.error.message ?? `HTTP ${res.status}`,
     );
   }
@@ -96,17 +100,17 @@ export interface ListAgentsQuery {
   city?: string;
   pincode?: string;
   tier?: string;
-  include?: 'delisted';
+  include?: "delisted";
   cursor?: string;
 }
 
 function qs(params: ListAgentsQuery): string {
   const u = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) {
-    if (v != null && v !== '') u.set(k, String(v));
+    if (v != null && v !== "") u.set(k, String(v));
   }
   const s = u.toString();
-  return s ? `?${s}` : '';
+  return s ? `?${s}` : "";
 }
 
 export const listAgents = (q: ListAgentsQuery = {}): Promise<PageResponse<AgentListing>> =>
@@ -115,9 +119,9 @@ export const listAgents = (q: ListAgentsQuery = {}): Promise<PageResponse<AgentL
 export const getAgent = (id: string): Promise<AgentDetail> =>
   http(`/v1/agents/${encodeURIComponent(id)}`);
 
-export const getMe = (): Promise<{ account: Account }> => http(`/auth/me`);
+export const getMe = (): Promise<{ account: Account }> => http("/auth/me");
 
-export const logout = (): Promise<void> => http(`/auth/logout`, { method: 'POST' });
+export const logout = (): Promise<void> => http("/auth/logout", { method: "POST" });
 
 export interface CreateAgentBody {
   agentId: string;
@@ -125,7 +129,7 @@ export interface CreateAgentBody {
   description?: string;
   baseUrl: string;
   manifestUrl?: string;
-  tier: 'lite' | 'http' | 'agentic';
+  tier: "lite" | "http" | "agentic";
   supportedItemTypes: string[];
   regions?: { country: string; city?: string; pincodes?: string[] }[];
   tags?: string[];
@@ -137,16 +141,16 @@ export interface CreateAgentResponse {
 }
 
 export const createAgent = (body: CreateAgentBody): Promise<CreateAgentResponse> =>
-  http(`/v1/agents`, { method: 'POST', body: JSON.stringify(body) });
+  http("/v1/agents", { method: "POST", body: JSON.stringify(body) });
 
 export const verifyAgent = (id: string): Promise<{ status: string }> =>
-  http(`/v1/agents/${encodeURIComponent(id)}/verify`, { method: 'POST' });
+  http(`/v1/agents/${encodeURIComponent(id)}/verify`, { method: "POST" });
 
 export const reverifyAgent = (id: string): Promise<{ status: string }> =>
-  http(`/v1/agents/${encodeURIComponent(id)}/reverify-conformance`, { method: 'POST' });
+  http(`/v1/agents/${encodeURIComponent(id)}/reverify-conformance`, { method: "POST" });
 
 export const deleteAgent = (id: string): Promise<void> =>
-  http(`/v1/agents/${encodeURIComponent(id)}`, { method: 'DELETE' });
+  http(`/v1/agents/${encodeURIComponent(id)}`, { method: "DELETE" });
 
 export const requestMagicLink = (email: string): Promise<void> =>
-  http(`/auth/magic-link`, { method: 'POST', body: JSON.stringify({ email }) });
+  http("/auth/magic-link", { method: "POST", body: JSON.stringify({ email }) });

@@ -1,61 +1,187 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="OpenKarta Registry">
-  <h1>OpenKarta Registry</h1>
-  <p>Discover OpenKarta-conformant agents. <a href="/submit">List your own agent →</a></p>
+<BaseLayout title="OpenKarta Registry — discover conformant agents" activeNav="browse">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Registry · open · neutral</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      Every conformant agent. In one place.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Discover transactable AI agents that speak the OpenKarta protocol. Listings are ranked by conformance freshness — not who paid. List your own and the daily verification cron does the rest.
+    </p>
+    <div class="flex flex-wrap gap-4 mt-12">
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/submit">List your agent →</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="https://openkarta.org/protocol">Read the spec ↗</a>
+    </div>
+  </section>
 
-  <form class="filters" id="filters">
-    <select name="itemType">
-      <option value="">Any item type</option>
-      <option value="product">Product</option>
-      <option value="stay">Stay</option>
-      <option value="flight">Flight</option>
-      <option value="bus">Bus</option>
-      <option value="service">Service</option>
-    </select>
-    <input name="country" placeholder="Country (IN, US…)" maxlength="2" />
-    <input name="city" placeholder="City" />
-    <select name="tier">
-      <option value="">Any tier</option>
-      <option value="lite">Lite</option>
-      <option value="http">HTTP</option>
-      <option value="agentic">Agentic</option>
-    </select>
-    <label>
-      <input type="checkbox" name="includeDelisted" /> Show delisted
-    </label>
-    <button type="submit">Apply</button>
-  </form>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-12">
+    <form id="filters" class="border border-on-background/10 bg-surface-container-lowest p-6 md:p-8 flex flex-col gap-6">
+      <div class="flex flex-col gap-3">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant">Item type</div>
+        <div class="flex flex-wrap gap-2" data-ok-chip-group="itemType">
+          <button type="button" data-value="" class="ok-chip ok-chip--active">All</button>
+          <button type="button" data-value="product" class="ok-chip">Product</button>
+          <button type="button" data-value="stay" class="ok-chip">Stay</button>
+          <button type="button" data-value="flight" class="ok-chip">Flight</button>
+          <button type="button" data-value="bus" class="ok-chip">Bus</button>
+          <button type="button" data-value="service" class="ok-chip">Service</button>
+        </div>
+        <input type="hidden" name="itemType" value="" />
+      </div>
 
-  <div id="error" class="error" style="display:none"></div>
-  <div id="empty" style="display:none">No agents match these filters.</div>
-  <div id="loading">Loading…</div>
-  <div id="results"></div>
+      <div class="flex flex-col gap-3">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant">Tier</div>
+        <div class="flex flex-wrap gap-2" data-ok-chip-group="tier">
+          <button type="button" data-value="" class="ok-chip ok-chip--active">All</button>
+          <button type="button" data-value="lite" class="ok-chip">Lite</button>
+          <button type="button" data-value="http" class="ok-chip">HTTP</button>
+          <button type="button" data-value="agentic" class="ok-chip">Agentic</button>
+        </div>
+        <input type="hidden" name="tier" value="" />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps uppercase text-on-surface-variant" for="f-country">Country</label>
+          <input id="f-country" name="country" maxlength="2" placeholder="IN, US…" class="ok-input" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps uppercase text-on-surface-variant" for="f-city">City</label>
+          <input id="f-city" name="city" placeholder="Bengaluru, Mumbai…" class="ok-input" />
+        </div>
+        <div class="flex flex-col justify-end">
+          <label class="inline-flex items-center gap-3 cursor-pointer select-none">
+            <input id="f-delisted" type="checkbox" name="includeDelisted" class="h-4 w-4 accent-primary" />
+            <span class="font-body-dense text-body-dense text-on-background">Show delisted</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 pt-2 border-t border-on-background/10">
+        <button type="submit" class="bg-primary text-on-primary px-5 py-2 border border-primary hover:bg-primary-container transition-colors duration-240 font-body-dense text-body-dense">Apply filters</button>
+        <button type="button" id="reset" class="border border-on-background/25 bg-transparent text-on-background px-5 py-2 hover:bg-on-background/5 transition-colors duration-240 font-body-dense text-body-dense">Reset</button>
+        <span id="count" class="font-code-block text-code-block text-on-surface-variant ml-auto"></span>
+      </div>
+    </form>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div id="loading" class="border border-on-background/10 bg-surface-container-lowest p-10 font-body-dense text-on-surface-variant">Loading conformant agents…</div>
+    <div id="error" class="border border-error/40 bg-error-container/40 text-on-error-container p-6 font-body-dense" style="display:none"></div>
+    <div id="empty" class="border border-on-background/10 bg-surface-container-lowest p-10 font-body-dense text-on-surface-variant" style="display:none">No agents match these filters. Try widening your search or <a class="underline hover:text-primary-container" href="/submit">list your own</a>.</div>
+    <div id="results"></div>
+  </section>
+
+  <style is:global>
+    .ok-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      padding: 6px 14px;
+      border: 1px solid rgb(15 35 38 / 0.2);
+      color: var(--color-on-surface-variant);
+      background: transparent;
+      cursor: pointer;
+      transition: color 240ms cubic-bezier(0.2,0,0,1),
+                  background-color 240ms cubic-bezier(0.2,0,0,1),
+                  border-color 240ms cubic-bezier(0.2,0,0,1);
+    }
+    .ok-chip:hover { color: var(--color-on-background); background: rgb(15 35 38 / 0.04); }
+    .ok-chip--active {
+      color: var(--color-on-primary);
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .ok-chip--active:hover { background: var(--color-primary-container); border-color: var(--color-primary-container); }
+
+    .ok-table { width: 100%; border-collapse: collapse; background: var(--color-surface-container-lowest); border: 1px solid rgb(15 35 38 / 0.1); }
+    .ok-table thead th {
+      text-align: left;
+      padding: 14px 16px;
+      font-family: Inter, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--color-on-surface-variant);
+      background: rgb(15 35 38 / 0.04);
+      border-bottom: 1px solid rgb(15 35 38 / 0.1);
+    }
+    .ok-table tbody td {
+      padding: 16px;
+      border-bottom: 1px solid rgb(15 35 38 / 0.08);
+      vertical-align: top;
+      font-size: 14px;
+    }
+    .ok-table tbody tr:last-child td { border-bottom: 0; }
+    .ok-table tbody tr { transition: background-color 160ms ease; }
+    .ok-table tbody tr:hover { background: color-mix(in oklab, var(--color-primary) 4%, transparent); }
+    .ok-table .agent-name { font-weight: 500; color: var(--color-on-background); text-decoration: none; }
+    .ok-table .agent-name:hover { color: var(--color-primary); text-decoration: underline; }
+    .ok-table .agent-id { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--color-on-surface-variant); margin-top: 2px; }
+    .ok-table .agent-tier { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-on-surface-variant); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    @media (max-width: 768px) {
+      .ok-table thead { display: none; }
+      .ok-table, .ok-table tbody, .ok-table tr, .ok-table td { display: block; width: 100%; }
+      .ok-table tbody tr { border-bottom: 1px solid rgb(15 35 38 / 0.1); padding: 8px 0; }
+      .ok-table tbody td { border-bottom: 0; padding: 6px 16px; }
+      .ok-table tbody td::before { content: attr(data-label); display: block; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--color-on-surface-variant); margin-bottom: 4px; }
+      .ok-table tbody td[data-label="Agent"]::before { display: none; }
+    }
+  </style>
 
   <script>
     import { listAgents } from '../lib/api.ts';
 
     const $ = (id) => document.getElementById(id);
-    const fmt = (date) => date ? new Date(date).toLocaleDateString() : '—';
+    const fmtDate = (d) => d ? new Date(d).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
     const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
     function render(items) {
+      const results = $('results');
+      const empty = $('empty');
+      const count = $('count');
+      count.textContent = items.length === 1 ? '1 agent' : `${items.length} agents`;
       if (items.length === 0) {
-        $('empty').style.display = '';
-        $('results').innerHTML = '';
+        empty.style.display = '';
+        results.innerHTML = '';
         return;
       }
-      $('empty').style.display = 'none';
+      empty.style.display = 'none';
       const rows = items.map((a) => `
         <tr>
-          <td><a href="/agent?id=${encodeURIComponent(a.agentId)}">${escapeHtml(a.displayName)}</a><div class="tier">${escapeHtml(a.agentId)} • ${escapeHtml(a.tier)}</div></td>
-          <td>${a.supportedItemTypes.map(escapeHtml).join(', ')}</td>
-          <td>${(a.regions ?? []).map((r) => escapeHtml(r.country) + (r.city ? ' / ' + escapeHtml(r.city) : '')).join(', ') || '—'}</td>
-          <td><span class="badge badge--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></td>
-          <td>${fmt(a.lastVerifiedAt)}</td>
+          <td data-label="Agent">
+            <a class="agent-name" href="/agent?id=${encodeURIComponent(a.agentId)}">${escapeHtml(a.displayName)}</a>
+            <div class="agent-id">${escapeHtml(a.agentId)}</div>
+            <div class="agent-tier">${escapeHtml(a.tier)}</div>
+          </td>
+          <td data-label="Item types">
+            <div class="flex flex-wrap gap-1.5">
+              ${a.supportedItemTypes.map((t) => `<span class="font-code-block text-xs px-2 py-0.5 border border-on-background/20 bg-on-background/5 text-on-background">${escapeHtml(t)}</span>`).join('')}
+            </div>
+          </td>
+          <td data-label="Region">${(a.regions ?? []).map((r) => escapeHtml(r.country) + (r.city ? ' / ' + escapeHtml(r.city) : '')).join(', ') || '—'}</td>
+          <td data-label="Health"><span class="ok-pill ok-pill--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></td>
+          <td data-label="Last verified" class="font-code-block text-xs">${escapeHtml(fmtDate(a.lastVerifiedAt))}</td>
         </tr>`).join('');
-      $('results').innerHTML = `<table><thead><tr><th>Agent</th><th>Item types</th><th>Region</th><th>Health</th><th>Last verified</th></tr></thead><tbody>${rows}</tbody></table>`;
+      results.innerHTML = `
+        <div class="overflow-x-auto border border-on-background/10">
+          <table class="ok-table">
+            <thead>
+              <tr>
+                <th>Agent</th>
+                <th>Item types</th>
+                <th>Region</th>
+                <th>Health</th>
+                <th>Last verified</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
     }
 
     async function load(query) {
@@ -84,7 +210,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       return q;
     }
 
+    // Wire chip groups — the active chip writes to a hidden input.
+    document.querySelectorAll('[data-ok-chip-group]').forEach((group) => {
+      const name = group.getAttribute('data-ok-chip-group');
+      const hidden = document.querySelector(`input[name="${name}"]`);
+      group.querySelectorAll('.ok-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          group.querySelectorAll('.ok-chip').forEach((c) => c.classList.remove('ok-chip--active'));
+          chip.classList.add('ok-chip--active');
+          if (hidden) hidden.value = chip.getAttribute('data-value') || '';
+        });
+      });
+    });
+
     $('filters').addEventListener('submit', (e) => { e.preventDefault(); load(readForm()); });
+    $('reset').addEventListener('click', () => {
+      $('filters').reset();
+      document.querySelectorAll('[data-ok-chip-group]').forEach((group) => {
+        group.querySelectorAll('.ok-chip').forEach((c, i) => c.classList.toggle('ok-chip--active', i === 0));
+        const hidden = document.querySelector(`input[name="${group.getAttribute('data-ok-chip-group')}"]`);
+        if (hidden) hidden.value = '';
+      });
+      load({});
+    });
+
     load({});
   </script>
 </BaseLayout>

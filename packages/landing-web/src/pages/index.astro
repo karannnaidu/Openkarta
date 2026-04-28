@@ -1,115 +1,232 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="OpenKarta — The open contract for agentic commerce" activeNav={null}>
+<BaseLayout title="OpenKarta — The trust layer for AI commerce" activeNav={null}>
   <!-- 1. Hero -->
-  <section class="relative min-h-[800px] flex flex-col justify-center px-8 md:px-16 overflow-hidden max-w-[1440px] mx-auto mb-[160px]">
+  <section class="relative min-h-[560px] md:min-h-[800px] flex flex-col justify-center px-8 md:px-16 overflow-hidden max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
     <div aria-hidden="true" class="absolute inset-0 pointer-events-none opacity-[0.06] font-code-block text-[10vw] leading-none whitespace-nowrap overflow-hidden select-none flex flex-col justify-between py-20 text-on-background">
-      <div class="animate-marquee">discover() search() get() quote() checkout() status() cancel() return()</div>
-      <div class="animate-marquee-reverse">product · stay · flight · bus · service</div>
-      <div class="animate-marquee">discover() search() get() quote() checkout() status() cancel() return()</div>
+      <div class="animate-marquee">signed.quote() verified.merchant() audit.trail() no.hallucinations()</div>
+      <div class="animate-marquee-reverse">quote · checkout · status · cancel · return · dispute</div>
+      <div class="animate-marquee">signed.quote() verified.merchant() audit.trail() no.hallucinations()</div>
     </div>
     <div class="relative z-10 max-w-5xl" data-ok-stagger=":scope > *">
+      <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">The trust layer for AI commerce</div>
       <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,8vw,108px)] leading-[1.05] tracking-tight mb-8">
-        The open contract for agentic commerce.
+        Your AI can talk. Now it can transact.
       </h1>
       <p class="font-h2-editorial text-on-surface-variant max-w-3xl mb-12">
-        Eight verbs. Five item types. Any AI agent can buy from any merchant — without per-merchant integration code.
+        Signed quotes. Verified merchants. Full audit trail. The open protocol that makes AI agents legally safe to buy with — no hallucinated prices, no invented SKUs, no liability fog.
       </p>
       <div class="flex flex-wrap gap-4 items-center mb-8">
-        <a class="group bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="/merchant">Expose your catalogue <span class="ok-arrow inline-block">→</span></a>
-        <a class="group bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="/developers">Build a consumer agent <span class="ok-arrow inline-block">→</span></a>
+        <a class="group bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/developers">Build a buying agent <span class="ok-arrow inline-block">→</span></a>
+        <a class="group border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/merchant">Make your catalogue agent-safe <span class="ok-arrow inline-block">→</span></a>
       </div>
-      <div class="font-code-block text-code-block text-on-surface-variant bg-surface-container-low p-4 inline-block border border-on-background/10" data-ok-typeout="60">$ npm install @openkarta/sdk-node @openkarta/spec</div>
+      <CodeBlock lang="bash" class="inline-block max-w-full">$ npm install @openkarta/sdk-node @openkarta/spec</CodeBlock>
     </div>
   </section>
 
-  <!-- 1b. Hero video reel -->
-  <section class="hidden md:block px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
-    <div class="border border-on-background/10 bg-surface-container-lowest overflow-hidden">
-      <video class="block w-full h-auto" autoplay muted loop playsinline preload="metadata" aria-label="OpenKarta protocol reel">
-        <source src="/hero.mp4" type="video/mp4" />
-      </video>
+  <!-- 1a. The problem -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">01 · The problem</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">
+      Every AI today can <em class="not-italic text-on-background/60 italic">talk</em> about buying. None of them can <em class="not-italic">actually</em> buy without a human babysitter.
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Failure mode 01</div>
+        <div class="font-h2-editorial text-on-background mb-3">Hallucinated prices.</div>
+        <p class="font-body-main text-on-surface-variant">The model promises ₹40,000 off. The merchant didn't authorise it. No CFO signs that order.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Failure mode 02</div>
+        <div class="font-h2-editorial text-on-background mb-3">Invented SKUs.</div>
+        <p class="font-body-main text-on-surface-variant">The agent confidently quotes a product that doesn't exist. The user clicks buy. The flow breaks at checkout.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Failure mode 03</div>
+        <div class="font-h2-editorial text-on-background mb-3">No audit trail.</div>
+        <p class="font-body-main text-on-surface-variant">When something goes wrong, there's no signed record. Just "the AI said something." Disputes have nowhere to land.</p>
+      </div>
     </div>
   </section>
+
+  <!-- 1b. Three trust primitives -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">02 · The fix</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">
+      Three primitives. That's the entire trust layer.
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up flex flex-col">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Primitive 01</div>
+        <div class="font-h2-editorial text-on-background mb-3">Signed quote.</div>
+        <p class="font-body-main text-on-surface-variant mb-6 flex-1">The price the agent quoted is the price the merchant honors. Cryptographically bound, time-locked, non-negotiable.</p>
+        <CodeBlock lang="json" class="text-xs">{`{ "quoteId": "qt_8f2…", "price": 1299, "expiresAt": "...", "sig": "ed25519:…" }`}</CodeBlock>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up flex flex-col">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Primitive 02</div>
+        <div class="font-h2-editorial text-on-background mb-3">Verified merchant.</div>
+        <p class="font-body-main text-on-surface-variant mb-6 flex-1">Domain ownership proven. Conformance badge issued by the registry. Re-checked daily. Expires if they break the contract.</p>
+        <CodeBlock lang="bash" class="text-xs">{`GET /.well-known/openkarta-owner.txt
+→ verification: PASSED · badge: HEALTHY`}</CodeBlock>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up flex flex-col">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Primitive 03</div>
+        <div class="font-h2-editorial text-on-background mb-3">Auditable trail.</div>
+        <p class="font-body-main text-on-surface-variant mb-6 flex-1">Every call timestamped and signed. Disputes resolve against receipts, not chat logs. The agent stops being a liability.</p>
+        <CodeBlock lang="bash" class="text-xs">{`quote → checkout → status
+each call: timestamp + sig + state`}</CodeBlock>
+      </div>
+    </div>
+    <p class="font-body-main text-on-surface-variant mt-12 max-w-3xl">
+      No hallucinations. No liability fog. Real commerce, by AI, with receipts. <a class="text-on-background underline hover:text-primary" href="/why-registry">Why a registry &rarr;</a>
+    </p>
+  </section>
+
+  <!-- 1b. OpenKarta protocol reel — poster only, video fetched on click anywhere -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div
+      id="ok-video"
+      class="relative border border-on-background/10 bg-surface-container-lowest overflow-hidden cursor-pointer group"
+      data-src="/openkarta.mp4"
+      data-poster="/openkarta-poster.jpg"
+      role="button"
+      tabindex="0"
+      aria-label="Play OpenKarta protocol reel"
+    >
+      <img src="/openkarta-poster.jpg" alt="" class="block w-full h-auto" />
+      <div class="absolute inset-0 flex items-center justify-center bg-black/25 group-hover:bg-black/35 transition-colors">
+        <span class="flex items-center justify-center w-24 h-24 rounded-full bg-white/95 shadow-2xl group-hover:scale-110 transition-transform">
+          <svg viewBox="0 0 24 24" class="w-10 h-10 text-black ml-1" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </div>
+    </div>
+  </section>
+  <script is:inline>
+    (() => {
+      const wrap = document.getElementById('ok-video');
+      if (!wrap) return;
+      const start = () => {
+        const src = wrap.dataset.src;
+        const poster = wrap.dataset.poster;
+        wrap.innerHTML = `<video class="block w-full h-auto" controls autoplay playsinline poster="${poster}"><source src="${src}" type="video/mp4" /></video>`;
+        wrap.style.cursor = 'default';
+        wrap.removeAttribute('role');
+        wrap.removeAttribute('tabindex');
+      };
+      wrap.addEventListener('click', start, { once: true });
+      wrap.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); start(); }
+      }, { once: true });
+    })();
+  </script>
 
   <!-- 2. Two worlds -->
-  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
-    <h2 class="font-h2-editorial text-on-background mb-8 max-w-2xl">Two ways your AI assistant could buy something.</h2>
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mb-12 font-label-caps text-label-caps uppercase" data-ok-scene-tabs>
-      <span class="text-on-surface-variant">Demonstrating</span>
-      <button type="button" data-ok-scene-tab="0" class="ok-scene-tab text-on-background border-b border-on-background pb-1 transition-colors duration-240">Product</button>
-      <button type="button" data-ok-scene-tab="1" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Stay</button>
-      <button type="button" data-ok-scene-tab="2" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Flight</button>
-      <button type="button" data-ok-scene-tab="3" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Bus</button>
-      <button type="button" data-ok-scene-tab="4" class="ok-scene-tab text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent transition-colors duration-240">Service</button>
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">03 · Same shopper, two worlds</div>
+    <h2 class="font-h2-editorial text-on-background mb-8 max-w-3xl">One world the AI guesses. The other, it transacts — signed, verified, logged.</h2>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-12 font-label-caps text-label-caps uppercase" data-ok-scene-tabs>
+      <span class="text-on-surface-variant">Pick a category</span>
+      <div role="tablist" aria-label="Demo category" class="flex flex-wrap gap-2">
+        <button type="button" role="tab" data-ok-scene-tab="0" class="ok-scene-tab px-4 py-2 border text-on-background border-on-background bg-on-background/5 hover:bg-on-background/10 transition-colors duration-240 cursor-pointer">Product</button>
+        <button type="button" role="tab" data-ok-scene-tab="1" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Stay</button>
+        <button type="button" role="tab" data-ok-scene-tab="2" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Flight</button>
+        <button type="button" role="tab" data-ok-scene-tab="3" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Bus</button>
+        <button type="button" role="tab" data-ok-scene-tab="4" class="ok-scene-tab px-4 py-2 border text-on-surface-variant border-on-background/20 bg-transparent hover:bg-on-background/5 hover:text-on-background transition-colors duration-240 cursor-pointer">Service</button>
+      </div>
     </div>
     <div class="grid md:grid-cols-2 gap-16 md:gap-gutter" data-ok-stagger=":scope > div">
       <div class="flex flex-col gap-8 fade-slide-up">
-        <div class="font-label-caps text-label-caps text-on-surface-variant border-b border-on-background/10 pb-4">WORLD A · TODAY</div>
+        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD A · AGENT GUESSES</div>
         <div class="bg-surface-container-low p-6 border border-on-background/10">
-          <div class="flex gap-4 items-start mb-6">
-            <div class="w-8 h-8 bg-surface-variant rounded-full flex-shrink-0 flex items-center justify-center">
-              <span class="material-symbols-outlined text-on-surface-variant text-sm">smart_toy</span>
+          <div class="bg-surface-container-lowest border border-on-background/10 ok-scene-text" data-ok-scene-a>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Ask</div>
+              <div class="font-body-dense text-body-dense">Asks Claude for a vitamin C serum from Minimalist.</div>
             </div>
-            <ol class="bg-surface-container-lowest border border-on-background/10 p-4 font-body-dense text-body-dense ok-scene-text list-decimal list-outside ml-5 space-y-2" data-ok-scene-a>
-              <li>Asks Claude for a vitamin C serum from Minimalist.</li>
-              <li>Claude returns three blue links and tells her to go pick one.</li>
-              <li>She opens beminimalist.co, makes an account, types in her card.</li>
-              <li>After paying she hunts for tracking across three different emails.</li>
-              <li>Next time she just opens Swiggy Instamart and skips Claude.</li>
-            </ol>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Discover</div>
+              <div class="font-body-dense text-body-dense">Claude returns three blue links and tells her to go pick one.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Decide</div>
+              <div class="font-body-dense text-body-dense">She opens beminimalist.co, makes an account, types in her card.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Track</div>
+              <div class="font-body-dense text-body-dense">After paying she hunts for tracking across three different emails.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Repeat</div>
+              <div class="font-body-dense text-body-dense">Next time she just opens Swiggy Instamart and skips Claude.</div>
+            </div>
           </div>
-          <p class="font-body-main text-body-main text-on-surface-variant">
+          <p class="font-body-main text-body-main text-on-surface-variant mt-6">
             Agents act as search engines, pushing the friction of transaction, identity, and state management back to the user via traditional web UI.
           </p>
         </div>
       </div>
       <div class="flex flex-col gap-8 fade-slide-up">
-        <div class="font-label-caps text-label-caps text-on-background border-b border-on-background pb-4">WORLD B · OPENKARTA</div>
+        <div class="font-label-caps text-label-caps uppercase border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1 self-start">WORLD B · AGENT TRANSACTS</div>
         <div class="bg-surface-container-lowest p-6 border border-on-background/10 hover-lift">
-          <div class="flex gap-4 items-start mb-6">
-            <div class="w-8 h-8 bg-on-background text-surface-container-lowest rounded-full flex-shrink-0 flex items-center justify-center">
-              <span class="material-symbols-outlined text-surface-container-lowest text-sm">robot_2</span>
+          <div class="bg-surface-container-low border border-on-background/10 ok-scene-text" data-ok-scene-b>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Ask</div>
+              <div class="font-body-dense text-body-dense">Asks Claude for a vitamin C serum from Minimalist.</div>
             </div>
-            <ol class="bg-surface-container-low border border-on-background/10 p-4 font-body-dense text-body-dense ok-scene-text list-decimal list-outside ml-5 space-y-2" data-ok-scene-b>
-              <li>Asks Claude for a vitamin C serum from Minimalist.</li>
-              <li>Claude pings the registry; Minimalist's brand agent answers in 200 ms.</li>
-              <li>Real SKU at ₹1,299 — locked for 2 minutes.</li>
-              <li>She says yes; Claude opens GPay; she taps; UPI PIN; paid.</li>
-              <li>Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.</li>
-              <li>Next week: "reorder that." One tap.</li>
-            </ol>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Discover</div>
+              <div class="font-body-dense text-body-dense">Claude pings the registry; Minimalist's brand agent answers in 200 ms.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Decide</div>
+              <div class="font-body-dense text-body-dense">Real SKU at ₹1,299 — locked for 2 minutes.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Pay</div>
+              <div class="font-body-dense text-body-dense">She says yes; Claude opens GPay; she taps; UPI PIN; paid.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Track</div>
+              <div class="font-body-dense text-body-dense">Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.</div>
+            </div>
+            <div class="grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0">
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5">Repeat</div>
+              <div class="font-body-dense text-body-dense">Next week: "reorder that." One tap.</div>
+            </div>
           </div>
-          <p class="font-body-main text-body-main text-on-background">
+          <p class="font-body-main text-body-main text-on-background mt-6">
             Agents execute transactions via a standard protocol — negotiating quotes, confirming orders, tracking state — all in the background.
           </p>
         </div>
         <div class="mt-4 space-y-2 border-l border-on-background/10 pl-6">
           <div class="font-label-caps text-label-caps text-on-surface-variant mb-2">SAME EIGHT VERBS, FIVE CATEGORIES:</div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="0">
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="0">
             <span class="text-on-surface-variant">product</span><span class="text-on-background font-medium">retail / quick-commerce / grocery</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="1">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="1">
             <span class="text-on-surface-variant">stay</span><span class="text-on-background font-medium">hotels · homestays</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="2">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="2">
             <span class="text-on-surface-variant">flight</span><span class="text-on-background font-medium">domestic + international</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="3">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="3">
             <span class="text-on-surface-variant">bus</span><span class="text-on-background font-medium">intercity, sleeper, semi-sleeper</span>
-          </div>
-          <div class="ok-scene-row flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240" data-ok-scene-row="4">
+          </button>
+          <button type="button" class="ok-scene-row w-full text-left flex justify-between py-2 border-b border-on-background/10 font-body-dense text-body-dense transition-colors duration-240 cursor-pointer hover:bg-on-background/5" data-ok-scene-row="4">
             <span class="text-on-surface-variant">service</span><span class="text-on-background font-medium">salon · cleaning · repair</span>
-          </div>
+          </button>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 3. Core execution loop -->
-  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px] bg-surface-container-low py-20">
-    <h2 class="font-h2-editorial text-on-background mb-4">The core execution loop.</h2>
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px] bg-surface-container-low py-12 md:py-20">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">04 · The execution loop</div>
+    <h2 class="font-h2-editorial text-on-background mb-4 max-w-3xl">Every step is signed. Every state is logged.</h2>
+    <p class="font-body-main text-on-surface-variant max-w-3xl mb-8">Discovery, quote, checkout, status — all under the same trust contract. The LLM speaks; the protocol guarantees.</p>
     <div class="flex flex-wrap items-center gap-3 mb-12 font-label-caps text-label-caps uppercase">
       <span class="text-on-surface-variant">Now demonstrating</span>
       <span class="ok-scene-chip border border-on-background/10 px-3 py-1 font-code-block text-code-block text-on-background bg-surface-container-lowest" data-ok-scene-chip>halcyon-shop · Tokai blend 250g · ₹780</span>
@@ -124,7 +241,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           { n: 5, title: 'Status & lifecycle', body: 'status() polls. cancel() and return() close the loop with auditable state transitions.' },
         ].map((s) => (
           <div class="flex gap-4 items-start group">
-            <div class="font-code-block text-code-block text-surface-container-lowest bg-on-background w-7 h-7 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-container transition-colors">{s.n}</div>
+            <div class="font-code-block text-code-block text-on-background border border-on-background bg-transparent w-7 h-7 flex items-center justify-center flex-shrink-0 group-hover:bg-on-background/5 transition-colors">{s.n}</div>
             <div>
               <div class="font-medium mb-1">{s.title}</div>
               <div class="font-body-dense text-body-dense text-on-surface-variant">{s.body}</div>
@@ -138,7 +255,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- 4. Stats + CTA -->
+  <!-- 4a. Who's listening -->
+  <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-16 md:mb-[160px]">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">05 · Who this is for</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">Built for the people who already feel the pain.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Audience 01</div>
+        <div class="font-h2-editorial text-on-background mb-3">Agent builders.</div>
+        <p class="font-body-main text-on-surface-variant">Perplexity, ChatGPT, Claude, Gemini — every assistant wants to ship commerce. None can do it safely without a trust layer.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Audience 02</div>
+        <div class="font-h2-editorial text-on-background mb-3">Voice commerce.</div>
+        <p class="font-body-main text-on-surface-variant">Voice-first checkout has zero tolerance for misquotes. Signed quotes and audit trails are non-negotiable infrastructure.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 fade-slide-up">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Audience 03</div>
+        <div class="font-h2-editorial text-on-background mb-3">Sovereign platforms.</div>
+        <p class="font-body-main text-on-surface-variant">India-rooted, ONDC-friendly, UPI-native, neutral. The alternative is being a thin wrapper on a US protocol.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4b. Stats + CTA -->
   <section class="px-8 md:px-16 max-w-[1440px] mx-auto mb-[160px]">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 border-t border-b border-on-background/10 py-8" data-ok-stagger=":scope > div">
       <div>
@@ -154,23 +294,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="font-label-caps text-label-caps text-on-surface-variant mt-2">ITEM TYPES</div>
       </div>
     </div>
-    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-center text-center">
-      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">
-        The contract should be open. The competition should be on service.
-      </h2>
-      <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-2xl">
-        <div class="flex-1 bg-inverse-surface border border-surface-container-lowest/20 p-4 font-code-block text-code-block text-surface-container-lowest text-left">
-          // Brand agent (sell anything)<br />
-          npm i @openkarta/sdk-node
-        </div>
-        <div class="flex-1 bg-inverse-surface border border-surface-container-lowest/20 p-4 font-code-block text-code-block text-surface-container-lowest text-left">
-          // Consumer agent (buy anywhere)<br />
-          npm i @openkarta/orchestrator
-        </div>
+    <div class="border border-on-background/15 bg-surface-container-lowest p-12 md:p-20 flex flex-col items-center text-center">
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">The pitch in one breath</div>
+      <blockquote class="font-h2-editorial text-on-background max-w-3xl mb-12 [font-size:clamp(22px,3.2vw,36px)] leading-snug">
+        "Your AI can talk to customers. Ours lets it transact with them — signed, verified, no hallucinations, full audit trail. The trust layer between any agent and any merchant."
+      </blockquote>
+      <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-2xl text-left">
+        <CodeBlock class="flex-1" filename="Brand agent (sell anything)" lang="bash">{`npm i @openkarta/sdk-node`}</CodeBlock>
+        <CodeBlock class="flex-1" filename="Consumer agent (buy anywhere)" lang="bash">{`npm i @openkarta/orchestrator`}</CodeBlock>
       </div>
       <div class="flex flex-wrap gap-4 justify-center">
-        <a class="bg-surface-container-lowest text-on-background px-8 py-4 border border-transparent hover:bg-transparent hover:text-surface-container-lowest hover:border-surface-container-lowest transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
-        <a class="bg-transparent text-surface-container-lowest px-8 py-4 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240 font-medium" href="/developers">Developer quickstart</a>
+        <a class="bg-primary text-on-primary px-8 py-4 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 font-medium" href="/developers">Build a buying agent</a>
+        <a class="border border-on-background/25 bg-transparent text-on-background px-8 py-4 hover:bg-on-background/5 transition-colors duration-240 font-medium" href="/protocol">Read the specification</a>
       </div>
     </div>
   </section>
@@ -183,7 +318,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       background-color: rgba(27, 28, 28, 0.04);
       border-color: rgba(27, 28, 28, 0.4);
     }
-    .ok-scene-tab { cursor: pointer; background: none; border: 0; border-bottom-width: 1px; padding: 0 0 4px 0; font: inherit; }
+    .ok-scene-tab { font: inherit; }
+    .ok-scene-tab:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
     @media (prefers-reduced-motion: reduce) {
       .ok-scene-text, .ok-scene-chip { transition: none; }
     }
@@ -194,87 +330,87 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const scenes = [
         {
           a: [
-            "Asks Claude for a vitamin C serum from Minimalist.",
-            "Claude returns three blue links and tells her to go pick one.",
-            "She opens beminimalist.co, makes an account, types in her card.",
-            "After paying she hunts for tracking across three different emails.",
-            "Next time she just opens Swiggy Instamart and skips Claude.",
+            { stage: "Ask",      text: "Asks Claude for a vitamin C serum from Minimalist." },
+            { stage: "Discover", text: "Claude returns three blue links and tells her to go pick one." },
+            { stage: "Decide",   text: "She opens beminimalist.co, makes an account, types in her card." },
+            { stage: "Track",    text: "After paying she hunts for tracking across three different emails." },
+            { stage: "Repeat",   text: "Next time she just opens Swiggy Instamart and skips Claude." },
           ],
           b: [
-            "Asks Claude for a vitamin C serum from Minimalist.",
-            "Claude pings the registry; Minimalist's brand agent answers in 200 ms.",
-            "Real SKU at \u20B91,299 \u2014 locked for 2 minutes.",
-            "She says yes; Claude opens GPay; she taps; UPI PIN; paid.",
-            "Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast.",
-            "Next week: \u201Creorder that.\u201D One tap.",
+            { stage: "Ask",      text: "Asks Claude for a vitamin C serum from Minimalist." },
+            { stage: "Discover", text: "Claude pings the registry; Minimalist's brand agent answers in 200 ms." },
+            { stage: "Decide",   text: "Real SKU at \u20B91,299 \u2014 locked for 2 minutes." },
+            { stage: "Pay",      text: "She says yes; Claude opens GPay; she taps; UPI PIN; paid." },
+            { stage: "Track",    text: "Order placed. Minimalist pushes 'shipped' overnight; Claude tells her at breakfast." },
+            { stage: "Repeat",   text: "Next week: \u201Creorder that.\u201D One tap." },
           ],
           chip: "minimalist-shop \u00B7 vitamin C serum \u00B7 \u20B91,299",
         },
         {
           a: [
-            "Asks Claude for 3 nights in Manali for two adults.",
-            "Claude lists 14 hotels and tells her to compare on her own.",
-            "She opens MakeMyTrip, signs in, picks Tamarind Tree.",
-            "Price has moved \u20B9400 since Claude quoted. She pays anyway.",
-            "Confirmation email gets buried; she copies the booking ID into her calendar by hand.",
+            { stage: "Ask",      text: "Asks Claude for 3 nights in Manali for two adults." },
+            { stage: "Discover", text: "Claude lists 14 hotels and tells her to compare on her own." },
+            { stage: "Decide",   text: "She opens MakeMyTrip, signs in, picks Tamarind Tree." },
+            { stage: "Pay",      text: "Price has moved \u20B9400 since Claude quoted. She pays anyway." },
+            { stage: "Track",    text: "Confirmation email gets buried; she copies the booking ID into her calendar by hand." },
           ],
           b: [
-            "Asks Claude for 3 nights in Manali for two adults.",
-            "Claude fans out to three stay agents on the registry; replies in 600 ms.",
-            "Tamarind Tree at \u20B914,400 \u2014 locked for 2 minutes.",
-            "She approves; UPI; paid in two taps.",
-            "PNR auto-added to her calendar with check-in time and address.",
+            { stage: "Ask",      text: "Asks Claude for 3 nights in Manali for two adults." },
+            { stage: "Discover", text: "Claude fans out to three stay agents on the registry; replies in 600 ms." },
+            { stage: "Decide",   text: "Tamarind Tree at \u20B914,400 \u2014 locked for 2 minutes." },
+            { stage: "Pay",      text: "She approves; UPI; paid in two taps." },
+            { stage: "Track",    text: "PNR auto-added to her calendar with check-in time and address." },
           ],
           chip: "tamarind-stays \u00B7 Manali \u00B7 3N \u00B7 \u20B914,400",
         },
         {
           a: [
-            "Asks Claude for a flight Bengaluru \u2192 Mumbai tomorrow evening.",
-            "Claude lists 27 options on a results page and steps back.",
-            "She opens IndiGo, signs in; the fare moved up \u20B9600 since Claude quoted.",
-            "Captcha. Card OTP. Confirms.",
-            "Boarding pass arrives in an app she has to remember to open.",
+            { stage: "Ask",      text: "Asks Claude for a flight Bengaluru \u2192 Mumbai tomorrow evening." },
+            { stage: "Discover", text: "Claude lists 27 options on a results page and steps back." },
+            { stage: "Decide",   text: "She opens IndiGo, signs in; the fare moved up \u20B9600 since Claude quoted." },
+            { stage: "Pay",      text: "Captcha. Card OTP. Confirms." },
+            { stage: "Track",    text: "Boarding pass arrives in an app she has to remember to open." },
           ],
           b: [
-            "Asks Claude for a flight BLR \u2192 BOM tomorrow evening.",
-            "Claude fans out to four airline agents on the registry.",
-            "IndiGo 6E-202 at 18:40 for \u20B94,890 \u2014 locked for 2 minutes.",
-            "She approves; tokenised card; PNR returned in the same response.",
-            "Boarding pass auto-imported to her wallet. Claude pings her at gate-close minus 60.",
+            { stage: "Ask",      text: "Asks Claude for a flight BLR \u2192 BOM tomorrow evening." },
+            { stage: "Discover", text: "Claude fans out to four airline agents on the registry." },
+            { stage: "Decide",   text: "IndiGo 6E-202 at 18:40 for \u20B94,890 \u2014 locked for 2 minutes." },
+            { stage: "Pay",      text: "She approves; tokenised card; PNR returned in the same response." },
+            { stage: "Track",    text: "Boarding pass auto-imported to her wallet. Claude pings her at gate-close minus 60." },
           ],
           chip: "indigo-air \u00B7 BLR\u2192BOM \u00B7 6E-202 \u00B7 \u20B94,890",
         },
         {
           a: [
-            "Asks Claude for a Volvo to Hyderabad tonight.",
-            "Claude lists three operators \u2014 RedBus, KSRTC, AbhiBus \u2014 and tells her to pick.",
-            "She opens RedBus on mobile; seat picker won't render; captcha.",
-            "Books on the third try, gets a PDF ticket buried in mail.",
-            "At 22:00 she's hunting for the boarding point on Google Maps.",
+            { stage: "Ask",      text: "Asks Claude for a Volvo to Hyderabad tonight." },
+            { stage: "Discover", text: "Claude lists three operators \u2014 RedBus, KSRTC, AbhiBus \u2014 and tells her to pick." },
+            { stage: "Decide",   text: "She opens RedBus on mobile; seat picker won't render; captcha." },
+            { stage: "Pay",      text: "Books on the third try, gets a PDF ticket buried in mail." },
+            { stage: "Track",    text: "At 22:00 she's hunting for the boarding point on Google Maps." },
           ],
           b: [
-            "Asks Claude for a Volvo to Hyderabad tonight.",
-            "Claude pings KSRTC's bus agent; lower-deck S-12 at \u20B91,250.",
-            "Quote locked. She approves; UPI; paid.",
-            "Boarding 22:00 from Madiwala \u2014 saved to her phone.",
-            "At 21:15 Claude pings her with the gate and walking ETA.",
+            { stage: "Ask",      text: "Asks Claude for a Volvo to Hyderabad tonight." },
+            { stage: "Discover", text: "Claude pings KSRTC's bus agent; lower-deck S-12 at \u20B91,250." },
+            { stage: "Pay",      text: "Quote locked. She approves; UPI; paid." },
+            { stage: "Track",    text: "Boarding 22:00 from Madiwala \u2014 saved to her phone." },
+            { stage: "Remind",   text: "At 21:15 Claude pings her with the gate and walking ETA." },
           ],
           chip: "ksrtc-bus \u00B7 BLR\u2192HYD \u00B7 Volvo S-12 \u00B7 \u20B91,250",
         },
         {
           a: [
-            "Asks Claude for a salon slot Saturday 4pm with Nisha.",
-            "Claude lists three salons nearby and tells her to call to confirm.",
-            "She rings the front desk; Nisha's free; books over the phone.",
-            "No calendar handoff \u2014 she types it in herself.",
-            "Saturday morning she's forgotten which stylist she booked.",
+            { stage: "Ask",      text: "Asks Claude for a salon slot Saturday 4pm with Nisha." },
+            { stage: "Discover", text: "Claude lists three salons nearby and tells her to call to confirm." },
+            { stage: "Decide",   text: "She rings the front desk; Nisha's free; books over the phone." },
+            { stage: "Track",    text: "No calendar handoff \u2014 she types it in herself." },
+            { stage: "Forget",   text: "Saturday morning she's forgotten which stylist she booked." },
           ],
           b: [
-            "Asks Claude for a salon slot Saturday 4pm with Nisha.",
-            "Claude pings Lakm\u00E9 Indiranagar's service agent; Nisha is open.",
-            "Quote: \u20B91,400. Locked for 2 minutes.",
-            "She approves; UPI; confirmation in chat.",
-            "Auto-added to her calendar with stylist, address, and salon phone.",
+            { stage: "Ask",      text: "Asks Claude for a salon slot Saturday 4pm with Nisha." },
+            { stage: "Discover", text: "Claude pings Lakm\u00E9 Indiranagar's service agent; Nisha is open." },
+            { stage: "Decide",   text: "Quote: \u20B91,400. Locked for 2 minutes." },
+            { stage: "Pay",      text: "She approves; UPI; confirmation in chat." },
+            { stage: "Track",    text: "Auto-added to her calendar with stylist, address, and salon phone." },
           ],
           chip: "lakme-services \u00B7 Saturday 4pm \u00B7 Indiranagar \u00B7 \u20B91,400",
         },
@@ -297,9 +433,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       function rebuildList(el, items) {
         el.innerHTML = '';
         items.forEach((s) => {
-          const li = document.createElement('li');
-          li.textContent = s;
-          el.appendChild(li);
+          const row = document.createElement('div');
+          row.className = 'grid grid-cols-[72px_1fr] sm:grid-cols-[96px_1fr] gap-4 px-4 py-3 border-t border-on-background/10 first:border-t-0';
+          const stage = document.createElement('div');
+          stage.className = 'font-label-caps text-label-caps uppercase text-on-surface-variant pt-0.5';
+          stage.textContent = s.stage;
+          const text = document.createElement('div');
+          text.className = 'font-body-dense text-body-dense';
+          text.textContent = s.text;
+          row.appendChild(stage);
+          row.appendChild(text);
+          el.appendChild(row);
         });
       }
 
@@ -320,11 +464,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       function setActive(idx) {
         tabs.forEach((t, k) => {
           if (k === idx) {
-            t.classList.add('text-on-background', 'border-on-background');
-            t.classList.remove('text-on-surface-variant', 'border-transparent');
+            t.classList.add('text-on-background', 'border-on-background', 'bg-on-background/5');
+            t.classList.remove('text-on-surface-variant', 'border-on-background/20', 'bg-transparent');
+            t.setAttribute('aria-selected', 'true');
           } else {
-            t.classList.remove('text-on-background', 'border-on-background');
-            t.classList.add('text-on-surface-variant', 'border-transparent');
+            t.classList.remove('text-on-background', 'border-on-background', 'bg-on-background/5');
+            t.classList.add('text-on-surface-variant', 'border-on-background/20', 'bg-transparent');
+            t.setAttribute('aria-selected', 'false');
           }
         });
         rows.forEach((r, k) => {
@@ -342,15 +488,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         setActive(i);
       }
 
-      tabs.forEach((t, k) => {
-        t.addEventListener('click', () => {
-          i = k;
-          setActive(i);
-          paused = true;
-          clearTimeout(resumeTimer);
-          resumeTimer = setTimeout(() => { paused = false; }, 30000);
-        });
-      });
+      const select = (k) => {
+        i = k;
+        setActive(i);
+        paused = true;
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => { paused = false; }, 30000);
+      };
+      tabs.forEach((t, k) => t.addEventListener('click', () => select(k)));
+      rows.forEach((r, k) => r.addEventListener('click', () => select(k)));
 
       if (tabsContainer) {
         tabsContainer.addEventListener('mouseenter', () => { paused = true; });

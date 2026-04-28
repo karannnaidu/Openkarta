@@ -1,31 +1,31 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const inScope = [
-  'api.openkarta.org — registry API',
-  'registry.openkarta.org — registry web app',
-  'openkarta.org — landing site',
-  'Reference agents at *.fly.dev that are operated under the OpenKarta umbrella',
-  '@openkarta/* npm packages on the public registry',
+  "api.openkarta.org — registry API",
+  "registry.openkarta.org — registry web app",
+  "openkarta.org — landing site",
+  "Reference agents at *.fly.dev that are operated under the OpenKarta umbrella",
+  "@openkarta/* npm packages on the public registry",
 ];
 
 const outOfScope = [
-  'Third-party merchant agents listed in the registry — report to the merchant directly',
-  'LLM-vendor endpoints (OpenRouter, OpenAI, Anthropic, etc.)',
-  'Self-XSS, social engineering, physical attacks, or DoS without a working exploit',
-  'Issues that require a privileged position on the user\'s device or network',
+  "Third-party merchant agents listed in the registry — report to the merchant directly",
+  "LLM-vendor endpoints (OpenRouter, OpenAI, Anthropic, etc.)",
+  "Self-XSS, social engineering, physical attacks, or DoS without a working exploit",
+  "Issues that require a privileged position on the user's device or network",
 ];
 
 const safeHarbor = [
-  'Make a good-faith effort to avoid privacy violations, data destruction, and service disruption.',
-  'Do not access more data than is necessary to demonstrate the issue.',
-  'Give us a reasonable time to respond before public disclosure (typically 90 days).',
-  'Do not exploit findings beyond proof of concept.',
+  "Make a good-faith effort to avoid privacy violations, data destruction, and service disruption.",
+  "Do not access more data than is necessary to demonstrate the issue.",
+  "Give us a reasonable time to respond before public disclosure (typically 90 days).",
+  "Do not exploit findings beyond proof of concept.",
 ];
 ---
 <BaseLayout title="Security disclosure — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Security · responsible disclosure</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Security · responsible disclosure</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Found something? Tell us first.
     </h1>
@@ -33,8 +33,8 @@ const safeHarbor = [
       We respond to security reports within 24 hours. Coordinate disclosure, get a CVE if applicable, and you stay anonymous unless you want credit.
     </p>
     <div class="flex flex-wrap gap-4 mt-12">
-      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="mailto:security@openkarta.org">security@openkarta.org</a>
-      <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="/.well-known/security.txt">security.txt</a>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="mailto:security@openkarta.org">security@openkarta.org</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/.well-known/security.txt">security.txt</a>
     </div>
   </section>
 
@@ -47,7 +47,7 @@ const safeHarbor = [
         { n: '03', title: 'We respond', body: 'Acknowledge in 24 hours. Triage and a fix-by date in 72 hours. Public advisory once a patch is available.' },
       ].map((s) => (
         <div class="border-t border-on-background pt-6">
-          <div class="font-code-block text-code-block w-7 h-7 flex items-center justify-center bg-on-background text-surface-container-lowest mb-4">{s.n}</div>
+          <div class="font-code-block text-code-block w-7 h-7 flex items-center justify-center border border-on-background text-on-background bg-transparent mb-4">{s.n}</div>
           <h3 class="font-medium mb-2">{s.title}</h3>
           <p class="font-body-dense text-body-dense text-on-surface-variant">{s.body}</p>
         </div>
@@ -101,10 +101,10 @@ const safeHarbor = [
   </section>
 
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
-    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
-      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Reading the wire-format spec for free is the best bug-hunting prep.</h2>
-      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">Closed enums, signed quotes, and the user-token delegation system are the highest-leverage areas for review. We particularly value reports against signature handling and quote replay.</p>
-      <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="/protocol">Read the spec</a>
+    <div class="border border-on-background/15 bg-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-on-background max-w-2xl mb-8">Reading the wire-format spec for free is the best bug-hunting prep.</h2>
+      <p class="font-body-main text-on-surface-variant max-w-2xl mb-8">Closed enums, signed quotes, and the user-token delegation system are the highest-leverage areas for review. We particularly value reports against signature handling and quote replay.</p>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/protocol">Read the spec</a>
     </div>
   </section>
 </BaseLayout>

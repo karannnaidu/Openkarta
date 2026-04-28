@@ -1,29 +1,29 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const facts = [
-  { label: 'Founded', value: '2026' },
-  { label: 'License', value: 'MIT, every package' },
-  { label: 'Wire-format version', value: 'v0.1' },
-  { label: 'Reference agents', value: '3 (product, stay, travel)' },
-  { label: 'Item types supported', value: '5 (product, stay, flight, bus, service)' },
-  { label: 'Verbs', value: '8' },
+  { label: "Founded", value: "2026" },
+  { label: "License", value: "MIT, every package" },
+  { label: "Wire-format version", value: "v0.1" },
+  { label: "Reference agents", value: "3 (product, stay, travel)" },
+  { label: "Item types supported", value: "5 (product, stay, flight, bus, service)" },
+  { label: "Verbs", value: "8" },
 ];
 
 const quotes = [
   {
-    speaker: 'OpenKarta team',
+    speaker: "OpenKarta team",
     body: '"OpenKarta is the public, neutral layer for agent-to-merchant transactions. We route data, not money. We add a contract, not a fee."',
   },
   {
-    speaker: 'OpenKarta team',
+    speaker: "OpenKarta team",
     body: '"Every conformance run is signed. Every quote is signed. Nothing about an agent\'s claim is taken on faith."',
   },
 ];
 ---
 <BaseLayout title="Press kit — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Press kit · for journalists</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Press kit · for journalists</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Press &amp; media.
     </h1>
@@ -99,10 +99,10 @@ const quotes = [
   </section>
 
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
-    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
-      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">Need an interview, briefing, or comment?</h2>
-      <p class="font-body-main text-surface-container-lowest/70 max-w-2xl mb-8">We respond to journalist requests within 48 hours. For embargo requests, please include a draft and a target publish date.</p>
-      <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="mailto:press@openkarta.org">press@openkarta.org</a>
+    <div class="border border-on-background/15 bg-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-on-background max-w-2xl mb-8">Need an interview, briefing, or comment?</h2>
+      <p class="font-body-main text-on-surface-variant max-w-2xl mb-8">We respond to journalist requests within 48 hours. For embargo requests, please include a draft and a target publish date.</p>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="mailto:press@openkarta.org">press@openkarta.org</a>
     </div>
   </section>
 </BaseLayout>

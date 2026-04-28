@@ -1,0 +1,124 @@
+---
+interface Props {
+  activeNav?: "browse" | "submit" | "me" | "sign-in" | null;
+}
+const { activeNav = null } = Astro.props;
+const item = (key: string, base: string) =>
+  key === activeNav
+    ? `${base} text-on-background border-b border-on-background pb-1`
+    : `${base} text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent`;
+const linkBase = "transition-colors duration-240 font-body-main text-sm";
+const mobileItem = (key: string) =>
+  key === activeNav
+    ? "block py-3 text-on-background font-medium"
+    : "block py-3 text-on-surface-variant hover:text-on-background transition-colors duration-240";
+---
+<header data-ok-header class="fixed top-0 w-full z-50 h-28 bg-surface-container-lowest/90 backdrop-blur-md border-b border-on-background/10 transition-all duration-240">
+  <div class="flex justify-between items-center px-8 md:px-16 h-full w-full max-w-[1440px] mx-auto">
+    <a href="/" class="flex items-center gap-3 group">
+      <img src="/logo.png" alt="" class="ok-logo-img h-[88px] w-[88px] group-hover:rotate-[8deg]" />
+      <span class="flex flex-col leading-tight">
+        <span class="font-hero-h1 text-2xl tracking-tight text-on-background">OpenKarta</span>
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Registry</span>
+      </span>
+    </a>
+    <nav class="hidden md:flex gap-8">
+      <a class={`${item('browse', linkBase)} ok-link`} href="/">Browse</a>
+      <a class={`${item('submit', linkBase)} ok-link`} href="/submit">Submit</a>
+      <a class={`${item('me', linkBase)} ok-link`} href="/me">My agents</a>
+    </nav>
+    <div class="hidden md:flex items-center gap-4">
+      <a class="ok-link text-on-surface-variant hover:text-on-background transition-colors duration-240 text-sm font-medium" href="https://openkarta.org">openkarta.org <span class="ok-arrow inline-block">↗</span></a>
+      <a class={`group bg-primary text-on-primary px-4 py-2 text-sm font-medium border border-primary hover:bg-primary-container hover:border-primary-container transition-colors duration-240 ${activeNav === 'sign-in' ? 'opacity-80' : ''}`} href="/sign-in">Sign in <span class="ok-arrow inline-block">↗</span></a>
+    </div>
+    <button
+      id="ok-mobile-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="ok-mobile-nav"
+      aria-label="Open navigation"
+      class="md:hidden inline-flex items-center justify-center w-11 h-11 -mr-2 text-on-background"
+    >
+      <span class="material-symbols-outlined" data-ok-mobile-icon aria-hidden="true">menu</span>
+    </button>
+  </div>
+  <nav
+    id="ok-mobile-nav"
+    data-open="false"
+    aria-hidden="true"
+    class="md:hidden absolute left-0 right-0 top-full bg-surface-container-lowest border-t border-on-background/10 px-8 py-6 [padding-top:max(1.5rem,env(safe-area-inset-top))] hidden"
+  >
+    <a class={mobileItem('browse')} href="/">Browse</a>
+    <a class={mobileItem('submit')} href="/submit">Submit</a>
+    <a class={mobileItem('me')} href="/me">My agents</a>
+    <div class="my-4 h-px bg-on-background/10"></div>
+    <a class="block py-3 text-on-surface-variant hover:text-on-background transition-colors duration-240" href="https://openkarta.org">openkarta.org <span class="ok-arrow inline-block">↗</span></a>
+    <a class="mt-2 inline-flex bg-primary text-on-primary px-4 py-3 text-sm font-medium border border-primary hover:bg-primary-container hover:border-primary-container transition-colors duration-240" href="/sign-in">Sign in <span class="ok-arrow inline-block">↗</span></a>
+  </nav>
+</header>
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('ok-mobile-toggle');
+    const panel = document.getElementById('ok-mobile-nav');
+    if (!btn || !panel) return;
+    const icon = btn.querySelector('[data-ok-mobile-icon]');
+    let lastFocused = null;
+
+    function focusables() {
+      return panel.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+    }
+
+    function open() {
+      lastFocused = document.activeElement;
+      panel.classList.remove('hidden');
+      panel.setAttribute('data-open', 'true');
+      panel.setAttribute('aria-hidden', 'false');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', 'Close navigation');
+      if (icon) icon.textContent = 'close';
+      document.body.style.overflow = 'hidden';
+      const f = focusables();
+      if (f.length) f[0].focus();
+    }
+
+    function close() {
+      panel.setAttribute('data-open', 'false');
+      panel.setAttribute('aria-hidden', 'true');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open navigation');
+      if (icon) icon.textContent = 'menu';
+      panel.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    function toggle() {
+      const isOpen = panel.getAttribute('data-open') === 'true';
+      if (isOpen) close();
+      else open();
+    }
+
+    btn.addEventListener('click', toggle);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && panel.getAttribute('data-open') === 'true') close();
+      if (e.key === 'Tab' && panel.getAttribute('data-open') === 'true') {
+        const f = Array.from(focusables());
+        if (!f.length) return;
+        const first = f[0];
+        const last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    document.addEventListener('pointerdown', (e) => {
+      if (panel.getAttribute('data-open') !== 'true') return;
+      const t = e.target;
+      if (panel.contains(t) || btn.contains(t)) return;
+      close();
+    });
+  })();
+</script>

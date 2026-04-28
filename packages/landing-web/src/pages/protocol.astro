@@ -1,37 +1,98 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const verbs = [
-  { name: 'discover', desc: 'Returns the agent\'s capability manifest — supported verbs, item types, regions, languages, payment rails.' },
-  { name: 'search',   desc: 'Item search with item-type-specific filters. Returns priced, in-stock options with provenance.' },
-  { name: 'get',      desc: 'Fetches a single item or fixture by id. Idempotent. Useful for hydration of remembered references.' },
-  { name: 'quote',    desc: 'Server-signed, time-bounded price lock. Inventory committed to the agent for the quote\'s TTL.' },
-  { name: 'checkout', desc: 'Exchanges a signed quote for an order. Payment intent issued out-of-band via the chosen rail.' },
-  { name: 'status',   desc: 'Polls order state. Closed enum lifecycle per item type — no free-form strings.' },
-  { name: 'cancel',   desc: 'Cancels a pending order. Returns canonical cancellation receipt with refund-state hint.' },
-  { name: 'return',   desc: 'Initiates a return / refund flow for product orders post-delivery.' },
+  {
+    name: "discover",
+    desc: "Returns the agent's capability manifest — supported verbs, item types, regions, languages, payment rails.",
+  },
+  {
+    name: "search",
+    desc: "Item search with item-type-specific filters. Returns priced, in-stock options with provenance.",
+  },
+  {
+    name: "get",
+    desc: "Fetches a single item or fixture by id. Idempotent. Useful for hydration of remembered references.",
+  },
+  {
+    name: "quote",
+    desc: "Server-signed, time-bounded price lock. Inventory committed to the agent for the quote's TTL.",
+  },
+  {
+    name: "checkout",
+    desc: "Exchanges a signed quote for an order. Payment intent issued out-of-band via the chosen rail.",
+  },
+  {
+    name: "status",
+    desc: "Polls order state. Closed enum lifecycle per item type — no free-form strings.",
+  },
+  {
+    name: "cancel",
+    desc: "Cancels a pending order. Returns canonical cancellation receipt with refund-state hint.",
+  },
+  { name: "return", desc: "Initiates a return / refund flow for product orders post-delivery." },
 ];
 
 const types = [
-  { name: 'product', desc: 'Physical goods. Categories, service areas, delivery modes, return window.' },
-  { name: 'stay',    desc: 'Hotels, homestays, apartments, villas, hostels. check_in / check_out, occupancy.' },
-  { name: 'flight',  desc: 'IATA-coded routes, fare classes, passenger manifest objects required at checkout.' },
-  { name: 'bus',     desc: 'Intercity bus operators, regions, seat classes (sleeper, ac-sleeper, volvo, …).' },
-  { name: 'service', desc: 'Salon, cleaning, repair. At-customer / at-provider / online / venue location modes.' },
+  {
+    name: "product",
+    desc: "Physical goods. Categories, service areas, delivery modes, return window.",
+  },
+  {
+    name: "stay",
+    desc: "Hotels, homestays, apartments, villas, hostels. check_in / check_out, occupancy.",
+  },
+  {
+    name: "flight",
+    desc: "IATA-coded routes, fare classes, passenger manifest objects required at checkout.",
+  },
+  {
+    name: "bus",
+    desc: "Intercity bus operators, regions, seat classes (sleeper, ac-sleeper, volvo, …).",
+  },
+  {
+    name: "service",
+    desc: "Salon, cleaning, repair. At-customer / at-provider / online / venue location modes.",
+  },
 ];
 
 const principles = [
-  { n: '01', title: 'Closed enums', body: 'Every status, error, fare class, payment rail is a closed enum. Extensibility happens via new RFCs, not free-form strings.' },
-  { n: '02', title: 'Integer minor units', body: 'All money is an integer in the smallest currency unit. ₹1 is 100 paise. Floats are forbidden in the wire format.' },
-  { n: '03', title: 'Signed quote tokens', body: 'quote() returns an HMAC-signed token bound to the exact item, agent, and TTL. checkout() verifies the signature.' },
-  { n: '04', title: 'No merchant-of-record', body: 'OpenKarta routes data, not money. Settlement and tax compliance are the merchant\'s responsibility — by design.' },
-  { n: '05', title: 'Region-aware', body: 'Every agent declares ISO-3166 regions. The registry filters by region; payment rails per region are explicit.' },
-  { n: '06', title: 'User-token delegation', body: 'Every checkout carries a short-lived user delegation token with explicit price-cap, time-cap, and rail-cap claims.' },
+  {
+    n: "01",
+    title: "Closed enums",
+    body: "Every status, error, fare class, payment rail is a closed enum. Extensibility happens via new RFCs, not free-form strings.",
+  },
+  {
+    n: "02",
+    title: "Integer minor units",
+    body: "All money is an integer in the smallest currency unit. ₹1 is 100 paise. Floats are forbidden in the wire format.",
+  },
+  {
+    n: "03",
+    title: "Signed quote tokens",
+    body: "quote() returns an HMAC-signed token bound to the exact item, agent, and TTL. checkout() verifies the signature.",
+  },
+  {
+    n: "04",
+    title: "No merchant-of-record",
+    body: "OpenKarta routes data, not money. Settlement and tax compliance are the merchant's responsibility — by design.",
+  },
+  {
+    n: "05",
+    title: "Region-aware",
+    body: "Every agent declares ISO-3166 regions. The registry filters by region; payment rails per region are explicit.",
+  },
+  {
+    n: "06",
+    title: "User-token delegation",
+    body: "Every checkout carries a short-lived user delegation token with explicit price-cap, time-cap, and rail-cap claims.",
+  },
 ];
 ---
 <BaseLayout title="Protocol Specification — OpenKarta" activeNav="protocol">
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">SPEC · v0.1 · MIT</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">SPEC · v0.1 · MIT</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Eight verbs. Five item types. One contract.
     </h1>
@@ -39,8 +100,8 @@ const principles = [
       The OpenKarta protocol defines exactly the surface area an autonomous agent needs to transact — and nothing more. Every type is Zod-checked. Every quote is signed. Every state machine is closed.
     </p>
     <div class="flex flex-wrap gap-4 mt-12">
-      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta/tree/main/packages/spec">View source ↗</a>
-      <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="https://www.npmjs.com/package/@openkarta/spec">npm i @openkarta/spec ↗</a>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta/tree/main/packages/spec">View source ↗</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="https://www.npmjs.com/package/@openkarta/spec">npm i @openkarta/spec ↗</a>
     </div>
   </section>
 
@@ -50,10 +111,10 @@ const principles = [
     <div class="overflow-x-auto border border-on-background/10">
       <table class="w-full font-body-dense text-body-dense bg-surface-container-lowest">
         <thead>
-          <tr class="border-b border-on-background/10 bg-surface-container-low">
-            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant">Verb</th>
+          <tr class="border-b border-on-background/10 bg-primary-container">
+            <th class="text-left py-3 px-4 font-label-caps text-label-caps uppercase text-on-primary-container">Verb</th>
             {types.map((t) => (
-              <th class="border-l border-on-background/10 py-3 px-4 font-label-caps text-label-caps uppercase text-on-surface-variant">{t.name}</th>
+              <th class="border-l border-on-primary-container/30 py-3 px-4 font-label-caps text-label-caps uppercase text-on-primary-container">{t.name}</th>
             ))}
           </tr>
         </thead>
@@ -126,9 +187,9 @@ const principles = [
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
     <h2 class="font-h2-editorial text-on-background mb-12 border-b border-on-background/10 pb-4">Wire format</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
-      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+      <div>
         <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">A signed quote</div>
-        <pre class="font-code-block text-code-block text-on-background overflow-x-auto"><code>{`{
+        <CodeBlock lang="json">{`{
   "quoteId":     "qt_01J...",
   "itemId":      "tokai-blend-250g",
   "totalMinor":  78000,
@@ -136,11 +197,11 @@ const principles = [
   "ttlMs":       180000,
   "issuedAt":    1731686400000,
   "signature":   "hmac-sha256:a1b2c3..."
-}`}</code></pre>
+}`}</CodeBlock>
       </div>
-      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+      <div>
         <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">A discover() response</div>
-        <pre class="font-code-block text-code-block text-on-background overflow-x-auto"><code>{`{
+        <CodeBlock lang="json">{`{
   "agentId":         "halcyon-shop",
   "protocolVersion": "0.1",
   "tier":            "http",
@@ -148,7 +209,7 @@ const principles = [
   "supportedItemTypes": ["product"],
   "paymentRails":    ["razorpay_routes","cod"],
   "regions":         [{"country":"IN"}]
-}`}</code></pre>
+}`}</CodeBlock>
       </div>
     </div>
   </section>

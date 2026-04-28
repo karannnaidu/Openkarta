@@ -1,4 +1,4 @@
-import type { RankedResult } from './types.js';
+import type { RankedResult } from "./types.js";
 
 export type RankStrategy = (a: RankedResult, b: RankedResult) => number;
 
@@ -9,7 +9,10 @@ export const lowestPriceFirst: RankStrategy = (a, b) => {
   return a.agentId.localeCompare(b.agentId);
 };
 
-export function rankResults(results: RankedResult[], strategy: RankStrategy = lowestPriceFirst): RankedResult[] {
+export function rankResults(
+  results: RankedResult[],
+  strategy: RankStrategy = lowestPriceFirst,
+): RankedResult[] {
   const sorted = [...results].sort(strategy);
   const n = sorted.length;
   // Deterministic score: higher = ranked earlier. Useful for downstream callers.

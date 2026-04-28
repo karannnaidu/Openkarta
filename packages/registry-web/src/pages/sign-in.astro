@@ -1,20 +1,46 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const apiBase = import.meta.env.PUBLIC_API_BASE ?? 'https://registry.openkarta.org';
+import BaseLayout from "../layouts/BaseLayout.astro";
+const apiBase = import.meta.env.PUBLIC_API_BASE ?? "https://api.openkarta.org";
 ---
-<BaseLayout title="Sign in — OpenKarta Registry">
-  <h1>Sign in</h1>
-  <p>Sign in with a magic link or your GitHub account.</p>
+<BaseLayout title="Sign in — OpenKarta Registry" activeNav="sign-in">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Sign in · magic link or GitHub</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,7vw,88px)] leading-[1.05] tracking-tight max-w-4xl">
+      No passwords. Just proof.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      Sign in to submit and manage your agents. We send a one-time link, or you authenticate with GitHub.
+    </p>
+  </section>
 
-  <h2>Magic link</h2>
-  <form id="magic">
-    <input type="email" name="email" placeholder="you@example.com" required style="padding:6px 8px; min-width: 280px" />
-    <button type="submit">Send link</button>
-  </form>
-  <div id="magic-msg" style="margin-top:8px"></div>
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10 max-w-4xl">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">01 · Magic link</div>
+        <h2 class="font-h2-editorial text-on-background mb-4">Email-only sign-in.</h2>
+        <p class="font-body-main text-on-surface-variant mb-6">Enter your email; we mail you a one-time link. No password to forget.</p>
 
-  <h2>GitHub</h2>
-  <p><a class="button" href={`${apiBase}/auth/github/start`}><button>Continue with GitHub</button></a></p>
+        <form id="magic" class="flex flex-col gap-4">
+          <label class="flex flex-col gap-2">
+            <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Email</span>
+            <input type="email" name="email" placeholder="you@example.com" required class="ok-input" />
+          </label>
+          <button type="submit" class="bg-primary text-on-primary px-5 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 self-start">Send link →</button>
+        </form>
+        <div id="magic-msg" class="mt-4 font-body-dense"></div>
+      </div>
+
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10 hover-lift">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">02 · GitHub</div>
+        <h2 class="font-h2-editorial text-on-background mb-4">OAuth with your handle.</h2>
+        <p class="font-body-main text-on-surface-variant mb-6">Use your GitHub account. Helpful if you want a public byline on your listings.</p>
+        <a class="border border-on-background/25 bg-transparent text-on-background px-5 py-3 hover:bg-on-background/5 transition-colors duration-240 inline-flex items-center gap-3" href={`${apiBase}/auth/github/start`}>
+          <span class="material-symbols-outlined text-base" aria-hidden="true">code</span>
+          Continue with GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
 
   <script>
     import { requestMagicLink } from '../lib/api.ts';
@@ -23,14 +49,16 @@ const apiBase = import.meta.env.PUBLIC_API_BASE ?? 'https://registry.openkarta.o
       e.preventDefault();
       const fd = new FormData(e.target);
       const email = String(fd.get('email') ?? '');
-      $('magic-msg').textContent = 'Sending…';
+      const msg = $('magic-msg');
+      msg.className = 'mt-4 font-body-dense text-on-surface-variant';
+      msg.textContent = 'Sending…';
       try {
         await requestMagicLink(email);
-        $('magic-msg').className = 'success';
-        $('magic-msg').textContent = 'If that account exists, a sign-in link is on its way.';
+        msg.className = 'mt-4 font-body-dense text-on-background';
+        msg.innerHTML = '<span class="ok-pill ok-pill--healthy">Sent</span> &nbsp; If that account exists, a sign-in link is on its way.';
       } catch (err) {
-        $('magic-msg').className = 'error';
-        $('magic-msg').textContent = err.message ?? 'Failed to send link';
+        msg.className = 'mt-4 font-body-dense text-on-error-container';
+        msg.textContent = err.message ?? 'Failed to send link';
       }
     });
   </script>

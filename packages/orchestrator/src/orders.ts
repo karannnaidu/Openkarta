@@ -1,18 +1,20 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { homedir } from 'node:os';
-import type { OrderRecord } from './types.js';
-import { createClient, type OpenKartaClient } from '@openkarta/sdk-node';
-import type { Order, Refund } from '@openkarta/spec';
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
+import { type OpenKartaClient, createClient } from "@openkarta/sdk-node";
+import type { Order, Refund } from "@openkarta/spec";
+import type { OrderRecord } from "./types.js";
 
-export interface OrderStoreOptions { ordersFile?: string; }
+export interface OrderStoreOptions {
+  ordersFile?: string;
+}
 export interface OrderStore {
   add(record: OrderRecord): Promise<void>;
   list(): Promise<OrderRecord[]>;
   find(orderId: string): Promise<OrderRecord | undefined>;
 }
 
-const DEFAULT_PATH = join(homedir(), '.openkarta', 'orders.json');
+const DEFAULT_PATH = join(homedir(), ".openkarta", "orders.json");
 
 export interface OrderOpOptions {
   store: OrderStore;
@@ -37,12 +39,20 @@ export async function getOrderStatus(orderId: string, opts: OrderOpOptions): Pro
   return client.status(orderId);
 }
 
-export async function cancelOrder(orderId: string, reason: string, opts: OrderOpOptions): Promise<Order> {
+export async function cancelOrder(
+  orderId: string,
+  reason: string,
+  opts: OrderOpOptions,
+): Promise<Order> {
   const client = await clientForOrder(orderId, opts);
   return client.cancel(orderId, reason);
 }
 
-export async function returnOrder(orderId: string, reason: string, opts: OrderOpOptions): Promise<Refund> {
+export async function returnOrder(
+  orderId: string,
+  reason: string,
+  opts: OrderOpOptions,
+): Promise<Refund> {
   const client = await clientForOrder(orderId, opts);
   return client.return(orderId, { reason });
 }
@@ -52,20 +62,20 @@ export function createOrderStore(opts: OrderStoreOptions = {}): OrderStore {
 
   async function readAll(): Promise<OrderRecord[]> {
     try {
-      const raw = await readFile(file, 'utf-8');
+      const raw = await readFile(file, "utf-8");
       const parsed: unknown = JSON.parse(raw);
-      if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) return [];
+      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) return [];
       const orders = (parsed as { orders?: unknown }).orders;
       return Array.isArray(orders) ? (orders as OrderRecord[]) : [];
     } catch (err) {
-      if ((err as NodeJS.ErrnoException).code === 'ENOENT') return [];
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
       throw err;
     }
   }
 
   async function writeAll(records: OrderRecord[]): Promise<void> {
     await mkdir(dirname(file), { recursive: true });
-    await writeFile(file, JSON.stringify({ version: 1, orders: records }, null, 2), 'utf-8');
+    await writeFile(file, JSON.stringify({ version: 1, orders: records }, null, 2), "utf-8");
   }
 
   return {

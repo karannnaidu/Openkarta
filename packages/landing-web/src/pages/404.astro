@@ -1,9 +1,10 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 <BaseLayout title="Not found — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-32">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">404 · resource not found</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">404 · resource not found</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       No such verb.
     </h1>
@@ -33,14 +34,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
-    <div class="border border-on-background/10 bg-surface-container-lowest p-10">
+    <div>
       <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Error envelope</div>
-      <pre class="font-code-block text-code-block text-on-background overflow-x-auto"><code>{`{
+      <CodeBlock lang="json">{`{
   "code":    "not_found",
   "message": "No resource at this URL.",
   "agentId": "openkarta-org",
   "ts":      ${Date.now()}
-}`}</code></pre>
+}`}</CodeBlock>
     </div>
   </section>
 </BaseLayout>

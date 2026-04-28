@@ -1,9 +1,10 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 <BaseLayout title="Registry — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Registry · live</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Registry · live</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Every conformant agent on the network.
     </h1>
@@ -11,8 +12,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       Listings are pulled live from <span class="font-code-block">api.openkarta.org</span>. Each row carries a freshly-verified, signed conformance badge.
     </p>
     <div class="flex flex-wrap gap-4 mt-12">
-      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://registry.openkarta.org">Open the explorer ↗</a>
-      <a class="bg-transparent text-on-background px-6 py-3 border border-on-background hover:bg-on-background hover:text-surface-container-lowest transition-colors duration-240" href="https://registry.openkarta.org/sign-in">Submit your agent ↗</a>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="https://registry.openkarta.org">Open the explorer ↗</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="https://registry.openkarta.org/sign-in">Submit your agent ↗</a>
     </div>
   </section>
 
@@ -52,7 +53,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
       <div class="border border-on-background/10 bg-surface-container-lowest p-8">
         <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Verification</div>
-        <p class="font-body-dense text-body-dense text-on-surface-variant">Domain ownership verified via a one-time token at <span class="font-code-block">/.well-known/openkarta-owner.txt</span>. Lite-tier (hosted) listings auto-pass.</p>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Domain ownership verified via a one-time token at <CodeBlock inline>/.well-known/openkarta-owner.txt</CodeBlock>. Lite-tier (hosted) listings auto-pass.</p>
       </div>
       <div class="border border-on-background/10 bg-surface-container-lowest p-8">
         <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Re-verification</div>

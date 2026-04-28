@@ -1,10 +1,10 @@
-import type { Orchestrator } from '../orchestrator.js';
-import type { ConversationState } from './memory.js';
-import type { ItemType } from '@openkarta/spec';
-import { newCart, addLine } from '../cart.js';
-import { quoteCart } from '../quote.js';
-import { checkoutCart } from '../checkout.js';
-import { getOrderStatus, cancelOrder, returnOrder, createOrderStore } from '../orders.js';
+import type { ItemType } from "@openkarta/spec";
+import { addLine, newCart } from "../cart.js";
+import { checkoutCart } from "../checkout.js";
+import type { Orchestrator } from "../orchestrator.js";
+import { cancelOrder, createOrderStore, getOrderStatus, returnOrder } from "../orders.js";
+import { quoteCart } from "../quote.js";
+import type { ConversationState } from "./memory.js";
 
 export type DispatchFn = (toolName: string, input: Record<string, unknown>) => Promise<unknown>;
 
@@ -17,17 +17,19 @@ export function createDispatcher(
 
   return async function dispatch(toolName, input) {
     switch (toolName) {
-      case 'search': {
+      case "search": {
         const results = await orch.search({
           itemType: input.itemType as ItemType,
           ...(input.q ? { q: input.q as string } : {}),
-          ...(input.country ? {
-            region: {
-              country: input.country as string,
-              ...(input.city ? { city: input.city as string } : {}),
-              ...(input.pincode ? { pincode: input.pincode as string } : {}),
-            },
-          } : {}),
+          ...(input.country
+            ? {
+                region: {
+                  country: input.country as string,
+                  ...(input.city ? { city: input.city as string } : {}),
+                  ...(input.pincode ? { pincode: input.pincode as string } : {}),
+                },
+              }
+            : {}),
         });
         state.lastSearch = {
           itemType: input.itemType as ItemType,
@@ -44,19 +46,21 @@ export function createDispatcher(
         }));
       }
 
-      case 'add_to_cart': {
+      case "add_to_cart": {
         const agentId = input.agentId as string;
         const itemId = input.itemId as string;
         const quantity = (input.quantity as number | undefined) ?? 1;
         if (!state.cart) {
-          if (!state.lastSearch) throw new Error('call search first to bind a cart context');
+          if (!state.lastSearch) throw new Error("call search first to bind a cart context");
           // Look up the agent baseUrl + currency by querying the orchestrator's registry view.
           const sample = await orch.search({
             itemType: state.lastSearch.itemType,
             agentIds: [agentId],
           });
           if (sample.length === 0) {
-            throw new Error(`agent ${agentId} returned no items for type ${state.lastSearch.itemType}`);
+            throw new Error(
+              `agent ${agentId} returned no items for type ${state.lastSearch.itemType}`,
+            );
           }
           const first = sample[0]!;
           const baseUrl = first.manifest.baseUrl;
@@ -69,25 +73,27 @@ export function createDispatcher(
           });
         }
         if (state.cart.agentId !== agentId) {
-          throw new Error(`cart is bound to ${state.cart.agentId}; cannot add items from ${agentId}`);
+          throw new Error(
+            `cart is bound to ${state.cart.agentId}; cannot add items from ${agentId}`,
+          );
         }
         state.cart = addLine(state.cart, { itemId, quantity });
         return { ok: true, lines: state.cart.lines.length };
       }
 
-      case 'view_cart': {
+      case "view_cart": {
         return state.cart ?? { lines: [] };
       }
 
-      case 'quote': {
-        if (!state.cart) throw new Error('cart is empty');
+      case "quote": {
+        if (!state.cart) throw new Error("cart is empty");
         const q = await quoteCart(state.cart);
         state.lastQuote = q;
         return { totalMinor: q.totalMinor, currency: q.currency, expiresAt: q.expiresAt };
       }
 
-      case 'checkout': {
-        if (!state.cart || !state.lastQuote) throw new Error('quote first, then checkout');
+      case "checkout": {
+        if (!state.cart || !state.lastQuote) throw new Error("quote first, then checkout");
         const order = await checkoutCart({
           cart: state.cart,
           quote: state.lastQuote,
@@ -100,13 +106,13 @@ export function createDispatcher(
         return { orderId: order.orderId };
       }
 
-      case 'order_status':
+      case "order_status":
         return getOrderStatus(input.orderId as string, { store });
 
-      case 'cancel_order':
+      case "cancel_order":
         return cancelOrder(input.orderId as string, input.reason as string, { store });
 
-      case 'return_order':
+      case "return_order":
         return returnOrder(input.orderId as string, input.reason as string, { store });
 
       default:

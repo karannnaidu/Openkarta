@@ -1,86 +1,149 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export function getStaticPaths() {
   return [
     {
-      params: { slug: 'eight-verbs-enough' },
+      params: { slug: "eight-verbs-enough" },
       props: {
-        date: '2026-04-20',
-        category: 'Spec',
+        date: "2026-04-20",
+        category: "Spec",
         readMin: 7,
-        title: 'Why eight verbs is enough.',
-        lede: 'Every commerce-API standardization effort that came before us added too much surface. Here is the thinking behind keeping it down to discover, search, get, quote, checkout, status, cancel, return.',
+        title: "Why eight verbs is enough.",
+        lede: "Every commerce-API standardization effort that came before us added too much surface. Here is the thinking behind keeping it down to discover, search, get, quote, checkout, status, cancel, return.",
         sections: [
-          { h: 'Surface area is liability', p: 'Every verb the wire format introduces is a contract every conformant agent must satisfy and every consumer agent must understand. Three additional verbs sound cheap until you multiply them by five item types and a daily conformance sweep. The protocol has to be small enough that a competent backend engineer can read the spec end-to-end before lunch.' },
-          { h: 'The eight, justified', p: 'discover declares the agent. search and get answer "what do you have." quote freezes a price. checkout binds the buyer. status reports state. cancel reverses commitment before fulfillment. return reverses commitment after delivery. There is no eighth concern that recurs across every commerce category.' },
-          { h: 'What we left out', p: 'No subscriptions, no installments, no auctions, no negotiation, no promotions, no loyalty. Each of these is real, important, and a separate spec. Folding any one of them into the core verbs would have doubled the surface for the 90% of merchants who do not need them.' },
-          { h: 'Extensibility, the boring way', p: 'Item-type-specific blocks (productCapabilities, stayCapabilities, etc.) are the extension point. A new item type adds one block and zero verbs. A new behavior on an existing type adds an enum value and zero verbs. The verb set is meant to be stable for years.' },
+          {
+            h: "Surface area is liability",
+            p: "Every verb the wire format introduces is a contract every conformant agent must satisfy and every consumer agent must understand. Three additional verbs sound cheap until you multiply them by five item types and a daily conformance sweep. The protocol has to be small enough that a competent backend engineer can read the spec end-to-end before lunch.",
+          },
+          {
+            h: "The eight, justified",
+            p: 'discover declares the agent. search and get answer "what do you have." quote freezes a price. checkout binds the buyer. status reports state. cancel reverses commitment before fulfillment. return reverses commitment after delivery. There is no eighth concern that recurs across every commerce category.',
+          },
+          {
+            h: "What we left out",
+            p: "No subscriptions, no installments, no auctions, no negotiation, no promotions, no loyalty. Each of these is real, important, and a separate spec. Folding any one of them into the core verbs would have doubled the surface for the 90% of merchants who do not need them.",
+          },
+          {
+            h: "Extensibility, the boring way",
+            p: "Item-type-specific blocks (productCapabilities, stayCapabilities, etc.) are the extension point. A new item type adds one block and zero verbs. A new behavior on an existing type adds an enum value and zero verbs. The verb set is meant to be stable for years.",
+          },
         ],
       },
     },
     {
-      params: { slug: 'signed-quotes' },
+      params: { slug: "signed-quotes" },
       props: {
-        date: '2026-04-18',
-        category: 'Security',
+        date: "2026-04-18",
+        category: "Security",
         readMin: 5,
-        title: 'Signed quotes, on the wire.',
-        lede: 'How HMAC-bound, time-limited quote tokens shut down agent-side price tampering — without a centralized escrow.',
+        title: "Signed quotes, on the wire.",
+        lede: "How HMAC-bound, time-limited quote tokens shut down agent-side price tampering — without a centralized escrow.",
         sections: [
-          { h: 'The threat model', p: 'A consumer agent renders a price to a user, the user assents, and the agent passes a different price to the merchant during checkout. Or a merchant honors a price during quote and inflates it during checkout. Either way, the human at the end of the loop sees one number and pays another.' },
-          { h: 'The mitigation', p: 'quote() returns an HMAC-signed token whose payload includes the item id, agent id, total in minor units, currency, issuance timestamp, and TTL. The signature is computed with the merchant\'s secret. checkout() refuses any token whose signature does not verify against that secret, or whose TTL has elapsed.' },
-          { h: 'What this buys', p: 'Tamper-evidence on the wire, with no trusted third party. The merchant can prove what they offered. The agent cannot inflate or deflate after the fact. Replay is bounded by TTL. The buyer\'s agent can show the user the verifiable quote token alongside the price.' },
-          { h: 'What this does not buy', p: 'It does not authenticate the buyer. It does not enforce that the merchant honors the quote on a different verb (cancel, return). For those we rely on closed enums and the conformance sweep, which are independently verifiable.' },
+          {
+            h: "The threat model",
+            p: "A consumer agent renders a price to a user, the user assents, and the agent passes a different price to the merchant during checkout. Or a merchant honors a price during quote and inflates it during checkout. Either way, the human at the end of the loop sees one number and pays another.",
+          },
+          {
+            h: "The mitigation",
+            p: "quote() returns an HMAC-signed token whose payload includes the item id, agent id, total in minor units, currency, issuance timestamp, and TTL. The signature is computed with the merchant's secret. checkout() refuses any token whose signature does not verify against that secret, or whose TTL has elapsed.",
+          },
+          {
+            h: "What this buys",
+            p: "Tamper-evidence on the wire, with no trusted third party. The merchant can prove what they offered. The agent cannot inflate or deflate after the fact. Replay is bounded by TTL. The buyer's agent can show the user the verifiable quote token alongside the price.",
+          },
+          {
+            h: "What this does not buy",
+            p: "It does not authenticate the buyer. It does not enforce that the merchant honors the quote on a different verb (cancel, return). For those we rely on closed enums and the conformance sweep, which are independently verifiable.",
+          },
         ],
       },
     },
     {
-      params: { slug: 'no-merchant-of-record' },
+      params: { slug: "no-merchant-of-record" },
       props: {
-        date: '2026-04-15',
-        category: 'Foundation',
+        date: "2026-04-15",
+        category: "Foundation",
         readMin: 6,
-        title: 'Why we will never be the merchant of record.',
-        lede: 'Settlement and tax compliance stay with the merchant, by design. We route data, not money.',
+        title: "Why we will never be the merchant of record.",
+        lede: "Settlement and tax compliance stay with the merchant, by design. We route data, not money.",
         sections: [
-          { h: 'The temptation', p: 'A protocol that handled settlement could charge a percentage of GMV, hold balances, and become economically self-sustaining without grants or sponsorship. Stripe Connect-style architecture is well understood. The board would write a compliant document tomorrow if we asked.' },
-          { h: 'Why we did not', p: 'Sitting on the payment path makes us a regulated entity in every jurisdiction we serve. It pulls KYC, AML, tax remittance, refund arbitration, and chargeback exposure into the foundation. The protocol stops being neutral the moment the operator has a balance sheet incentive to favor one merchant or rail over another.' },
-          { h: 'The trade we made', p: 'OpenKarta is funded by grants, infra subsidies, and optional paid SLAs for the badge service. Settlement happens entirely between the merchant\'s existing payment processor and the buyer\'s payment instrument. We never touch a paise.' },
-          { h: 'The merchant\'s reciprocal duty', p: 'Because we route data not money, the merchant remains responsible for fulfillment, taxation, refunds, and dispute resolution. The terms of service and the charter both state this plainly. We will not silently change that posture.' },
+          {
+            h: "The temptation",
+            p: "A protocol that handled settlement could charge a percentage of GMV, hold balances, and become economically self-sustaining without grants or sponsorship. Stripe Connect-style architecture is well understood. The board would write a compliant document tomorrow if we asked.",
+          },
+          {
+            h: "Why we did not",
+            p: "Sitting on the payment path makes us a regulated entity in every jurisdiction we serve. It pulls KYC, AML, tax remittance, refund arbitration, and chargeback exposure into the foundation. The protocol stops being neutral the moment the operator has a balance sheet incentive to favor one merchant or rail over another.",
+          },
+          {
+            h: "The trade we made",
+            p: "OpenKarta is funded by grants, infra subsidies, and optional paid SLAs for the badge service. Settlement happens entirely between the merchant's existing payment processor and the buyer's payment instrument. We never touch a paise.",
+          },
+          {
+            h: "The merchant's reciprocal duty",
+            p: "Because we route data not money, the merchant remains responsible for fulfillment, taxation, refunds, and dispute resolution. The terms of service and the charter both state this plainly. We will not silently change that posture.",
+          },
         ],
       },
     },
     {
-      params: { slug: 'orchestrator-launch' },
+      params: { slug: "orchestrator-launch" },
       props: {
-        date: '2026-04-25',
-        category: 'Release',
+        date: "2026-04-25",
+        category: "Release",
         readMin: 4,
-        title: 'The orchestrator and CLI go public.',
-        lede: 'Release notes for v0.2 — typed client, fan-out search, homogeneous carts, signed-quote checkout, order tracking, and a vendor-neutral chat REPL.',
+        title: "The orchestrator and CLI go public.",
+        lede: "Release notes for v0.2 — typed client, fan-out search, homogeneous carts, signed-quote checkout, order tracking, and a vendor-neutral chat REPL.",
         sections: [
-          { h: 'What\'s new', p: 'v0.2 introduces @openkarta/orchestrator (consumer-side library) and @openkarta/cli (REPL + scripted subcommands). Together they let any consumer agent talk to the registry, fan-out search across listed merchants, build a single homogeneous cart, lock signed quotes, and exchange them for orders.' },
-          { h: 'The chat loop', p: 'Vendor-neutral. We dropped the @anthropic-ai/sdk dependency and now talk the standard chat/completions wire format. Point at OpenRouter, OpenAI, Together, Groq, Ollama, llama.cpp — anything that exposes /v1/chat/completions works.' },
-          { h: 'How to try it', p: 'npm install @openkarta/orchestrator @openkarta/cli, set OPENROUTER_API_KEY (or your provider equivalent), and run openkarta chat. The REPL will discover live agents from the registry and walk you through a real purchase.' },
-          { h: 'Next', p: 'v0.3 is focused on the badge service — moving signing into a dedicated worker, adding a public verification endpoint, and exposing the badge JSON in the npm package metadata.' },
+          {
+            h: "What's new",
+            p: "v0.2 introduces @openkarta/orchestrator (consumer-side library) and @openkarta/cli (REPL + scripted subcommands). Together they let any consumer agent talk to the registry, fan-out search across listed merchants, build a single homogeneous cart, lock signed quotes, and exchange them for orders.",
+          },
+          {
+            h: "The chat loop",
+            p: "Vendor-neutral. We dropped the @anthropic-ai/sdk dependency and now talk the standard chat/completions wire format. Point at OpenRouter, OpenAI, Together, Groq, Ollama, llama.cpp — anything that exposes /v1/chat/completions works.",
+          },
+          {
+            h: "How to try it",
+            p: "npm install @openkarta/orchestrator @openkarta/cli, set OPENROUTER_API_KEY (or your provider equivalent), and run openkarta chat. The REPL will discover live agents from the registry and walk you through a real purchase.",
+          },
+          {
+            h: "Next",
+            p: "v0.3 is focused on the badge service — moving signing into a dedicated worker, adding a public verification endpoint, and exposing the badge JSON in the npm package metadata.",
+          },
         ],
       },
     },
     {
-      params: { slug: 'conformance-pipeline' },
+      params: { slug: "conformance-pipeline" },
       props: {
-        date: '2026-04-10',
-        category: 'Operations',
+        date: "2026-04-10",
+        category: "Operations",
         readMin: 8,
-        title: 'How daily conformance sweeps work.',
-        lede: 'A walkthrough of the cron worker, the test runner, the badge signer, and the lifecycle that takes a flapping agent from healthy to stale to delisted.',
+        title: "How daily conformance sweeps work.",
+        lede: "A walkthrough of the cron worker, the test runner, the badge signer, and the lifecycle that takes a flapping agent from healthy to stale to delisted.",
         sections: [
-          { h: 'The cron', p: 'A Cloudflare Worker runs every six hours. It pulls the list of verified agents from D1, partitions them across queue producers, and emits one verification job per agent. Workers are stateless; D1 owns the truth.' },
-          { h: 'The runner', p: 'Each job pulls @openkarta/conformance-tests, hydrates fixtures, and exercises the agent over the wire. The runner auto-detects supportedItemTypes from discover() and selects core + matching per-type packs.' },
-          { h: 'The signer', p: 'On a passing run, the runner emits a JSON badge — {agentId, suiteVersion, packs, passed, ranAt} — and signs it with the registry HMAC key. The badge is stored in D1 and exposed via the registry API.' },
-          { h: 'The lifecycle', p: 'A passing run resets the failure counter to zero. Three consecutive failures move the agent to stale (still listed, badge degraded). Seven consecutive failures move the agent to delisted (removed from the public listing). A successful run resets the counter and restores the public listing.' },
-          { h: 'What the sweep cannot tell you', p: 'It cannot tell you whether a merchant is fulfilling well, whether their reviews are accurate, or whether their inventory matches what is on the wire. The badge attests only to protocol conformance — not commercial quality.' },
+          {
+            h: "The cron",
+            p: "A Cloudflare Worker runs every six hours. It pulls the list of verified agents from D1, partitions them across queue producers, and emits one verification job per agent. Workers are stateless; D1 owns the truth.",
+          },
+          {
+            h: "The runner",
+            p: "Each job pulls @openkarta/conformance-tests, hydrates fixtures, and exercises the agent over the wire. The runner auto-detects supportedItemTypes from discover() and selects core + matching per-type packs.",
+          },
+          {
+            h: "The signer",
+            p: "On a passing run, the runner emits a JSON badge — {agentId, suiteVersion, packs, passed, ranAt} — and signs it with the registry HMAC key. The badge is stored in D1 and exposed via the registry API.",
+          },
+          {
+            h: "The lifecycle",
+            p: "A passing run resets the failure counter to zero. Three consecutive failures move the agent to stale (still listed, badge degraded). Seven consecutive failures move the agent to delisted (removed from the public listing). A successful run resets the counter and restores the public listing.",
+          },
+          {
+            h: "What the sweep cannot tell you",
+            p: "It cannot tell you whether a merchant is fulfilling well, whether their reviews are accurate, or whether their inventory matches what is on the wire. The badge attests only to protocol conformance — not commercial quality.",
+          },
         ],
       },
     },
@@ -115,11 +178,11 @@ const { date, category, readMin, title, lede, sections } = Astro.props;
   </section>
 
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
-    <div class="bg-on-background text-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
-      <h2 class="font-h2-editorial text-surface-container-lowest max-w-2xl mb-8">More from the protocol.</h2>
+    <div class="border border-on-background/15 bg-surface-container-lowest p-12 md:p-20 flex flex-col items-start">
+      <h2 class="font-h2-editorial text-on-background max-w-2xl mb-8">More from the protocol.</h2>
       <div class="flex flex-wrap gap-4">
-        <a class="bg-surface-container-lowest text-on-background px-6 py-3 border border-surface-container-lowest hover:bg-transparent hover:text-surface-container-lowest transition-colors duration-240" href="/blog">All posts</a>
-        <a class="bg-transparent text-surface-container-lowest px-6 py-3 border border-surface-container-lowest hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="/protocol">Read the spec</a>
+        <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/blog">All posts</a>
+        <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/protocol">Read the spec</a>
       </div>
     </div>
   </section>

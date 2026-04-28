@@ -1,19 +1,32 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="My agents — OpenKarta Registry">
-  <div id="auth-gate" style="display:none">
-    <p>You need to sign in to manage your agents. <a href="/sign-in">Sign in →</a></p>
-  </div>
-  <div id="content" style="display:none">
-    <h1>My agents</h1>
-    <p id="who"></p>
-    <p><a href="/submit">+ Submit a new agent</a></p>
-    <div id="error" class="error" style="display:none"></div>
-    <div id="empty" style="display:none">You haven't submitted any agents yet.</div>
+<BaseLayout title="My agents — OpenKarta Registry" activeNav="me">
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
+    <div id="auth-gate" class="border border-on-background/10 bg-surface-container-lowest p-10 max-w-3xl" style="display:none">
+      <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Sign in required</div>
+      <h2 class="font-h2-editorial text-on-background mb-4">You need to sign in to manage your agents.</h2>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240 inline-block" href="/sign-in">Sign in →</a>
+    </div>
+
+    <div id="content" style="display:none">
+      <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">My agents · owner view</div>
+      <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,7vw,88px)] leading-[1.05] tracking-tight max-w-4xl">
+        Your listings.
+      </h1>
+      <p id="who" class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl"></p>
+      <div class="flex flex-wrap gap-4 mt-12">
+        <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="/submit">+ Submit a new agent</a>
+        <button id="logout" class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240">Log out</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-32">
+    <div id="error" class="border border-error/40 bg-error-container/40 text-on-error-container p-6 font-body-dense max-w-4xl" style="display:none"></div>
+    <div id="empty" class="border border-on-background/10 bg-surface-container-lowest p-10 font-body-dense text-on-surface-variant" style="display:none">You haven't submitted any agents yet. <a class="underline hover:text-primary-container" href="/submit">List your first one →</a></div>
     <div id="results"></div>
-    <p style="margin-top:24px"><button class="secondary" id="logout">Log out</button></p>
-  </div>
+  </section>
 
   <script>
     import { getMe, listAgents, reverifyAgent, deleteAgent, logout } from '../lib/api.ts';
@@ -23,30 +36,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     async function init() {
       let me;
-      try { me = (await getMe()).account; } catch { $('auth-gate').style.display = ''; return; }
+      try { me = (await getMe()).account; }
+      catch { $('auth-gate').style.display = ''; return; }
       $('content').style.display = '';
-      $('who').textContent = `Signed in as ${me.email}`;
-      // Use include=delisted so the user sees everything they own, even after a delisting.
+      $('who').textContent = `Signed in as ${me.email}.`;
       const page = await listAgents({ include: 'delisted' });
-      const mine = page.items; // server already enforces ownership for /me/agents but listAgents is public-only;
-      // The public listing is filtered to verified-or-newly-pending; use our auth state as enough scoping client-side.
-      // (Future: add /me/agents endpoint server-side for stricter scoping.)
-      render(mine);
+      render(page.items);
     }
 
     function render(items) {
       if (items.length === 0) { $('empty').style.display = ''; return; }
       const rows = items.map((a) => `
         <tr data-id="${escapeHtml(a.agentId)}">
-          <td><a href="/agent?id=${encodeURIComponent(a.agentId)}">${escapeHtml(a.displayName)}</a><div class="tier">${escapeHtml(a.agentId)}</div></td>
-          <td><span class="badge badge--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></td>
-          <td>${escapeHtml(a.verificationStatus)}</td>
-          <td>
-            <button class="secondary reverify">Re-verify</button>
-            <button class="danger delete">Delete</button>
+          <td data-label="Agent">
+            <a class="agent-name" href="/agent?id=${encodeURIComponent(a.agentId)}">${escapeHtml(a.displayName)}</a>
+            <div class="agent-id">${escapeHtml(a.agentId)}</div>
+          </td>
+          <td data-label="Health"><span class="ok-pill ok-pill--${escapeHtml(a.healthStatus)}">${escapeHtml(a.healthStatus)}</span></td>
+          <td data-label="Verification"><span class="ok-pill ok-pill--${escapeHtml(a.verificationStatus)}">${escapeHtml(a.verificationStatus)}</span></td>
+          <td data-label="Actions">
+            <div class="flex flex-wrap gap-2">
+              <button class="reverify font-code-block text-xs px-3 py-2 border border-on-background/25 bg-transparent text-on-background hover:bg-on-background/5 transition-colors duration-240">Re-verify</button>
+              <button class="delete font-code-block text-xs px-3 py-2 border border-error/50 bg-transparent text-error hover:bg-error/10 transition-colors duration-240">Delete</button>
+            </div>
           </td>
         </tr>`).join('');
-      $('results').innerHTML = `<table><thead><tr><th>Agent</th><th>Health</th><th>Verification</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+      $('results').innerHTML = `
+        <div class="overflow-x-auto border border-on-background/10">
+          <table class="ok-table">
+            <thead>
+              <tr><th>Agent</th><th>Health</th><th>Verification</th><th>Actions</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+
       $('results').addEventListener('click', async (ev) => {
         const t = ev.target;
         if (!(t instanceof HTMLButtonElement)) return;
@@ -74,4 +98,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     init();
   </script>
+
+  <style is:global>
+    .ok-table { width: 100%; border-collapse: collapse; background: var(--color-surface-container-lowest); border: 1px solid rgb(15 35 38 / 0.1); }
+    .ok-table thead th {
+      text-align: left;
+      padding: 14px 16px;
+      font-family: Inter, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--color-on-surface-variant);
+      background: rgb(15 35 38 / 0.04);
+      border-bottom: 1px solid rgb(15 35 38 / 0.1);
+    }
+    .ok-table tbody td {
+      padding: 16px;
+      border-bottom: 1px solid rgb(15 35 38 / 0.08);
+      vertical-align: top;
+      font-size: 14px;
+    }
+    .ok-table tbody tr:last-child td { border-bottom: 0; }
+    .ok-table .agent-name { font-weight: 500; color: var(--color-on-background); text-decoration: none; }
+    .ok-table .agent-name:hover { color: var(--color-primary); text-decoration: underline; }
+    .ok-table .agent-id { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--color-on-surface-variant); margin-top: 2px; }
+
+    @media (max-width: 768px) {
+      .ok-table thead { display: none; }
+      .ok-table, .ok-table tbody, .ok-table tr, .ok-table td { display: block; width: 100%; }
+      .ok-table tbody tr { border-bottom: 1px solid rgb(15 35 38 / 0.1); padding: 8px 0; }
+      .ok-table tbody td { border-bottom: 0; padding: 6px 16px; }
+      .ok-table tbody td::before { content: attr(data-label); display: block; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--color-on-surface-variant); margin-bottom: 4px; }
+      .ok-table tbody td[data-label="Agent"]::before { display: none; }
+    }
+  </style>
 </BaseLayout>

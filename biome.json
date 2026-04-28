@@ -6,7 +6,8 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "style": { "useImportType": "error" }
+      "style": { "useImportType": "error", "noNonNullAssertion": "off" },
+      "suspicious": { "noExplicitAny": "off", "noConfusingVoidType": "off" }
     }
   },
   "organizeImports": { "enabled": true }

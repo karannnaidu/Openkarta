@@ -1,60 +1,104 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CodeBlock from '../components/CodeBlock.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const compare = [
-  { dim: 'Discovery', spec: 'Consumer agents must know merchant domains a priori. No list.', reg: 'Single API call returns every conformant agent, filtered by item type and region.' },
-  { dim: 'Trust signal', spec: '"Claims to be conformant" — anyone can put the file on disk.', reg: 'Domain-verified, signed by the registry, time-bounded badge.' },
-  { dim: 'Conformance freshness', spec: 'Write-once, drift forever. No re-test.', reg: 'Cron re-runs the test suite daily. 3 fails → stale; 7 → delisted.' },
-  { dim: 'Defensibility', spec: 'Forkable in a weekend. Spec is a giveaway.', reg: 'Catalogue of N verified merchants takes years to replicate.' },
-  { dim: 'Revenue surface', spec: 'You cannot charge for a spec.', reg: 'Listing fees, badge SLAs, priority placement, white-glove onboarding.' },
-  { dim: 'Feedback loop', spec: 'You do not know who is implementing.', reg: 'You see who is listed, who is healthy, who is drifting.' },
-  { dim: 'Liability if money disappears', spec: 'Zero — not your problem.', reg: 'Real — but with audit trail, signed quotes, and recourse.' },
-  { dim: 'Brand asset', spec: 'Spec authors are forgotten. (Who wrote OAuth 2.1?)', reg: 'Registries become household names. (npm, App Store, Docker Hub.)' },
+  {
+    dim: "Discovery",
+    spec: "Consumer agents must know merchant domains in advance. No list.",
+    reg: "Single API call returns every conformant agent, filtered by item type and region.",
+  },
+  {
+    dim: "Trust signal",
+    spec: '"Claims to be conformant" — anyone can put the file on disk.',
+    reg: "Domain-verified, signed by the registry, time-bounded badge.",
+  },
+  {
+    dim: "Conformance freshness",
+    spec: "Write-once, drift forever. No re-test.",
+    reg: "Cron re-runs the test suite daily. 3 fails → stale; 7 → delisted.",
+  },
+  {
+    dim: "Defensibility",
+    spec: "Forkable in a weekend. Spec is a giveaway.",
+    reg: "Catalogue of N verified merchants takes years to replicate.",
+  },
+  {
+    dim: "Revenue surface",
+    spec: "You cannot charge for a spec.",
+    reg: "Listing fees, badge SLAs, priority placement, white-glove onboarding.",
+  },
+  {
+    dim: "Feedback loop",
+    spec: "You do not know who is implementing.",
+    reg: "You see who is listed, who is healthy, who is drifting.",
+  },
+  {
+    dim: "Liability if money disappears",
+    spec: "Zero — not your problem.",
+    reg: "Real — but with audit trail, signed quotes, and recourse.",
+  },
+  {
+    dim: "Brand asset",
+    spec: "Spec authors are forgotten. (Who wrote OAuth 2.1?)",
+    reg: "Registries become household names. (npm, App Store, Docker Hub.)",
+  },
 ];
 
 const personas = [
   {
-    chip: '01 · Merchant',
-    name: 'Priya',
-    role: 'Founder, D2C beauty brand',
-    without: 'I added the manifest file. Now what? Nobody finds me. If an agent ghosts a half-finished checkout, my support team eats it. I will buy more Instagram ads.',
-    withReg: 'OpenKarta verified my domain, runs my conformance test nightly, and gives me a green badge. Last month Claude bought 47 orders, Perplexity bought 12. I show up in the list. The list is the channel.',
+    chip: "01 · Merchant",
+    name: "Priya",
+    role: "Founder, D2C beauty brand",
+    without:
+      "I added the manifest file. Now what? Nobody finds me. If an agent ghosts a half-finished checkout, my support team eats it. I will buy more Instagram ads.",
+    withReg:
+      "OpenKarta verified my domain, runs my conformance test nightly, and gives me a green badge. Last month Claude bought 47 orders, Perplexity bought 12. I show up in the list. The list is the channel.",
   },
   {
-    chip: '02 · Consumer agent',
-    name: 'Aman',
-    role: 'Engineer, Krutrim shopping assistant',
-    without: 'OK… buy from where? Crawl the entire web for .well-known files? Write my own verifier per domain? Half the manifests are stale, half are phishing. Forget it — I will hand-wire 5 partnerships and ship.',
-    withReg: 'GET /v1/agents?itemType=product&country=IN. 200 verified merchants, all signed, all tested last night. I wire OpenKarta once and have 200 sellers. It is npm install for commerce.',
+    chip: "02 · Consumer agent",
+    name: "Aman",
+    role: "Engineer, Krutrim shopping assistant",
+    without:
+      "OK… buy from where? Crawl the entire web for .well-known files? Write my own verifier per domain? Half the manifests are stale, half are phishing. Forget it — I will hand-wire 5 partnerships and ship.",
+    withReg:
+      "GET /v1/agents?itemType=product&country=IN. 200 verified merchants, all signed, all tested last night. I wire OpenKarta once and have 200 sellers. It is npm install for commerce.",
   },
   {
-    chip: '03 · Investor',
-    name: 'Karthik',
-    role: 'Partner, Series-A VC',
-    without: 'You wrote a spec. So did MCP, A2A, AP2, ACP, OAuth, and 14 others. Specs are not defensible. I cannot put a spec on a P&L. Pass.',
-    withReg: '500 verified merchants, ₹2,000Cr GMV flowing through your signed quotes. That is the rails for agent commerce in India. Anyone shipping a shopping agent has to come through you. What is the round?',
+    chip: "03 · Investor",
+    name: "Karthik",
+    role: "Partner, Series-A VC",
+    without:
+      "You wrote a spec. So did MCP, A2A, AP2, ACP, OAuth, and 14 others. Specs are not defensible. I cannot put a spec on a P&L. Pass.",
+    withReg:
+      "500 verified merchants, ₹2,000Cr GMV flowing through your signed quotes. That is the rails for agent commerce in India. Anyone shipping a shopping agent has to come through you. What is the round?",
   },
   {
-    chip: '04 · Frontier-lab partner',
-    name: 'Meera',
-    role: 'Head of partnerships, frontier model',
-    without: 'I would have to do 500 individual merchant deals. My team is six. We launch with three exclusives and call the rest "coming soon" for 18 months.',
-    withReg: 'OpenKarta hands us 500 merchants on day one. Our agent learns the spec once, works with all of them. I sign one deal, not 500. Six people become a 500-merchant team overnight.',
+    chip: "04 · Frontier-lab partner",
+    name: "Meera",
+    role: "Head of partnerships, frontier model",
+    without:
+      'I would have to do 500 individual merchant deals. My team is six. We launch with three exclusives and call the rest "coming soon" for 18 months.',
+    withReg:
+      "OpenKarta hands us 500 merchants on day one. Our agent learns the spec once, works with all of them. I sign one deal, not 500. Six people become a 500-merchant team overnight.",
   },
   {
-    chip: '05 · Internal',
-    name: 'Rohan',
-    role: 'CTO, OpenKarta',
-    without: 'No infra, no abuse moderation, no on-call, no legal exposure. And no business. We give away the spec and become a footnote in someone else\'s case study.',
-    withReg: 'Yes ops costs and abuse handling. But every verified merchant is a row someone else has to replicate to compete. The cost is the moat. Painful infra is what stops eight clones from launching by Friday.',
+    chip: "05 · Internal",
+    name: "Rohan",
+    role: "CTO, OpenKarta",
+    without:
+      "No infra, no abuse moderation, no on-call, no legal exposure. And no business. We give away the spec and become a footnote in someone else's case study.",
+    withReg:
+      "Yes ops costs and abuse handling. But every verified merchant is a row someone else has to replicate to compete. The cost is the moat. Painful infra is what stops eight clones from launching by Friday.",
   },
   {
-    chip: '06 · Regulator',
-    name: 'Anjali',
-    role: 'Compliance counsel, RBI-regulated bank',
-    without: 'Some merchant claimed to support OpenKarta. Anyone could. There is no authority. The spec authors are an open-source project — no throat to choke. I cannot approve our card on this rail. Block.',
-    withReg: 'OpenKarta verified the domain, ran conformance, signed the quote, time-bounded the order. There is an audit trail, an entity, a phone number. Recommendation: pilot with verified-only.',
+    chip: "06 · Regulator",
+    name: "Anjali",
+    role: "Compliance counsel, RBI-regulated bank",
+    without:
+      "Some merchant claimed to support OpenKarta. Anyone could. There is no authority. The spec authors are an open-source project — no throat to choke. I cannot approve our card on this rail. Block.",
+    withReg:
+      "OpenKarta verified the domain, ran conformance, signed the quote, time-bounded the order. There is an audit trail, an entity, a phone number. Recommendation: pilot with verified-only.",
   },
 ];
 ---

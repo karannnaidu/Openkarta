@@ -1,12 +1,12 @@
-import { createClient, OpenKartaError } from '@openkarta/sdk-node';
-import type { Quote, Cart } from '@openkarta/spec';
-import type { OrchestratorCart } from './cart.js';
+import { OpenKartaError, createClient } from "@openkarta/sdk-node";
+import type { Cart, Quote } from "@openkarta/spec";
+import type { OrchestratorCart } from "./cart.js";
 
 export async function quoteCart(
   cart: OrchestratorCart,
   opts: { fetchImpl?: typeof fetch; timeoutMs?: number } = {},
 ): Promise<Quote> {
-  if (cart.lines.length === 0) throw new Error('cannot quote empty cart');
+  if (cart.lines.length === 0) throw new Error("cannot quote empty cart");
   const client = createClient({
     baseUrl: cart.agentBaseUrl,
     timeoutMs: opts.timeoutMs ?? 10_000,
@@ -19,12 +19,12 @@ export async function quoteCart(
       itemType: l.itemType,
       itemId: l.itemId,
       quantity: l.quantity,
-    })) as Cart['lines'],
+    })) as Cart["lines"],
   };
   try {
     return await client.quote(protocolCart);
   } catch (err) {
     if (err instanceof OpenKartaError) throw err;
-    throw new OpenKartaError('network_error', 0, err instanceof Error ? err.message : String(err));
+    throw new OpenKartaError("network_error", 0, err instanceof Error ? err.message : String(err));
   }
 }

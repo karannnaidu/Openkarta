@@ -1,10 +1,10 @@
-import { env, applyD1Migrations } from 'cloudflare:test';
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
-import worker, { setRunner, setEmailFactory, type VerifyMessage } from '../src/index.js';
-import type { ConformanceResult } from '@openkarta/conformance-tests';
-import type { EmailClient } from '@openkarta/registry-shared';
+import { applyD1Migrations, env } from "cloudflare:test";
+import type { ConformanceResult } from "@openkarta/conformance-tests";
+import type { EmailClient } from "@openkarta/registry-shared";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
+import worker, { setRunner, setEmailFactory, type VerifyMessage } from "../src/index.js";
 
-declare module 'cloudflare:test' {
+declare module "cloudflare:test" {
   interface ProvidedEnv {
     DB: D1Database;
     TEST_MIGRATIONS: D1Migration[];
@@ -20,15 +20,19 @@ beforeAll(async () => {
 const sentEmails: Array<{ to: string; kind: string; agentId: string }> = [];
 
 const stubEmail: EmailClient = {
-  async sendMagicLink() { return { id: 'm' }; },
-  async sendTransferInvite() { return { id: 't' }; },
+  async sendMagicLink() {
+    return { id: "m" };
+  },
+  async sendTransferInvite() {
+    return { id: "t" };
+  },
   async sendVerificationPassed({ to, agentId }) {
-    sentEmails.push({ to, agentId, kind: 'verification_passed' });
-    return { id: 'vp' };
+    sentEmails.push({ to, agentId, kind: "verification_passed" });
+    return { id: "vp" };
   },
   async sendHealthTransition({ to, agentId, kind }) {
     sentEmails.push({ to, agentId, kind });
-    return { id: 'ht' };
+    return { id: "ht" };
   },
 };
 
@@ -37,17 +41,17 @@ function fakeResult(passed: boolean): ConformanceResult {
     passed,
     testsPassed: passed ? 5 : 2,
     testsFailed: passed ? 0 : 3,
-    packs: ['core', 'product'],
-    ...(passed ? {} : { errorSummary: 'core/manifest: failed' }),
+    packs: ["core", "product"],
+    ...(passed ? {} : { errorSummary: "core/manifest: failed" }),
     signedBadge: {
-      agentId: 'test-agent',
-      protocolVersion: '0.1',
-      tierDetected: 'compliant',
-      packsPassed: passed ? ['core', 'product'] : [],
+      agentId: "test-agent",
+      protocolVersion: "0.1",
+      tierDetected: "compliant",
+      packsPassed: passed ? ["core", "product"] : [],
       testsPassed: passed ? 5 : 2,
       testsFailed: passed ? 0 : 3,
       signedAt: new Date(0).toISOString(),
-      signature: 'sig',
+      signature: "sig",
     },
   };
 }
@@ -60,13 +64,13 @@ setEmailFactory(() => stubEmail);
 async function seedAgent(opts: {
   agentId: string;
   email: string;
-  healthStatus?: 'unknown' | 'healthy' | 'stale' | 'delisted';
+  healthStatus?: "unknown" | "healthy" | "stale" | "delisted";
   consecutiveFailures?: number;
   lastVerifiedAt?: number | null;
 }) {
-  const accountId = 'acc-' + opts.agentId;
+  const accountId = `acc-${opts.agentId}`;
   const now = Math.floor(Date.now() / 1000);
-  await env.DB.prepare('INSERT INTO accounts (id, email, created_at) VALUES (?,?,?)')
+  await env.DB.prepare("INSERT INTO accounts (id, email, created_at) VALUES (?,?,?)")
     .bind(accountId, opts.email, now)
     .run();
   await env.DB.prepare(
@@ -77,13 +81,13 @@ async function seedAgent(opts: {
     .bind(
       opts.agentId,
       accountId,
-      'Test',
-      'https://example.com',
-      'https://example.com/v0/discover',
-      'lite',
-      JSON.stringify(['product']),
-      'verified',
-      opts.healthStatus ?? 'unknown',
+      "Test",
+      "https://example.com",
+      "https://example.com/v0/discover",
+      "lite",
+      JSON.stringify(["product"]),
+      "verified",
+      opts.healthStatus ?? "unknown",
       opts.consecutiveFailures ?? 0,
       opts.lastVerifiedAt === undefined ? null : opts.lastVerifiedAt,
       now,
@@ -94,140 +98,158 @@ async function seedAgent(opts: {
 
 function makeBatch(msgs: VerifyMessage[]): MessageBatch<VerifyMessage> {
   return {
-    queue: 'verify-queue',
+    queue: "verify-queue",
     messages: msgs.map((body, i) => ({
       id: `m${i}`,
       timestamp: new Date(),
       body,
       attempts: 1,
-      ack() { /* no-op for test */ },
-      retry() { /* no-op for test */ },
+      ack() {
+        /* no-op for test */
+      },
+      retry() {
+        /* no-op for test */
+      },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     })) as any,
-    ackAll() { /* no-op */ },
-    retryAll() { /* no-op */ },
+    ackAll() {
+      /* no-op */
+    },
+    retryAll() {
+      /* no-op */
+    },
+    metadata: { metrics: { backlogCount: 0, backlogBytes: 0 } },
   };
 }
 
 beforeEach(async () => {
   sentEmails.length = 0;
   // Wipe state between tests.
-  await env.DB.exec('DELETE FROM badge_runs');
-  await env.DB.exec('DELETE FROM email_log');
-  await env.DB.exec('DELETE FROM agents');
-  await env.DB.exec('DELETE FROM accounts');
+  await env.DB.exec("DELETE FROM badge_runs");
+  await env.DB.exec("DELETE FROM email_log");
+  await env.DB.exec("DELETE FROM agents");
+  await env.DB.exec("DELETE FROM accounts");
 });
 
-describe('verifier queue consumer', () => {
-  it('first-ever pass writes badge_run, sets healthy, emails verification_passed', async () => {
+describe("verifier queue consumer", () => {
+  it("first-ever pass writes badge_run, sets healthy, emails verification_passed", async () => {
     nextResult = fakeResult(true);
-    await seedAgent({ agentId: 'agent-a', email: 'owner@example.com', lastVerifiedAt: null });
+    await seedAgent({ agentId: "agent-a", email: "owner@example.com", lastVerifiedAt: null });
 
-    await worker.queue(makeBatch([{ agentId: 'agent-a', baseUrl: 'https://example.com' }]), env);
+    await worker.queue(makeBatch([{ agentId: "agent-a", baseUrl: "https://example.com" }]), env);
 
-    const agent = await env.DB
-      .prepare('SELECT health_status, consecutive_failures, last_verified_at FROM agents WHERE id = ?')
-      .bind('agent-a')
+    const agent = await env.DB.prepare(
+      "SELECT health_status, consecutive_failures, last_verified_at FROM agents WHERE id = ?",
+    )
+      .bind("agent-a")
       .first<{ health_status: string; consecutive_failures: number; last_verified_at: number }>();
-    expect(agent?.health_status).toBe('healthy');
+    expect(agent?.health_status).toBe("healthy");
     expect(agent?.consecutive_failures).toBe(0);
     expect(agent?.last_verified_at).toBeGreaterThan(0);
 
-    const runs = await env.DB.prepare('SELECT passed, tests_passed FROM badge_runs WHERE agent_id = ?')
-      .bind('agent-a')
+    const runs = await env.DB.prepare(
+      "SELECT passed, tests_passed FROM badge_runs WHERE agent_id = ?",
+    )
+      .bind("agent-a")
       .all<{ passed: number; tests_passed: number }>();
     expect(runs.results.length).toBe(1);
     expect(runs.results[0]!.passed).toBe(1);
     expect(runs.results[0]!.tests_passed).toBe(5);
 
     expect(sentEmails).toEqual([
-      { to: 'owner@example.com', agentId: 'agent-a', kind: 'verification_passed' },
+      { to: "owner@example.com", agentId: "agent-a", kind: "verification_passed" },
     ]);
   });
 
-  it('healthy → 3rd consecutive fail → stale, emails stale', async () => {
+  it("healthy → 3rd consecutive fail → stale, emails stale", async () => {
     nextResult = fakeResult(false);
     await seedAgent({
-      agentId: 'agent-b',
-      email: 'b@example.com',
-      healthStatus: 'healthy',
+      agentId: "agent-b",
+      email: "b@example.com",
+      healthStatus: "healthy",
       consecutiveFailures: 2,
       lastVerifiedAt: 1000,
     });
 
-    await worker.queue(makeBatch([{ agentId: 'agent-b', baseUrl: 'https://example.com' }]), env);
+    await worker.queue(makeBatch([{ agentId: "agent-b", baseUrl: "https://example.com" }]), env);
 
-    const agent = await env.DB
-      .prepare('SELECT health_status, consecutive_failures FROM agents WHERE id = ?')
-      .bind('agent-b')
+    const agent = await env.DB.prepare(
+      "SELECT health_status, consecutive_failures FROM agents WHERE id = ?",
+    )
+      .bind("agent-b")
       .first<{ health_status: string; consecutive_failures: number }>();
-    expect(agent?.health_status).toBe('stale');
+    expect(agent?.health_status).toBe("stale");
     expect(agent?.consecutive_failures).toBe(3);
 
-    expect(sentEmails).toEqual([{ to: 'b@example.com', agentId: 'agent-b', kind: 'stale' }]);
+    expect(sentEmails).toEqual([{ to: "b@example.com", agentId: "agent-b", kind: "stale" }]);
 
-    const runs = await env.DB.prepare('SELECT passed, error_summary FROM badge_runs WHERE agent_id = ?')
-      .bind('agent-b')
+    const runs = await env.DB.prepare(
+      "SELECT passed, error_summary FROM badge_runs WHERE agent_id = ?",
+    )
+      .bind("agent-b")
       .all<{ passed: number; error_summary: string }>();
     expect(runs.results[0]!.passed).toBe(0);
-    expect(runs.results[0]!.error_summary).toContain('core/manifest');
+    expect(runs.results[0]!.error_summary).toContain("core/manifest");
   });
 
-  it('stale + pass → healthy, emails back_to_healthy', async () => {
+  it("stale + pass → healthy, emails back_to_healthy", async () => {
     nextResult = fakeResult(true);
     await seedAgent({
-      agentId: 'agent-c',
-      email: 'c@example.com',
-      healthStatus: 'stale',
+      agentId: "agent-c",
+      email: "c@example.com",
+      healthStatus: "stale",
       consecutiveFailures: 5,
       lastVerifiedAt: 1000,
     });
 
-    await worker.queue(makeBatch([{ agentId: 'agent-c', baseUrl: 'https://example.com' }]), env);
+    await worker.queue(makeBatch([{ agentId: "agent-c", baseUrl: "https://example.com" }]), env);
 
-    const agent = await env.DB
-      .prepare('SELECT health_status, consecutive_failures FROM agents WHERE id = ?')
-      .bind('agent-c')
+    const agent = await env.DB.prepare(
+      "SELECT health_status, consecutive_failures FROM agents WHERE id = ?",
+    )
+      .bind("agent-c")
       .first<{ health_status: string; consecutive_failures: number }>();
-    expect(agent?.health_status).toBe('healthy');
+    expect(agent?.health_status).toBe("healthy");
     expect(agent?.consecutive_failures).toBe(0);
     expect(sentEmails).toEqual([
-      { to: 'c@example.com', agentId: 'agent-c', kind: 'back_to_healthy' },
+      { to: "c@example.com", agentId: "agent-c", kind: "back_to_healthy" },
     ]);
   });
 
-  it('stale + 7th fail → delisted, emails delisted', async () => {
+  it("stale + 7th fail → delisted, emails delisted", async () => {
     nextResult = fakeResult(false);
     await seedAgent({
-      agentId: 'agent-d',
-      email: 'd@example.com',
-      healthStatus: 'stale',
+      agentId: "agent-d",
+      email: "d@example.com",
+      healthStatus: "stale",
       consecutiveFailures: 6,
       lastVerifiedAt: 1000,
     });
 
-    await worker.queue(makeBatch([{ agentId: 'agent-d', baseUrl: 'https://example.com' }]), env);
+    await worker.queue(makeBatch([{ agentId: "agent-d", baseUrl: "https://example.com" }]), env);
 
-    const agent = await env.DB
-      .prepare('SELECT health_status, consecutive_failures FROM agents WHERE id = ?')
-      .bind('agent-d')
+    const agent = await env.DB.prepare(
+      "SELECT health_status, consecutive_failures FROM agents WHERE id = ?",
+    )
+      .bind("agent-d")
       .first<{ health_status: string; consecutive_failures: number }>();
-    expect(agent?.health_status).toBe('delisted');
+    expect(agent?.health_status).toBe("delisted");
     expect(agent?.consecutive_failures).toBe(7);
-    expect(sentEmails).toEqual([{ to: 'd@example.com', agentId: 'agent-d', kind: 'delisted' }]);
+    expect(sentEmails).toEqual([{ to: "d@example.com", agentId: "agent-d", kind: "delisted" }]);
   });
 
-  it('skips silently when agent was deleted before processing', async () => {
+  it("skips silently when agent was deleted before processing", async () => {
     nextResult = fakeResult(true);
     // No seedAgent — DB has no row for this id.
 
     await worker.queue(
-      makeBatch([{ agentId: 'agent-missing', baseUrl: 'https://example.com' }]),
+      makeBatch([{ agentId: "agent-missing", baseUrl: "https://example.com" }]),
       env,
     );
 
-    const runs = await env.DB.prepare('SELECT count(*) as c FROM badge_runs')
-      .first<{ c: number }>();
+    const runs = await env.DB.prepare("SELECT count(*) as c FROM badge_runs").first<{
+      c: number;
+    }>();
     expect(runs?.c).toBe(0);
     expect(sentEmails).toEqual([]);
   });

@@ -1,6 +1,6 @@
 {
   "name": "@openkarta/cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "MIT",
   "type": "module",
   "bin": { "openkarta": "./dist/bin.js" },
@@ -12,11 +12,11 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@openkarta/spec":         "workspace:*",
-    "@openkarta/sdk-node":     "workspace:*",
+    "@openkarta/spec": "workspace:*",
+    "@openkarta/sdk-node": "workspace:*",
     "@openkarta/orchestrator": "workspace:*",
-    "commander":  "^12.1.0",
-    "kleur":      "^4.1.5",
+    "commander": "^12.1.0",
+    "kleur": "^4.1.5",
     "cli-table3": "^0.6.5"
   },
   "devDependencies": {

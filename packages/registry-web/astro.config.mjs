@@ -1,6 +1,6 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  output: 'static',
-  site: 'https://registry.openkarta.org',
+  output: "static",
+  site: "https://registry.openkarta.org",
 });

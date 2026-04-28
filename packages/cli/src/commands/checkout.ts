@@ -1,30 +1,35 @@
-import { Command } from 'commander';
-import { quoteCart, checkoutCart, createOrderStore, type OrchestratorCart } from '@openkarta/orchestrator';
-import { readState, ORDERS_FILE } from '../storage.js';
-import { info, ok, error as printError, formatPrice } from '../output.js';
+import {
+  type OrchestratorCart,
+  checkoutCart,
+  createOrderStore,
+  quoteCart,
+} from "@openkarta/orchestrator";
+import { Command } from "commander";
+import { formatPrice, info, ok, error as printError } from "../output.js";
+import { ORDERS_FILE, readState } from "../storage.js";
 
 export function checkoutCommand(): Command {
-  return new Command('checkout')
-    .description('Quote the cart and place the order')
-    .requiredOption('--payment <method>', 'cod | razorpay_routes | stripe_connect | …')
-    .option('--payment-ref <ref>', 'optional payment reference')
-    .option('-y, --yes', 'skip the price-confirmation prompt', false)
+  return new Command("checkout")
+    .description("Quote the cart and place the order")
+    .requiredOption("--payment <method>", "cod | razorpay_routes | stripe_connect | …")
+    .option("--payment-ref <ref>", "optional payment reference")
+    .option("-y, --yes", "skip the price-confirmation prompt", false)
     .action(async (opts: { payment: string; paymentRef?: string; yes: boolean }) => {
       try {
         const s = await readState();
         const cart = (s as { cart?: OrchestratorCart } | null)?.cart;
         if (!cart || cart.lines.length === 0) {
-          printError('cart is empty');
+          printError("cart is empty");
           process.exitCode = 1;
           return;
         }
 
-        info('quoting cart…');
+        info("quoting cart…");
         const q = await quoteCart(cart);
         info(`total: ${formatPrice(q.totalMinor, q.currency)} (expires ${q.expiresAt})`);
 
         if (!opts.yes) {
-          info('re-run with --yes to confirm');
+          info("re-run with --yes to confirm");
           return;
         }
 

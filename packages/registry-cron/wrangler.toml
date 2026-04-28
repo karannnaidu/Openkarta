@@ -5,8 +5,8 @@ compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "openkarta-registry"
-database_id = "REPLACE_WITH_D1_ID"
+database_name = "registry_db"
+database_id = "eab7860d-51a4-4eb0-abee-d89c14e8c233"
 
 [[queues.producers]]
 binding = "VERIFY_QUEUE"
@@ -18,7 +18,7 @@ crons = ["0 2 * * *", "0 3 * * *"]
 [vars]
 GITHUB_REPO = "karannnaidu/Openkarta"
 GIT_MIRROR_BRANCH = "registry-mirror"
-PUBLIC_BASE_URL = "https://registry.openkarta.org"
+PUBLIC_BASE_URL = "https://api.openkarta.org"
 
 # Secrets (set via `wrangler secret put`):
 #   GITHUB_BOT_PAT

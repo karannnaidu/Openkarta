@@ -1,4 +1,4 @@
-import { type ErrorCode, errorStatusFor } from '@openkarta/spec';
+import { type ErrorCode, errorStatusFor } from "@openkarta/spec";
 
 /**
  * Client-side error codes extend the wire-protocol `ErrorCode` set with two
@@ -11,7 +11,7 @@ import { type ErrorCode, errorStatusFor } from '@openkarta/spec';
  * Orchestrators branch on `code` to decide retry behaviour, so these must be
  * distinct from `'internal'` (which means the agent's handler crashed).
  */
-export type ClientErrorCode = ErrorCode | 'timeout' | 'network_error';
+export type ClientErrorCode = ErrorCode | "timeout" | "network_error";
 
 export class OpenKartaError extends Error {
   constructor(
@@ -21,12 +21,17 @@ export class OpenKartaError extends Error {
     public readonly details?: unknown,
   ) {
     super(message);
-    this.name = 'OpenKartaError';
+    this.name = "OpenKartaError";
   }
 }
 
 export interface ErrorBody {
-  error: { code: ErrorCode; message: string; retryable: boolean; details?: Record<string, unknown> };
+  error: {
+    code: ErrorCode;
+    message: string;
+    retryable: boolean;
+    details?: Record<string, unknown>;
+  };
   requestId?: string;
 }
 
@@ -38,7 +43,7 @@ export const toErrorResponse = (
   requestId?: string,
 ): { status: number; body: ErrorBody } => ({
   status: errorStatusFor(code),
-  body:   {
+  body: {
     error: { code, message, retryable, ...(details !== undefined ? { details } : {}) },
     ...(requestId !== undefined ? { requestId } : {}),
   },

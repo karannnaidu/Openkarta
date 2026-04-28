@@ -1,7 +1,10 @@
-import type { DispatchFn } from './dispatcher.js';
-import { buildToolDefs } from './tool-defs.js';
+import type { DispatchFn } from "./dispatcher.js";
+import { buildToolDefs } from "./tool-defs.js";
 
-export interface ChatTurn { role: 'user' | 'assistant'; text: string; }
+export interface ChatTurn {
+  role: "user" | "assistant";
+  text: string;
+}
 
 export interface ChatLoopOptions {
   /** Base URL of the chat-completions endpoint, e.g. 'https://openrouter.ai/api/v1' or 'http://localhost:11434/v1'. */
@@ -26,12 +29,12 @@ Guidelines:
 
 interface ToolCallShape {
   id: string;
-  type: 'function';
+  type: "function";
   function: { name: string; arguments: string };
 }
 
 interface ChatMessage {
-  role: 'system' | 'user' | 'assistant' | 'tool';
+  role: "system" | "user" | "assistant" | "tool";
   content?: string | null;
   tool_calls?: ToolCallShape[];
   tool_call_id?: string;
@@ -55,26 +58,26 @@ export async function chatOnce(
 ): Promise<{ history: ChatTurn[]; finalText: string }> {
   const fetchImpl = opts.fetchImpl ?? fetch;
   const tools = buildToolDefs().map((t) => ({
-    type: 'function' as const,
+    type: "function" as const,
     function: { name: t.name, description: t.description, parameters: t.parameters },
   }));
 
   const messages: ChatMessage[] = [
-    { role: 'system', content: opts.systemPrompt ?? DEFAULT_SYSTEM },
+    { role: "system", content: opts.systemPrompt ?? DEFAULT_SYSTEM },
     ...history.map<ChatMessage>((t) => ({ role: t.role, content: t.text })),
   ];
 
-  const url = `${opts.baseURL.replace(/\/$/, '')}/chat/completions`;
+  const url = `${opts.baseURL.replace(/\/$/, "")}/chat/completions`;
   const maxIter = opts.maxIterations ?? 10;
   const maxTokens = opts.maxTokens ?? 1024;
 
-  let finalText = '';
+  let finalText = "";
   for (let i = 0; i < maxIter; i++) {
-    const headers: Record<string, string> = { 'content-type': 'application/json' };
-    if (opts.apiKey) headers['authorization'] = `Bearer ${opts.apiKey}`;
+    const headers: Record<string, string> = { "content-type": "application/json" };
+    if (opts.apiKey) headers.authorization = `Bearer ${opts.apiKey}`;
 
     const res = await fetchImpl(url, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: JSON.stringify({
         model: opts.model,
@@ -85,24 +88,24 @@ export async function chatOnce(
     });
 
     if (!res.ok) {
-      const bodyText = await res.text().catch(() => '');
+      const bodyText = await res.text().catch(() => "");
       throw new Error(`chat endpoint ${res.status}: ${bodyText.slice(0, 500)}`);
     }
 
     const json = (await res.json()) as ChatCompletionResponse;
     const choice = json.choices?.[0];
-    if (!choice?.message) throw new Error('chat response had no choices[0].message');
+    if (!choice?.message) throw new Error("chat response had no choices[0].message");
     const msg = choice.message;
     const toolCalls = msg.tool_calls ?? [];
 
     if (toolCalls.length === 0) {
-      finalText = (msg.content ?? '').trim();
-      messages.push({ role: 'assistant', content: msg.content ?? '' });
+      finalText = (msg.content ?? "").trim();
+      messages.push({ role: "assistant", content: msg.content ?? "" });
       break;
     }
 
     messages.push({
-      role: 'assistant',
+      role: "assistant",
       content: msg.content ?? null,
       tool_calls: toolCalls,
     });
@@ -113,7 +116,7 @@ export async function chatOnce(
         parsedInput = JSON.parse(tc.function.arguments) as Record<string, unknown>;
       } catch {
         messages.push({
-          role: 'tool',
+          role: "tool",
           tool_call_id: tc.id,
           content: `error: tool input for ${tc.function.name} was not valid JSON`,
         });
@@ -123,13 +126,13 @@ export async function chatOnce(
       try {
         const result = await dispatch(tc.function.name, parsedInput);
         messages.push({
-          role: 'tool',
+          role: "tool",
           tool_call_id: tc.id,
           content: JSON.stringify(result),
         });
       } catch (err) {
         messages.push({
-          role: 'tool',
+          role: "tool",
           tool_call_id: tc.id,
           content: `error: ${err instanceof Error ? err.message : String(err)}`,
         });
@@ -137,14 +140,12 @@ export async function chatOnce(
     }
   }
 
-  if (finalText === '') {
-    throw new Error(
-      `chat loop exhausted: no final text response within ${maxIter} iterations`,
-    );
+  if (finalText === "") {
+    throw new Error(`chat loop exhausted: no final text response within ${maxIter} iterations`);
   }
 
   return {
-    history: [...history, { role: 'assistant', text: finalText }],
+    history: [...history, { role: "assistant", text: finalText }],
     finalText,
   };
 }

@@ -4,19 +4,19 @@ export interface EmailClient {
   sendHealthTransition(args: {
     to: string;
     agentId: string;
-    kind: 'stale' | 'delisted' | 'back_to_healthy';
+    kind: "stale" | "delisted" | "back_to_healthy";
   }): Promise<{ id: string }>;
   sendTransferInvite(args: { to: string; agentId: string; link: string }): Promise<{ id: string }>;
 }
 
-const FROM_DEFAULT = 'OpenKarta <noreply@openkarta.org>';
+const FROM_DEFAULT = "OpenKarta <noreply@openkarta.org>";
 
 export function makeResendClient(apiKey: string, from: string = FROM_DEFAULT): EmailClient {
   async function send(to: string, subject: string, html: string): Promise<{ id: string }> {
-    const r = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({ from, to, subject, html }),
@@ -30,7 +30,7 @@ export function makeResendClient(apiKey: string, from: string = FROM_DEFAULT): E
     sendMagicLink: ({ to, link }) =>
       send(
         to,
-        'Sign in to OpenKarta',
+        "Sign in to OpenKarta",
         `<p><a href="${link}">Sign in to OpenKarta</a> &mdash; this link expires in 15 minutes.</p>`,
       ),
     sendVerificationPassed: ({ to, agentId }) =>
@@ -42,8 +42,8 @@ export function makeResendClient(apiKey: string, from: string = FROM_DEFAULT): E
     sendHealthTransition: ({ to, agentId, kind }) =>
       send(
         to,
-        `${agentId}: ${kind.replace(/_/g, ' ')}`,
-        `<p>Your agent <code>${agentId}</code> is now <b>${kind.replace(/_/g, ' ')}</b>.</p>`,
+        `${agentId}: ${kind.replace(/_/g, " ")}`,
+        `<p>Your agent <code>${agentId}</code> is now <b>${kind.replace(/_/g, " ")}</b>.</p>`,
       ),
     sendTransferInvite: ({ to, agentId, link }) =>
       send(

@@ -1,52 +1,57 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const posts = [
   {
-    slug: 'eight-verbs-enough',
-    date: '2026-04-20',
-    category: 'Spec',
-    title: 'Why eight verbs is enough.',
-    excerpt: 'Every commerce-API standardization effort that came before us added too much surface. Here\'s the thinking behind keeping it down to discover, search, get, quote, checkout, status, cancel, return.',
+    slug: "eight-verbs-enough",
+    date: "2026-04-20",
+    category: "Spec",
+    title: "Why eight verbs is enough.",
+    excerpt:
+      "Every commerce-API standardization effort that came before us added too much surface. Here's the thinking behind keeping it down to discover, search, get, quote, checkout, status, cancel, return.",
     readMin: 7,
   },
   {
-    slug: 'signed-quotes',
-    date: '2026-04-18',
-    category: 'Security',
-    title: 'Signed quotes, on the wire.',
-    excerpt: 'How HMAC-bound, time-limited quote tokens shut down the entire class of agent-side price tampering attacks — without a centralized escrow.',
+    slug: "signed-quotes",
+    date: "2026-04-18",
+    category: "Security",
+    title: "Signed quotes, on the wire.",
+    excerpt:
+      "How HMAC-bound, time-limited quote tokens shut down the entire class of agent-side price tampering attacks — without a centralized escrow.",
     readMin: 5,
   },
   {
-    slug: 'no-merchant-of-record',
-    date: '2026-04-15',
-    category: 'Foundation',
-    title: 'Why we will never be the merchant of record.',
-    excerpt: 'Settlement and tax compliance stay with the merchant, by design. We route data, not money. The reasons are commercial, technical, and political.',
+    slug: "no-merchant-of-record",
+    date: "2026-04-15",
+    category: "Foundation",
+    title: "Why we will never be the merchant of record.",
+    excerpt:
+      "Settlement and tax compliance stay with the merchant, by design. We route data, not money. The reasons are commercial, technical, and political.",
     readMin: 6,
   },
   {
-    slug: 'orchestrator-launch',
-    date: '2026-04-25',
-    category: 'Release',
-    title: 'The orchestrator and CLI go public.',
-    excerpt: 'Release notes for v0.2 — a typed client, fan-out search, homogeneous carts, signed-quote checkout, order tracking, and a vendor-neutral chat REPL.',
+    slug: "orchestrator-launch",
+    date: "2026-04-25",
+    category: "Release",
+    title: "The orchestrator and CLI go public.",
+    excerpt:
+      "Release notes for v0.2 — a typed client, fan-out search, homogeneous carts, signed-quote checkout, order tracking, and a vendor-neutral chat REPL.",
     readMin: 4,
   },
   {
-    slug: 'conformance-pipeline',
-    date: '2026-04-10',
-    category: 'Operations',
-    title: 'How daily conformance sweeps work.',
-    excerpt: 'A walkthrough of the cron worker, the test runner, the badge signer, and the lifecycle that takes a flapping agent from healthy to stale to delisted.',
+    slug: "conformance-pipeline",
+    date: "2026-04-10",
+    category: "Operations",
+    title: "How daily conformance sweeps work.",
+    excerpt:
+      "A walkthrough of the cron worker, the test runner, the badge signer, and the lifecycle that takes a flapping agent from healthy to stale to delisted.",
     readMin: 8,
   },
 ];
 ---
 <BaseLayout title="Blog — OpenKarta" activeNav={null}>
   <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16">
-    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-8">Blog · field notes</div>
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Blog · field notes</div>
     <h1 class="font-hero-h1 text-on-background [font-size:clamp(48px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
       Field notes from the protocol.
     </h1>
@@ -80,7 +85,7 @@ const posts = [
         <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">RSS</div>
         <p class="font-body-dense text-body-dense text-on-surface-variant">Subscribe at <span class="font-code-block">openkarta.org/blog/feed.xml</span> — or watch the GitHub repo to get notified on new posts.</p>
       </div>
-      <a class="bg-on-background text-surface-container-lowest px-6 py-3 border border-on-background hover:bg-surface-container-lowest hover:text-on-background transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta">View on GitHub ↗</a>
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta">View on GitHub ↗</a>
     </div>
   </section>
 </BaseLayout>
