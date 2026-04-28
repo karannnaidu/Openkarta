@@ -14,7 +14,7 @@ Ship a thin, MIT-licensed npm package that exposes OpenKarta's 8 protocol verbs 
 Success criteria:
 - A user can paste a 5-line config into `claude_desktop_config.json`, restart Claude Desktop, and place an order against a reference merchant via natural conversation.
 - Bridge code is small enough to audit in one sitting (~600 LOC across six files).
-- Bridge stays lockstep with `@openkarta/orchestrator` — when the dispatcher gains a verb, the bridge gains it for free via `buildToolDefs()`.
+- A new **stateless dispatcher** + tool-defs land in `@openkarta/orchestrator` first; the bridge wraps them. The CLI REPL keeps the existing stateful path unchanged.
 
 Non-goals (v1): HTTP/SSE transport, auth, accounts, resources, prompts, custom registry override, telemetry, recommendation logic.
 
@@ -26,8 +26,8 @@ Non-goals (v1): HTTP/SSE transport, auth, accounts, resources, prompts, custom r
 |---|---|---|---|
 | 1 | Transport | stdio only | Local-first, zero infra, ships as MIT npm. HTTP variant defers to a future hosted bridge (Game 2 monetization path). |
 | 2 | LLM-key handling | N/A — host owns the LLM | Bridge is pure tool execution; no chat/completions calls leave the bridge. |
-| 3 | Tool surface | Flat 8 verbs, mirrors `tool-defs.ts` 1:1 | Reuses `buildToolDefs()`. New verbs are inherited automatically. |
-| 4 | State model | Stateless — cart and quote tokens threaded through tool I/O | Matches MCP request/response. Parallel-conversation-safe. Cart payloads are small (~200–500 tokens). |
+| 3 | Tool surface | Flat 8 verbs, exposed via a new `buildStatelessToolDefs()` in `@openkarta/orchestrator` | Bridge does not invent its own schemas — it imports them from orchestrator. New verbs added later are inherited automatically. |
+| 4 | State model | Stateless — `cart` and `quote` are inputs and outputs of the relevant tools | Matches MCP request/response. Parallel-conversation-safe (multi-tab). Existing stateful dispatcher is preserved for the CLI REPL. |
 | 5 | Merchant routing | Explicit `agentId` on every merchant-bound tool | Matches existing dispatcher shape. Hallucinated agentIds error loudly and recoverably. |
 | 6 | MCP primitives | Tools only — no resources, no prompts | `search` already covers merchant discovery. Resources/prompts add product opinions to a transport adapter. |
 | 7 | Error mapping | Structured `code` + advisory `hint`, hint table colocated with `@openkarta/spec` errors | Closed-enum codes are load-bearing; hints help the LLM recover without hiding the canonical signal. |
@@ -37,41 +37,75 @@ Non-goals (v1): HTTP/SSE transport, auth, accounts, resources, prompts, custom r
 
 ## 3. Architecture
 
-The bridge is a stdio-mode MCP server that handles two MCP requests:
+Plan 04 ships in two waves inside the same release:
 
-- `tools/list` → returns 8 tool definitions from `buildToolDefs()`.
-- `tools/call` → routes to `createDispatcher()` from `@openkarta/orchestrator`, wraps the result for MCP, returns it.
+**Wave 1 — orchestrator additions** (`@openkarta/orchestrator`):
+- `buildStatelessToolDefs()` — same 8 verbs, but with `cart` and `quote` as explicit input/output fields where relevant. Returns the same `ToolDef[]` envelope.
+- `createStatelessDispatcher()` — pure functions over `(args) → result`. `add_to_cart`/`view_cart`/`quote`/`checkout` operate on a `StatelessCart`/`StatelessQuote` passed in args, return updated cart/quote in result. The existing `createDispatcher` is left untouched — CLI REPL keeps using it.
+- `StatelessCart`, `StatelessQuote` types exported from the orchestrator public API.
 
-Everything else (registry loading, merchant HTTP calls, schema validation, signed-quote handling) is reused from `@openkarta/orchestrator`. The bridge does not duplicate orchestrator logic; it adapts orchestrator I/O to MCP I/O.
+**Wave 2 — the bridge package** (`@openkarta/mcp-bridge`):
+- A stdio-mode MCP server that handles two MCP requests:
+  - `tools/list` → returns 8 tool definitions from `buildStatelessToolDefs()`.
+  - `tools/call` → routes to the stateless dispatcher, wraps the result for MCP, returns it.
+
+Everything else (registry loading, merchant HTTP calls, schema validation, signed-quote handling) is reused from orchestrator. Bridge owns adaptation only.
 
 ### What lives in the bridge
 - `@modelcontextprotocol/sdk` server bootstrap.
-- A re-export of `buildToolDefs()` shaped to MCP's tool-definition envelope.
-- A thin call-router (`tools.ts`) that maps `request.params.name` → dispatcher method.
+- A thin re-export of `buildStatelessToolDefs()` shaped to MCP's tool-definition envelope.
+- A call-router (`tools.ts`) that maps `request.params.name` → stateless-dispatcher call.
 - An error shaper (`errors.ts`) that looks up the closed-enum code and attaches a `hint`.
 - A registry loader pinned to `DEFAULT_REGISTRY_URL`, called once on startup.
 
 ### What does NOT live in the bridge
 - No LLM or chat-completions client.
-- No cross-call state.
+- No process-level state.
 - No env-driven registry override.
 - No auth, no keys, no user identity.
-- No new tools beyond what `tool-defs.ts` defines.
+- No new tools beyond what stateless tool-defs publish.
 
 ---
 
 ## 4. Components & file structure
 
+### 4.1 Orchestrator additions (Wave 1)
+
+```
+packages/orchestrator/
+├── src/
+│   ├── llm/
+│   │   ├── stateless-types.ts         ← NEW: StatelessCart, StatelessQuote types
+│   │   ├── stateless-tool-defs.ts     ← NEW: buildStatelessToolDefs()
+│   │   └── stateless-dispatcher.ts    ← NEW: createStatelessDispatcher()
+│   └── index.ts                       ← MODIFIED: export the three new symbols
+└── test/
+    └── stateless-dispatcher.test.ts   ← NEW: unit tests for the new dispatcher
+```
+
+### 4.2 Spec additions (Wave 1)
+
+```
+packages/spec/
+├── src/
+│   ├── error-hints.ts        ← NEW: hint lookup table for closed-enum codes
+│   └── index.ts              ← MODIFIED: re-export errorHintFor / ERROR_HINTS
+└── test/
+    └── error-hints.test.ts   ← NEW: every code → expected hint
+```
+
+### 4.3 Bridge package (Wave 2)
+
 ```
 packages/mcp-bridge/
 ├── package.json              ← bin: openkarta-mcp, deps on workspace + @mcp sdk
 ├── tsconfig.json
-├── tsup.config.ts            ← matches monorepo conventions
+├── tsup.config.ts
 ├── README.md                 ← Claude Desktop config + 8-tool reference + troubleshooting
 ├── src/
 │   ├── bin.ts                ← #!/usr/bin/env node — wires stdio transport, starts server
 │   ├── server.ts             ← MCP Server: tools/list + tools/call handlers
-│   ├── tools.ts              ← maps tool name → dispatcher call
+│   ├── tools.ts              ← maps tool name → stateless-dispatcher call
 │   ├── errors.ts             ← OpenKarta error → MCP isError result, with hint lookup
 │   ├── registry.ts           ← thin wrapper around loadRegistry({ url: DEFAULT_REGISTRY_URL })
 │   └── index.ts              ← public exports for tests and embedding
@@ -82,12 +116,12 @@ packages/mcp-bridge/
 
 Each `src/*.ts` file is ≤150 lines. Total bridge code excluding tests targets ~500–600 LOC.
 
-### Interface boundaries
+### 4.4 Interface boundaries
 
 - `bin.ts` depends on `server.ts` only.
 - `server.ts` depends on `tools.ts`, `errors.ts`, `registry.ts`.
-- `tools.ts` depends on `@openkarta/orchestrator` (`createDispatcher`, `buildToolDefs`).
-- `errors.ts` depends on `@openkarta/spec` (closed-enum codes + hint table).
+- `tools.ts` depends on `@openkarta/orchestrator` (`createStatelessDispatcher`, `buildStatelessToolDefs`).
+- `errors.ts` depends on `@openkarta/spec` (`errorHintFor`, `ErrorCode`).
 - `registry.ts` depends on `@openkarta/orchestrator` (`loadRegistry`, `DEFAULT_REGISTRY_URL`).
 
 No file imports from sibling test files. No circular deps.
@@ -143,13 +177,14 @@ No file imports from sibling test files. No circular deps.
 Three layers, all return MCP `{ isError: true, content: [{ type: 'text', text: <json> }] }`:
 
 ### 6.1 Merchant-returned OpenKarta errors
-The merchant's reception agent returns a closed-enum error like `{ error: { code: 'QUOTE_EXPIRED', message: '...', details: {...} } }`. `errors.ts` looks up the code in the spec's hint table and adds a `hint` field:
+The merchant's reception agent returns a closed-enum error like `{ error: { code: 'quote_expired', message: '...', retryable: true, details: {...} } }`. `errors.ts` looks up the code via `errorHintFor()` and adds a `hint` field:
 
 ```json
 {
-  "code": "QUOTE_EXPIRED",
+  "code": "quote_expired",
   "message": "Quote token expired at 2026-04-28T10:14:00Z",
-  "hint": "Call quote again to get a fresh token.",
+  "hint": "The signed quote has expired. Call quote again on the same cart to get a fresh token, then checkout.",
+  "retryable": true,
   "details": { ... }
 }
 ```
@@ -157,15 +192,15 @@ The merchant's reception agent returns a closed-enum error like `{ error: { code
 The hint table lives in `@openkarta/spec` so it's the single source of truth — orchestrator and CLI can opt in to the same hints later.
 
 ### 6.2 Bridge-internal errors
-When the bridge itself fails (registry unreachable on boot, merchant connection refused, malformed merchant response), it synthesizes its own `BRIDGE_*` codes that follow the same shape:
+When the bridge itself fails (registry unreachable on boot, merchant connection refused, malformed merchant response), it synthesizes its own `bridge_*` codes that follow the same shape:
 
 | Code | When | Recovery hint |
 |---|---|---|
-| `BRIDGE_REGISTRY_UNAVAILABLE` | startup registry fetch failed | "OpenKarta registry is unreachable. Retry shortly." |
-| `BRIDGE_NETWORK_ERROR` | merchant HTTP call timed out / refused | "Merchant unreachable. Try a different agentId or retry shortly." |
-| `BRIDGE_INVALID_MERCHANT_RESPONSE` | merchant returned non-conformant payload | "Merchant returned an invalid response. Pick a different agent." |
-| `BRIDGE_INVALID_MERCHANT` | unknown agentId | "agentId not found in the OpenKarta registry. Use search to find a valid agentId." |
-| `BRIDGE_INVALID_ARGS` | zod schema rejected the args | (passes the zod path so the LLM can correct) |
+| `bridge_registry_unavailable` | startup registry fetch failed | "OpenKarta registry is unreachable. Retry shortly." |
+| `bridge_network_error` | merchant HTTP call timed out / refused | "Merchant unreachable. Try a different agentId or retry shortly." |
+| `bridge_invalid_merchant_response` | merchant returned non-conformant payload | "Merchant returned an invalid response. Pick a different agent." |
+| `bridge_invalid_merchant` | unknown agentId | "agentId not found in the OpenKarta registry. Use search to find a valid agentId." |
+| `bridge_invalid_args` | zod schema rejected the args | (passes the zod path so the LLM can correct) |
 
 ### 6.3 Schema-validation errors
 The orchestrator dispatcher already runs zod validation on tool args. When it throws, `errors.ts` catches it and wraps as `BRIDGE_INVALID_ARGS` with the zod-issued path string preserved.
