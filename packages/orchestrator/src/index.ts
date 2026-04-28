@@ -21,6 +21,8 @@ export { createOrderStore, getOrderStatus, cancelOrder, returnOrder } from "./or
 export type { OrderStore, OrderStoreOptions, OrderOpOptions } from "./orders.js";
 export { buildToolDefs, TOOL_NAMES } from "./llm/tool-defs.js";
 export type { ToolDef } from "./llm/tool-defs.js";
+export { buildStatelessToolDefs, STATELESS_TOOL_NAMES, StatelessSchemas } from './llm/stateless-tool-defs.js';
+export type { StatelessCart, StatelessQuote, StatelessToolName } from './llm/stateless-tool-defs.js';
 export { createDispatcher } from "./llm/dispatcher.js";
 export type { DispatchFn } from "./llm/dispatcher.js";
 export { newState } from "./llm/memory.js";
