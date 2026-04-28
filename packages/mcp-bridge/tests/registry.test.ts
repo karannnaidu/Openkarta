@@ -12,7 +12,7 @@ describe("loadBridgeRegistry", () => {
       );
     };
     const reg = await loadBridgeRegistry({ fetchImpl: stubFetch });
-    expect(calledWith).toBe("https://registry.openkarta.org/v1/agents");
+    expect(calledWith).toBe("https://api.openkarta.org/v1/agents");
     expect(reg.agents).toEqual([]);
   });
 
@@ -29,7 +29,7 @@ describe("loadBridgeRegistry", () => {
         );
       };
       await loadBridgeRegistry({ fetchImpl: stubFetch });
-      expect(calledWith).toBe("https://registry.openkarta.org/v1/agents");
+      expect(calledWith).toBe("https://api.openkarta.org/v1/agents");
     } finally {
       if (prev === undefined) delete process.env.OPENKARTA_REGISTRY_URL;
       else process.env.OPENKARTA_REGISTRY_URL = prev;

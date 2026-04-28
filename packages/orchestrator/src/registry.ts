@@ -196,4 +196,4 @@ export function filterAgents(agents: RegistryAgent[], filter: AgentFilter): Regi
   });
 }
 
-export const DEFAULT_REGISTRY_URL = "https://registry.openkarta.org/v1/agents";
+export const DEFAULT_REGISTRY_URL = "https://api.openkarta.org/v1/agents";

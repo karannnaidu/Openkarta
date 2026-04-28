@@ -7,6 +7,9 @@
 - **`@openkarta/orchestrator`**: `createStatelessDispatcher()` + `buildStatelessToolDefs()` — cart and quote threaded through tool I/O, parallel-conversation safe. Existing stateful `createDispatcher()` is preserved for the CLI REPL.
 - **`@openkarta/spec`**: `errorHintFor()` and `ERROR_HINTS` — LLM-targeted recovery hint per closed-enum error code.
 
+### Fixed
+- **`@openkarta/orchestrator`**: `DEFAULT_REGISTRY_URL` now points at `https://api.openkarta.org/v1/agents` (the actual Worker hostname). Previously it pointed at `https://registry.openkarta.org/v1/agents`, which is the Pages dashboard and serves HTML — every default-config bridge/CLI invocation since 0.4.0 was failing to bootstrap. Custom-URL callers (`loadRegistry({ url })`) were unaffected.
+
 ### Why
 v1.0 Track C of the roadmap calls for native MCP-host distribution so users can transact via OpenKarta from any MCP-capable assistant — no OpenKarta-specific install, no Anthropic-specific UI. The bridge is the safe-by-default consumer surface; developers who need custom registry behavior continue to use the orchestrator package directly.
 

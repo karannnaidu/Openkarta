@@ -59,7 +59,7 @@ describe("filterAgents", () => {
 describe("DEFAULT_REGISTRY_URL", () => {
   it("points to the hosted registry", () => {
     expect(DEFAULT_REGISTRY_URL).toMatch(/^https:\/\//);
-    expect(DEFAULT_REGISTRY_URL).toContain("registry.openkarta.org");
+    expect(DEFAULT_REGISTRY_URL).toContain("api.openkarta.org");
     expect(DEFAULT_REGISTRY_URL).toMatch(/\/v1\/agents$/);
   });
 });

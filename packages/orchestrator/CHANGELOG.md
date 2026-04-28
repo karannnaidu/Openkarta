@@ -1,5 +1,15 @@
 # @openkarta/orchestrator
 
+## 0.5.0
+
+### Fixed
+
+- `DEFAULT_REGISTRY_URL` now points at `https://api.openkarta.org/v1/agents`
+  (the actual Worker hostname). Previously it pointed at
+  `https://registry.openkarta.org/v1/agents`, which is the public Pages
+  dashboard and serves HTML — every default-config caller since 0.4.0 was
+  failing to bootstrap. Callers using `loadRegistry({ url })` were unaffected.
+
 ## 0.4.0
 
 ### Breaking
