@@ -1,0 +1,260 @@
+---
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const tools = [
+  { name: "search", body: "Fan-out across every conformant agent in the registry. Filter by item type and region." },
+  { name: "add_to_cart", body: "Stage items from a single agent. Cart is homogeneous — one merchant per cart." },
+  { name: "view_cart", body: "Inspect what's been staged before quoting. Returns merchant context too." },
+  { name: "quote", body: "Get a signed, time-bounded price from the merchant. HMAC-bound to the cart contents." },
+  { name: "checkout", body: "Place the order against the signed quote. Idempotent — safe to retry." },
+  { name: "order_status", body: "Read state by orderId. The merchant is the source of truth, not the agent." },
+  { name: "cancel_order", body: "Closed-enum errors tell the agent exactly what recovery is allowed." },
+  { name: "return_order", body: "Mirror of cancel for post-fulfilment returns where the merchant supports it." },
+];
+
+const hosts = [
+  {
+    id: "claude-desktop",
+    chip: "01 · Claude Desktop",
+    name: "Claude Desktop",
+    blurb: "Anthropic's official desktop app. Quit fully (system tray, not just close window) and reopen after editing.",
+    file: {
+      darwin: "~/Library/Application Support/Claude/claude_desktop_config.json",
+      windows: "%APPDATA%\\Claude\\claude_desktop_config.json",
+    },
+    config: `{
+  "mcpServers": {
+    "openkarta": {
+      "command": "npx",
+      "args": ["-y", "@openkarta/mcp-bridge"]
+    }
+  }
+}`,
+  },
+  {
+    id: "cursor",
+    chip: "02 · Cursor",
+    name: "Cursor",
+    blurb: "Settings → MCP → Add new server. Cursor reads the same JSON shape as Claude Desktop.",
+    file: { darwin: "~/.cursor/mcp.json", windows: "%USERPROFILE%\\.cursor\\mcp.json" },
+    config: `{
+  "mcpServers": {
+    "openkarta": {
+      "command": "npx",
+      "args": ["-y", "@openkarta/mcp-bridge"]
+    }
+  }
+}`,
+  },
+  {
+    id: "windsurf",
+    chip: "03 · Windsurf",
+    name: "Windsurf (Codeium)",
+    blurb: "Cmd/Ctrl-Shift-P → MCP: Edit Configuration. Same JSON shape; restart Windsurf to load.",
+    file: {
+      darwin: "~/.codeium/windsurf/mcp_config.json",
+      windows: "%USERPROFILE%\\.codeium\\windsurf\\mcp_config.json",
+    },
+    config: `{
+  "mcpServers": {
+    "openkarta": {
+      "command": "npx",
+      "args": ["-y", "@openkarta/mcp-bridge"]
+    }
+  }
+}`,
+  },
+  {
+    id: "vscode",
+    chip: "04 · VS Code",
+    name: "VS Code (GitHub Copilot Chat)",
+    blurb: "Workspace-level MCP config. Lives next to .vscode/settings.json and is auto-discovered by Copilot Chat with MCP enabled.",
+    file: { darwin: ".vscode/mcp.json (per-workspace)", windows: ".vscode\\mcp.json (per-workspace)" },
+    config: `{
+  "servers": {
+    "openkarta": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@openkarta/mcp-bridge"]
+    }
+  }
+}`,
+  },
+  {
+    id: "claude-code",
+    chip: "05 · Claude Code (CLI)",
+    name: "Claude Code",
+    blurb: "Anthropic's terminal coding agent. Register the bridge once, then every new session sees the eight tools.",
+    file: { darwin: "one-time CLI command (writes to ~/.claude.json)", windows: "one-time CLI command (writes to %USERPROFILE%\\.claude.json)" },
+    config: `claude mcp add openkarta -- npx -y @openkarta/mcp-bridge`,
+    configLang: "bash",
+  },
+  {
+    id: "generic",
+    chip: "06 · Any MCP-aware host",
+    name: "Generic stdio MCP host",
+    blurb: "ChatGPT desktop's MCP support, Zed, Continue, Goose, your own host — anything that speaks MCP over stdio.",
+    file: { darwin: "(host-specific config)", windows: "(host-specific config)" },
+    config: `{
+  "mcpServers": {
+    "openkarta": {
+      "command": "npx",
+      "args": ["-y", "@openkarta/mcp-bridge"]
+    }
+  }
+}`,
+  },
+];
+---
+<BaseLayout title="Connect any AI to OpenKarta — the MCP bridge" activeNav={null} description="One package, one stdio config. Plug Claude Desktop, Cursor, Windsurf, VS Code, or any MCP-aware AI host into the OpenKarta registry — eight commerce tools across every verified merchant.">
+  <!-- 1. Hero -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mt-20 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase mb-8 border border-on-background/20 bg-on-background/5 text-on-background inline-block px-3 py-1">Bridge · MCP adapter</div>
+    <h1 class="font-hero-h1 text-on-background [font-size:clamp(40px,8vw,108px)] leading-[1.05] tracking-tight max-w-5xl">
+      One config. Every AI shops the registry.
+    </h1>
+    <p class="font-h2-editorial text-on-surface-variant mt-8 max-w-3xl">
+      <span class="font-code-block">@openkarta/mcp-bridge</span> is a stdio MCP server that exposes the eight OpenKarta verbs as native tools to any MCP-aware host — Claude Desktop, Cursor, Windsurf, VS Code, ChatGPT MCP, Claude Code. No OpenKarta-specific install. No Anthropic-specific UI. Bring your own model, bring your own key.
+    </p>
+    <div class="flex flex-wrap gap-4 mt-12">
+      <a class="bg-primary text-on-primary px-6 py-3 border border-primary hover:bg-primary-container hover:text-on-primary transition-colors duration-240" href="#hosts">Pick your host →</a>
+      <a class="border border-on-background/25 bg-transparent text-on-background px-6 py-3 hover:bg-on-background/5 transition-colors duration-240" href="/why-not-mcp">Why an adapter, not a foundation →</a>
+    </div>
+  </section>
+
+  <!-- 2. The 8 tools -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">01 · What appears in your AI</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">Eight tools, one shared registry. The same eight verbs your HTTP clients already use.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-on-background/10" data-ok-stagger=":scope > div">
+      {tools.map((t) => (
+        <div class="border border-on-background/10 bg-surface-container-lowest p-6 fade-slide-up">
+          <div class="font-code-block text-code-block text-on-background mb-3">{t.name}</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">{t.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 3. Single canonical install -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">02 · The whole install</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">If your host speaks MCP over stdio, this is the entire config.</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 items-start">
+      <CodeBlock lang="json" filename="claude_desktop_config.json · cursor mcp.json · any stdio host">{`{
+  "mcpServers": {
+    "openkarta": {
+      "command": "npx",
+      "args": ["-y", "@openkarta/mcp-bridge"]
+    }
+  }
+}`}</CodeBlock>
+      <div class="space-y-5">
+        <div class="border-l-2 border-primary pl-4">
+          <div class="font-label-caps text-label-caps uppercase text-primary mb-2">No state · no auth · no env</div>
+          <p class="font-body-dense text-body-dense text-on-background">The bridge is a pure transport adapter. No OpenKarta API key, no env-driven registry override, no persisted session.</p>
+        </div>
+        <div class="border-l-2 border-on-background/20 pl-4">
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Bring your own model</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">Whatever model your MCP host runs is the one calling the tools. The bridge never sees an LLM key — it just executes verbs against the registry.</p>
+        </div>
+        <div class="border-l-2 border-on-background/20 pl-4">
+          <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Pinned to the hosted registry</div>
+          <p class="font-body-dense text-body-dense text-on-surface-variant">Always reads <span class="font-code-block">api.openkarta.org/v1/agents</span>. Daily-conformance-tested merchants only. No way for a malicious config to point your AI at a fake registry.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Per-host configs -->
+  <section id="hosts" class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32 scroll-mt-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">03 · Pick your host</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">Same JSON shape almost everywhere. Six hosts, copy-paste each.</h2>
+    <div class="space-y-px bg-on-background/10" data-ok-stagger=":scope > article">
+      {hosts.map((h) => (
+        <article id={h.id} class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10 fade-slide-up scroll-mt-32">
+          <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
+            <div>
+              <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">{h.chip}</div>
+              <h3 class="font-h2-editorial text-on-background mb-4">{h.name}</h3>
+              <p class="font-body-dense text-body-dense text-on-surface-variant mb-6">{h.blurb}</p>
+              <div class="space-y-3">
+                <div>
+                  <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">macOS / Linux</div>
+                  <div class="font-code-block text-code-block text-on-background break-all">{h.file.darwin}</div>
+                </div>
+                <div>
+                  <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Windows</div>
+                  <div class="font-code-block text-code-block text-on-background break-all">{h.file.windows}</div>
+                </div>
+              </div>
+            </div>
+            <CodeBlock lang={h.configLang ?? "json"}>{h.config}</CodeBlock>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 5. Verify -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">04 · Verify the connection</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl border-b border-on-background/10 pb-4">Two ways to confirm the bridge is live.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">In the host</div>
+        <h3 class="font-h2-editorial text-on-background mb-4">Ask your AI to search.</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mb-6">Open a new chat in your MCP host and ask:</p>
+        <CodeBlock lang="text">{`> Use the openkarta search tool to find products available in India.`}</CodeBlock>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mt-6">If the bridge is connected, the host invokes <span class="font-code-block">openkarta.search</span> and returns a fan-out of items from every conformant merchant. If you don't see the tool offered, the config didn't load — restart the host.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8 md:p-10">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">From the terminal</div>
+        <h3 class="font-h2-editorial text-on-background mb-4">Run the handshake script.</h3>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mb-6">A standalone smoke test that spawns the bridge, runs the MCP handshake, and prints the registered tool names:</p>
+        <CodeBlock lang="bash">{`npx -y @openkarta/mcp-bridge --version
+# or, for a full handshake test:
+git clone https://github.com/karannnaidu/Openkarta
+cd Openkarta && pnpm install && pnpm --filter @openkarta/mcp-bridge build
+node packages/mcp-bridge/scripts/verify-handshake.mjs`}</CodeBlock>
+        <p class="font-body-dense text-body-dense text-on-surface-variant mt-6">Expected output: <span class="font-code-block">tools/list returned 8 tools</span> followed by <span class="font-code-block">search</span>, <span class="font-code-block">add_to_cart</span>, …</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Troubleshooting / advanced -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32 bg-surface-container-low py-12 md:py-20">
+    <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">05 · Troubleshooting</div>
+    <h2 class="font-h2-editorial text-on-background mb-12 max-w-3xl">If the tools don't appear.</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-on-background/10">
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Fully restart the host</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Most MCP hosts only read the config at startup. Quit from the system tray on Windows, or <span class="font-code-block">Cmd-Q</span> on macOS — closing the window is not enough.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Node 22 or newer required</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">The bridge uses native fetch and structured stdout. Check with <span class="font-code-block">node --version</span>. On Windows ensure Node is on the global PATH so <span class="font-code-block">npx</span> resolves.</p>
+      </div>
+      <div class="border border-on-background/10 bg-surface-container-lowest p-8">
+        <div class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-3">Read the host's MCP log</div>
+        <p class="font-body-dense text-body-dense text-on-surface-variant">Claude Desktop: <span class="font-code-block">~/Library/Logs/Claude/mcp-server-openkarta.log</span> on macOS, <span class="font-code-block">%APPDATA%\Claude\logs\</span> on Windows. The bridge writes structured stderr lines that surface registry-fetch errors directly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-32">
+    <div class="bg-primary text-on-primary p-12 md:p-20 flex flex-col items-start">
+      <div class="font-label-caps text-label-caps uppercase text-primary-container/80 mb-4">In one line</div>
+      <h2 class="font-h2-editorial text-on-primary max-w-3xl mb-8 [font-size:clamp(28px,4vw,48px)] leading-[1.15]">
+        npx, paste, restart. Your AI just got a verified merchant network.
+      </h2>
+      <div class="flex flex-wrap gap-4">
+        <a class="bg-on-primary text-primary px-6 py-3 border border-on-primary hover:bg-transparent hover:text-on-primary transition-colors duration-240" href="https://registry.openkarta.org">See the live registry ↗</a>
+        <a class="bg-transparent text-on-primary px-6 py-3 border border-on-primary hover:bg-on-primary hover:text-primary transition-colors duration-240" href="/protocol">Read the protocol</a>
+        <a class="bg-transparent text-on-primary px-6 py-3 border border-on-primary hover:bg-on-primary hover:text-primary transition-colors duration-240" href="https://github.com/karannnaidu/Openkarta/tree/main/packages/mcp-bridge">Bridge source ↗</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
