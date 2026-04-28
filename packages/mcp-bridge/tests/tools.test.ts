@@ -32,4 +32,12 @@ describe("runTool", () => {
     const parsed = JSON.parse(result.content[0]!.text);
     expect(parsed.code).toBe("internal");
   });
+
+  it("represents undefined dispatcher results as JSON null", async () => {
+    const dispatch = vi.fn().mockResolvedValue(undefined);
+    const result = await runTool(dispatch, "cancel_order", { orderId: "o1", reason: "x" });
+    expect(result.isError).toBeUndefined();
+    expect(result.content).toHaveLength(1);
+    expect(result.content[0]!.text).toBe("null");
+  });
 });

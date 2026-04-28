@@ -16,7 +16,7 @@ export async function runTool(
   try {
     const result = await dispatch(name, args);
     return {
-      content: [{ type: "text", text: JSON.stringify(result) }],
+      content: [{ type: "text", text: JSON.stringify(result ?? null) }],
     };
   } catch (err) {
     return toMcpError(err);
