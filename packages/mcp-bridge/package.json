@@ -1,8 +1,17 @@
 {
   "name": "@openkarta/mcp-bridge",
   "version": "0.5.0",
+  "description": "OpenKarta MCP bridge — exposes the OpenKarta agent registry as MCP tools to MCP-aware hosts (Claude Desktop, MCP-aware editors).",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openkarta/openkarta.git",
+    "directory": "packages/mcp-bridge"
+  },
+  "homepage": "https://github.com/openkarta/openkarta/tree/main/packages/mcp-bridge#readme",
+  "engines": { "node": ">=22.0.0" },
+  "publishConfig": { "access": "public" },
   "bin": { "openkarta-mcp": "./dist/bin.js" },
   "files": ["dist", "README.md"],
   "scripts": {
