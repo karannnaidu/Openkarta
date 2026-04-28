@@ -1,6 +1,7 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { describe, expect, it, vi } from "vitest";
+import { bootstrap } from "../src/bin.js";
 import { buildServer } from "../src/server.js";
 
 const fakeRegistry = {
@@ -90,5 +91,17 @@ describe("buildServer", () => {
     const payload = JSON.parse(content[0]!.text);
     expect(payload.code).toBe("quote_expired");
     expect(payload.hint).toBeTruthy();
+  });
+});
+
+describe("bootstrap", () => {
+  it("returns a connected server when given a registry snapshot and dispatch", async () => {
+    const result = await bootstrap({
+      registry: fakeRegistry,
+      dispatch: async () => ({}),
+      transport: "noop",
+    });
+    expect(result.server).toBeDefined();
+    expect(result.startedAt).toBeInstanceOf(Date);
   });
 });
