@@ -38,8 +38,7 @@ export function buildServer(opts: BuildServerOpts): Server {
 
   server.setRequestHandler(CallToolRequestSchema, async (req) => {
     const { name, arguments: args } = req.params;
-    const result = await runTool(opts.dispatch, name, (args ?? {}) as Record<string, unknown>);
-    return result as CallToolResult;
+    return (await runTool(opts.dispatch, name, args ?? {})) as CallToolResult;
   });
 
   return server;
