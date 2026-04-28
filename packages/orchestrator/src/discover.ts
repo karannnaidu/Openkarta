@@ -1,7 +1,10 @@
-import type { CapabilitiesManifest } from '@openkarta/spec';
-import { createClient } from '@openkarta/sdk-node';
+import { createClient } from "@openkarta/sdk-node";
+import type { CapabilitiesManifest } from "@openkarta/spec";
 
-interface CacheEntry { manifest: CapabilitiesManifest; expiresAt: number; }
+interface CacheEntry {
+  manifest: CapabilitiesManifest;
+  expiresAt: number;
+}
 
 export interface ManifestCacheOptions {
   /** Cache TTL in milliseconds. @default 300_000 */

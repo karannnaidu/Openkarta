@@ -1,45 +1,50 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const posts = [
   {
-    slug: 'eight-verbs-enough',
-    date: '2026-04-20',
-    category: 'Spec',
-    title: 'Why eight verbs is enough.',
-    excerpt: 'Every commerce-API standardization effort that came before us added too much surface. Here\'s the thinking behind keeping it down to discover, search, get, quote, checkout, status, cancel, return.',
+    slug: "eight-verbs-enough",
+    date: "2026-04-20",
+    category: "Spec",
+    title: "Why eight verbs is enough.",
+    excerpt:
+      "Every commerce-API standardization effort that came before us added too much surface. Here's the thinking behind keeping it down to discover, search, get, quote, checkout, status, cancel, return.",
     readMin: 7,
   },
   {
-    slug: 'signed-quotes',
-    date: '2026-04-18',
-    category: 'Security',
-    title: 'Signed quotes, on the wire.',
-    excerpt: 'How HMAC-bound, time-limited quote tokens shut down the entire class of agent-side price tampering attacks — without a centralized escrow.',
+    slug: "signed-quotes",
+    date: "2026-04-18",
+    category: "Security",
+    title: "Signed quotes, on the wire.",
+    excerpt:
+      "How HMAC-bound, time-limited quote tokens shut down the entire class of agent-side price tampering attacks — without a centralized escrow.",
     readMin: 5,
   },
   {
-    slug: 'no-merchant-of-record',
-    date: '2026-04-15',
-    category: 'Foundation',
-    title: 'Why we will never be the merchant of record.',
-    excerpt: 'Settlement and tax compliance stay with the merchant, by design. We route data, not money. The reasons are commercial, technical, and political.',
+    slug: "no-merchant-of-record",
+    date: "2026-04-15",
+    category: "Foundation",
+    title: "Why we will never be the merchant of record.",
+    excerpt:
+      "Settlement and tax compliance stay with the merchant, by design. We route data, not money. The reasons are commercial, technical, and political.",
     readMin: 6,
   },
   {
-    slug: 'orchestrator-launch',
-    date: '2026-04-25',
-    category: 'Release',
-    title: 'The orchestrator and CLI go public.',
-    excerpt: 'Release notes for v0.2 — a typed client, fan-out search, homogeneous carts, signed-quote checkout, order tracking, and a vendor-neutral chat REPL.',
+    slug: "orchestrator-launch",
+    date: "2026-04-25",
+    category: "Release",
+    title: "The orchestrator and CLI go public.",
+    excerpt:
+      "Release notes for v0.2 — a typed client, fan-out search, homogeneous carts, signed-quote checkout, order tracking, and a vendor-neutral chat REPL.",
     readMin: 4,
   },
   {
-    slug: 'conformance-pipeline',
-    date: '2026-04-10',
-    category: 'Operations',
-    title: 'How daily conformance sweeps work.',
-    excerpt: 'A walkthrough of the cron worker, the test runner, the badge signer, and the lifecycle that takes a flapping agent from healthy to stale to delisted.',
+    slug: "conformance-pipeline",
+    date: "2026-04-10",
+    category: "Operations",
+    title: "How daily conformance sweeps work.",
+    excerpt:
+      "A walkthrough of the cron worker, the test runner, the badge signer, and the lifecycle that takes a flapping agent from healthy to stale to delisted.",
     readMin: 8,
   },
 ];

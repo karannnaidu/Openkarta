@@ -1,33 +1,93 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CodeBlock from '../components/CodeBlock.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const verbs = [
-  { name: 'discover', desc: 'Returns the agent\'s capability manifest — supported verbs, item types, regions, languages, payment rails.' },
-  { name: 'search',   desc: 'Item search with item-type-specific filters. Returns priced, in-stock options with provenance.' },
-  { name: 'get',      desc: 'Fetches a single item or fixture by id. Idempotent. Useful for hydration of remembered references.' },
-  { name: 'quote',    desc: 'Server-signed, time-bounded price lock. Inventory committed to the agent for the quote\'s TTL.' },
-  { name: 'checkout', desc: 'Exchanges a signed quote for an order. Payment intent issued out-of-band via the chosen rail.' },
-  { name: 'status',   desc: 'Polls order state. Closed enum lifecycle per item type — no free-form strings.' },
-  { name: 'cancel',   desc: 'Cancels a pending order. Returns canonical cancellation receipt with refund-state hint.' },
-  { name: 'return',   desc: 'Initiates a return / refund flow for product orders post-delivery.' },
+  {
+    name: "discover",
+    desc: "Returns the agent's capability manifest — supported verbs, item types, regions, languages, payment rails.",
+  },
+  {
+    name: "search",
+    desc: "Item search with item-type-specific filters. Returns priced, in-stock options with provenance.",
+  },
+  {
+    name: "get",
+    desc: "Fetches a single item or fixture by id. Idempotent. Useful for hydration of remembered references.",
+  },
+  {
+    name: "quote",
+    desc: "Server-signed, time-bounded price lock. Inventory committed to the agent for the quote's TTL.",
+  },
+  {
+    name: "checkout",
+    desc: "Exchanges a signed quote for an order. Payment intent issued out-of-band via the chosen rail.",
+  },
+  {
+    name: "status",
+    desc: "Polls order state. Closed enum lifecycle per item type — no free-form strings.",
+  },
+  {
+    name: "cancel",
+    desc: "Cancels a pending order. Returns canonical cancellation receipt with refund-state hint.",
+  },
+  { name: "return", desc: "Initiates a return / refund flow for product orders post-delivery." },
 ];
 
 const types = [
-  { name: 'product', desc: 'Physical goods. Categories, service areas, delivery modes, return window.' },
-  { name: 'stay',    desc: 'Hotels, homestays, apartments, villas, hostels. check_in / check_out, occupancy.' },
-  { name: 'flight',  desc: 'IATA-coded routes, fare classes, passenger manifest objects required at checkout.' },
-  { name: 'bus',     desc: 'Intercity bus operators, regions, seat classes (sleeper, ac-sleeper, volvo, …).' },
-  { name: 'service', desc: 'Salon, cleaning, repair. At-customer / at-provider / online / venue location modes.' },
+  {
+    name: "product",
+    desc: "Physical goods. Categories, service areas, delivery modes, return window.",
+  },
+  {
+    name: "stay",
+    desc: "Hotels, homestays, apartments, villas, hostels. check_in / check_out, occupancy.",
+  },
+  {
+    name: "flight",
+    desc: "IATA-coded routes, fare classes, passenger manifest objects required at checkout.",
+  },
+  {
+    name: "bus",
+    desc: "Intercity bus operators, regions, seat classes (sleeper, ac-sleeper, volvo, …).",
+  },
+  {
+    name: "service",
+    desc: "Salon, cleaning, repair. At-customer / at-provider / online / venue location modes.",
+  },
 ];
 
 const principles = [
-  { n: '01', title: 'Closed enums', body: 'Every status, error, fare class, payment rail is a closed enum. Extensibility happens via new RFCs, not free-form strings.' },
-  { n: '02', title: 'Integer minor units', body: 'All money is an integer in the smallest currency unit. ₹1 is 100 paise. Floats are forbidden in the wire format.' },
-  { n: '03', title: 'Signed quote tokens', body: 'quote() returns an HMAC-signed token bound to the exact item, agent, and TTL. checkout() verifies the signature.' },
-  { n: '04', title: 'No merchant-of-record', body: 'OpenKarta routes data, not money. Settlement and tax compliance are the merchant\'s responsibility — by design.' },
-  { n: '05', title: 'Region-aware', body: 'Every agent declares ISO-3166 regions. The registry filters by region; payment rails per region are explicit.' },
-  { n: '06', title: 'User-token delegation', body: 'Every checkout carries a short-lived user delegation token with explicit price-cap, time-cap, and rail-cap claims.' },
+  {
+    n: "01",
+    title: "Closed enums",
+    body: "Every status, error, fare class, payment rail is a closed enum. Extensibility happens via new RFCs, not free-form strings.",
+  },
+  {
+    n: "02",
+    title: "Integer minor units",
+    body: "All money is an integer in the smallest currency unit. ₹1 is 100 paise. Floats are forbidden in the wire format.",
+  },
+  {
+    n: "03",
+    title: "Signed quote tokens",
+    body: "quote() returns an HMAC-signed token bound to the exact item, agent, and TTL. checkout() verifies the signature.",
+  },
+  {
+    n: "04",
+    title: "No merchant-of-record",
+    body: "OpenKarta routes data, not money. Settlement and tax compliance are the merchant's responsibility — by design.",
+  },
+  {
+    n: "05",
+    title: "Region-aware",
+    body: "Every agent declares ISO-3166 regions. The registry filters by region; payment rails per region are explicit.",
+  },
+  {
+    n: "06",
+    title: "User-token delegation",
+    body: "Every checkout carries a short-lived user delegation token with explicit price-cap, time-cap, and rail-cap claims.",
+  },
 ];
 ---
 <BaseLayout title="Protocol Specification — OpenKarta" activeNav="protocol">

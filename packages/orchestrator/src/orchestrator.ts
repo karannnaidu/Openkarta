@@ -1,8 +1,8 @@
-import type { OrchestratorOptions, SearchPlan, RankedResult, RegistrySnapshot } from './types.js';
-import { loadRegistry, filterAgents, DEFAULT_REGISTRY_URL, type AgentFilter } from './registry.js';
-import { createManifestCache } from './discover.js';
-import { searchAcrossAgents } from './search.js';
-import { rankResults, lowestPriceFirst, type RankStrategy } from './rank.js';
+import { createManifestCache } from "./discover.js";
+import { type RankStrategy, lowestPriceFirst, rankResults } from "./rank.js";
+import { type AgentFilter, DEFAULT_REGISTRY_URL, filterAgents, loadRegistry } from "./registry.js";
+import { searchAcrossAgents } from "./search.js";
+import type { OrchestratorOptions, RankedResult, RegistrySnapshot, SearchPlan } from "./types.js";
 
 export interface Orchestrator {
   search(plan: SearchPlan, ranker?: RankStrategy): Promise<RankedResult[]>;
@@ -25,7 +25,9 @@ export function createOrchestrator(opts: OrchestratorOptions = {}): Orchestrator
       url: opts.registryUrl ?? DEFAULT_REGISTRY_URL,
       ...(opts.fetchImpl ? { fetchImpl: opts.fetchImpl } : {}),
     });
-    p.catch(() => { if (registryPromise === p) registryPromise = null; });
+    p.catch(() => {
+      if (registryPromise === p) registryPromise = null;
+    });
     registryPromise = p;
     return p;
   }
@@ -45,7 +47,9 @@ export function createOrchestrator(opts: OrchestratorOptions = {}): Orchestrator
         agents,
         plan,
         manifestCache: cache,
-        ...(opts.perAgentTimeoutMs !== undefined ? { perAgentTimeoutMs: opts.perAgentTimeoutMs } : {}),
+        ...(opts.perAgentTimeoutMs !== undefined
+          ? { perAgentTimeoutMs: opts.perAgentTimeoutMs }
+          : {}),
         ...(opts.searchConcurrency !== undefined ? { concurrency: opts.searchConcurrency } : {}),
         ...(opts.fetchImpl ? { fetchImpl: opts.fetchImpl } : {}),
       });

@@ -1,5 +1,5 @@
-import type { OrchestratorCart } from '../cart.js';
-import type { ItemType, Quote } from '@openkarta/spec';
+import type { ItemType, Quote } from "@openkarta/spec";
+import type { OrchestratorCart } from "../cart.js";
 
 export interface ConversationState {
   cart?: OrchestratorCart;
@@ -7,4 +7,6 @@ export interface ConversationState {
   lastSearch?: { itemType: ItemType; agentIdsSeen: string[] };
 }
 
-export function newState(): ConversationState { return {}; }
+export function newState(): ConversationState {
+  return {};
+}

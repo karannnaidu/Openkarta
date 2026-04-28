@@ -1,7 +1,7 @@
-import { createClient, OpenKartaError } from '@openkarta/sdk-node';
-import type { Cart, Order, Quote } from '@openkarta/spec';
-import type { OrchestratorCart } from './cart.js';
-import type { OrderStore } from './orders.js';
+import { OpenKartaError, createClient } from "@openkarta/sdk-node";
+import type { Cart, Order, Quote } from "@openkarta/spec";
+import type { OrchestratorCart } from "./cart.js";
+import type { OrderStore } from "./orders.js";
 
 export interface CheckoutInput {
   cart: OrchestratorCart;
@@ -14,7 +14,7 @@ export interface CheckoutInput {
 }
 
 export async function checkoutCart(input: CheckoutInput): Promise<Order> {
-  if (input.cart.lines.length === 0) throw new Error('cannot checkout empty cart');
+  if (input.cart.lines.length === 0) throw new Error("cannot checkout empty cart");
 
   const client = createClient({
     baseUrl: input.cart.agentBaseUrl,
@@ -29,7 +29,7 @@ export async function checkoutCart(input: CheckoutInput): Promise<Order> {
       itemType: l.itemType,
       itemId: l.itemId,
       quantity: l.quantity,
-    })) as Cart['lines'],
+    })) as Cart["lines"],
   };
 
   let order: Order;
@@ -41,7 +41,7 @@ export async function checkoutCart(input: CheckoutInput): Promise<Order> {
     });
   } catch (err) {
     if (err instanceof OpenKartaError) throw err;
-    throw new OpenKartaError('network_error', 0, err instanceof Error ? err.message : String(err));
+    throw new OpenKartaError("network_error", 0, err instanceof Error ? err.message : String(err));
   }
 
   if (input.store) {

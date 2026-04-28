@@ -5,7 +5,7 @@ interface Props {
   inline?: boolean;
   class?: string;
 }
-const { lang, filename, inline = false, class: extra = '' } = Astro.props;
+const { lang, filename, inline = false, class: extra = "" } = Astro.props;
 const hasHeader = Boolean(filename || lang);
 ---
 {inline ? (

@@ -7,8 +7,8 @@
   "required": ["version", "updated", "agents"],
   "properties": {
     "$schema": { "type": "string" },
-    "version":  { "type": "string", "const": "0.1" },
-    "updated":  { "type": "string", "format": "date" },
+    "version": { "type": "string", "const": "0.1" },
+    "updated": { "type": "string", "format": "date" },
     "agents": {
       "type": "array",
       "items": { "$ref": "#/$defs/Agent" }
@@ -19,12 +19,12 @@
       "type": "object",
       "required": ["agentId", "displayName", "baseUrl", "tier", "supportedItemTypes", "addedAt"],
       "properties": {
-        "agentId":            { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$" },
-        "displayName":        { "type": "string", "minLength": 1, "maxLength": 100 },
-        "description":        { "type": "string", "maxLength": 500 },
-        "baseUrl":            { "type": "string", "format": "uri", "pattern": "^https://" },
-        "manifestUrl":        { "type": "string", "format": "uri" },
-        "tier":               { "enum": ["lite", "http", "agentic"] },
+        "agentId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$" },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 500 },
+        "baseUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "manifestUrl": { "type": "string", "format": "uri" },
+        "tier": { "enum": ["lite", "http", "agentic"] },
         "supportedItemTypes": {
           "type": "array",
           "minItems": 1,
@@ -36,17 +36,26 @@
             "type": "object",
             "required": ["country"],
             "properties": {
-              "country":  { "type": "string", "pattern": "^[A-Z]{2}$" },
-              "city":     { "type": "string" },
+              "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+              "city": { "type": "string" },
               "pincodes": { "type": "array", "items": { "type": "string" } }
             }
           }
         },
-        "publicKey":  { "type": ["string", "null"], "description": "Base64-encoded public key used to verify signed updates from this agent." },
-        "badgeUrl":   { "type": ["string", "null"], "description": "URL to the agent's signed conformance badge JSON." },
-        "tags":       { "type": "array", "items": { "type": "string" } },
-        "addedAt":    { "type": "string", "format": "date" },
-        "verified":   { "type": "boolean", "description": "Set by maintainers after the agent passes the conformance harness against its public baseUrl." }
+        "publicKey": {
+          "type": ["string", "null"],
+          "description": "Base64-encoded public key used to verify signed updates from this agent."
+        },
+        "badgeUrl": {
+          "type": ["string", "null"],
+          "description": "URL to the agent's signed conformance badge JSON."
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "addedAt": { "type": "string", "format": "date" },
+        "verified": {
+          "type": "boolean",
+          "description": "Set by maintainers after the agent passes the conformance harness against its public baseUrl."
+        }
       },
       "additionalProperties": false
     }

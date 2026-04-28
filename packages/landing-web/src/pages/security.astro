@@ -1,26 +1,26 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const inScope = [
-  'api.openkarta.org — registry API',
-  'registry.openkarta.org — registry web app',
-  'openkarta.org — landing site',
-  'Reference agents at *.fly.dev that are operated under the OpenKarta umbrella',
-  '@openkarta/* npm packages on the public registry',
+  "api.openkarta.org — registry API",
+  "registry.openkarta.org — registry web app",
+  "openkarta.org — landing site",
+  "Reference agents at *.fly.dev that are operated under the OpenKarta umbrella",
+  "@openkarta/* npm packages on the public registry",
 ];
 
 const outOfScope = [
-  'Third-party merchant agents listed in the registry — report to the merchant directly',
-  'LLM-vendor endpoints (OpenRouter, OpenAI, Anthropic, etc.)',
-  'Self-XSS, social engineering, physical attacks, or DoS without a working exploit',
-  'Issues that require a privileged position on the user\'s device or network',
+  "Third-party merchant agents listed in the registry — report to the merchant directly",
+  "LLM-vendor endpoints (OpenRouter, OpenAI, Anthropic, etc.)",
+  "Self-XSS, social engineering, physical attacks, or DoS without a working exploit",
+  "Issues that require a privileged position on the user's device or network",
 ];
 
 const safeHarbor = [
-  'Make a good-faith effort to avoid privacy violations, data destruction, and service disruption.',
-  'Do not access more data than is necessary to demonstrate the issue.',
-  'Give us a reasonable time to respond before public disclosure (typically 90 days).',
-  'Do not exploit findings beyond proof of concept.',
+  "Make a good-faith effort to avoid privacy violations, data destruction, and service disruption.",
+  "Do not access more data than is necessary to demonstrate the issue.",
+  "Give us a reasonable time to respond before public disclosure (typically 90 days).",
+  "Do not exploit findings beyond proof of concept.",
 ];
 ---
 <BaseLayout title="Security disclosure — OpenKarta" activeNav={null}>

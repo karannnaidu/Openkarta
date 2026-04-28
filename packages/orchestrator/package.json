@@ -13,14 +13,14 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@openkarta/spec":     "workspace:*",
+    "@openkarta/spec": "workspace:*",
     "@openkarta/sdk-node": "workspace:*",
     "zod": "^3.23.0",
     "zod-to-json-schema": "^3.23.0"
   },
   "devDependencies": {
-    "@openkarta/reference-agent-shop":   "workspace:*",
-    "@openkarta/reference-agent-stays":  "workspace:*",
+    "@openkarta/reference-agent-shop": "workspace:*",
+    "@openkarta/reference-agent-stays": "workspace:*",
     "@openkarta/reference-agent-travel": "workspace:*",
     "tsup": "^8.3.0",
     "typescript": "^5.4.5",

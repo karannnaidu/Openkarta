@@ -1,17 +1,17 @@
 ---
 interface Props {
-  activeNav?: 'protocol' | 'merchant' | 'developers' | 'governance' | 'manifesto' | null;
+  activeNav?: "protocol" | "merchant" | "developers" | "governance" | "manifesto" | null;
 }
 const { activeNav = null } = Astro.props;
 const item = (key: string, base: string) =>
   key === activeNav
     ? `${base} text-on-background border-b border-on-background pb-1`
     : `${base} text-on-surface-variant hover:text-on-background pb-1 border-b border-transparent`;
-const linkBase = 'transition-colors duration-240 font-body-main text-sm';
+const linkBase = "transition-colors duration-240 font-body-main text-sm";
 const mobileItem = (key: string) =>
   key === activeNav
-    ? 'block py-3 text-on-background font-medium'
-    : 'block py-3 text-on-surface-variant hover:text-on-background transition-colors duration-240';
+    ? "block py-3 text-on-background font-medium"
+    : "block py-3 text-on-surface-variant hover:text-on-background transition-colors duration-240";
 ---
 <header data-ok-header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-on-background/10 transition-all duration-240">
   <div class="flex justify-between items-center px-8 md:px-16 h-28 w-full max-w-[1440px] mx-auto">

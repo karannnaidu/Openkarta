@@ -1,26 +1,48 @@
 [
   {
-    "id": "p_espresso_250", "brandId": "halcyon", "title": "Halcyon Espresso Blend 250g",
-    "description": "Single-origin Arabica", "priceMinor": 89900, "currency": "INR",
-    "type": "product", "sku": "HLC-ESP-250", "inventoryStatus": "in_stock",
-    "category": ["coffee"], "shipsFrom": { "country": "IN", "city": "Bengaluru" }
+    "id": "p_espresso_250",
+    "brandId": "halcyon",
+    "title": "Halcyon Espresso Blend 250g",
+    "description": "Single-origin Arabica",
+    "priceMinor": 89900,
+    "currency": "INR",
+    "type": "product",
+    "sku": "HLC-ESP-250",
+    "inventoryStatus": "in_stock",
+    "category": ["coffee"],
+    "shipsFrom": { "country": "IN", "city": "Bengaluru" }
   },
   {
-    "id": "p_espresso_1kg", "brandId": "halcyon", "title": "Halcyon Espresso Blend 1kg",
-    "priceMinor": 329900, "currency": "INR",
-    "type": "product", "sku": "HLC-ESP-1KG", "inventoryStatus": "low",
+    "id": "p_espresso_1kg",
+    "brandId": "halcyon",
+    "title": "Halcyon Espresso Blend 1kg",
+    "priceMinor": 329900,
+    "currency": "INR",
+    "type": "product",
+    "sku": "HLC-ESP-1KG",
+    "inventoryStatus": "low",
     "category": ["coffee"]
   },
   {
-    "id": "p_cardamom_tea", "brandId": "halcyon", "title": "Halcyon Cardamom Chai 200g",
-    "priceMinor": 49900, "currency": "INR",
-    "type": "product", "sku": "HLC-CRD-200", "inventoryStatus": "in_stock",
+    "id": "p_cardamom_tea",
+    "brandId": "halcyon",
+    "title": "Halcyon Cardamom Chai 200g",
+    "priceMinor": 49900,
+    "currency": "INR",
+    "type": "product",
+    "sku": "HLC-CRD-200",
+    "inventoryStatus": "in_stock",
     "category": ["tea"]
   },
   {
-    "id": "p_biscotti", "brandId": "halcyon", "title": "Halcyon Almond Biscotti Pack of 6",
-    "priceMinor": 35000, "currency": "INR",
-    "type": "product", "sku": "HLC-BIS-06", "inventoryStatus": "in_stock",
+    "id": "p_biscotti",
+    "brandId": "halcyon",
+    "title": "Halcyon Almond Biscotti Pack of 6",
+    "priceMinor": 35000,
+    "currency": "INR",
+    "type": "product",
+    "sku": "HLC-BIS-06",
+    "inventoryStatus": "in_stock",
     "category": ["snacks"]
   }
 ]

@@ -1,19 +1,56 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const groups = [
-  { name: 'Spec working group', remit: 'Reviews protocol RFCs. Final word on what enters the wire format.', cadence: 'Public meeting every other Wednesday on the OpenKarta Discord.' },
-  { name: 'Conformance working group', remit: 'Owns the test packs and the badge-signing key. Approves new per-type packs.', cadence: 'Async on GitHub. Sweeps reviewed weekly.' },
-  { name: 'Registry stewardship', remit: 'Operates registry.openkarta.org and the daily verification cron. Enforces neutrality covenant.', cadence: 'Quarterly transparency report on every change to listing logic.' },
+  {
+    name: "Spec working group",
+    remit: "Reviews protocol RFCs. Final word on what enters the wire format.",
+    cadence: "Public meeting every other Wednesday on the OpenKarta Discord.",
+  },
+  {
+    name: "Conformance working group",
+    remit: "Owns the test packs and the badge-signing key. Approves new per-type packs.",
+    cadence: "Async on GitHub. Sweeps reviewed weekly.",
+  },
+  {
+    name: "Registry stewardship",
+    remit:
+      "Operates registry.openkarta.org and the daily verification cron. Enforces neutrality covenant.",
+    cadence: "Quarterly transparency report on every change to listing logic.",
+  },
 ];
 
 const principles = [
-  { n: '01', title: 'Open by default', body: 'Every spec, test, RFC, and reference implementation is MIT-licensed. The wire format is documented before it is shipped.' },
-  { n: '02', title: 'No paid placement', body: 'The registry has no concept of priority placement, sponsored slots, or featured tiers. Conformance freshness is the only sort signal allowed.' },
-  { n: '03', title: 'No vendor lock-in', body: 'No backend, no SDK, no framework, no LLM is privileged. Anything that talks the 8 verbs over HTTPS is a first-class peer.' },
-  { n: '04', title: 'Reversible decisions', body: 'Major spec changes ship as a parallel package version with an 18-month deprecation window. Nothing breaks silently.' },
-  { n: '05', title: 'Public processes', body: 'RFCs, conformance changes, and registry policy edits all happen in public GitHub issues with the rfc / governance labels.' },
-  { n: '06', title: 'Conflict of interest', body: 'Working group members disclose merchant or LLM-vendor affiliations. Stewardship rotates yearly.' },
+  {
+    n: "01",
+    title: "Open by default",
+    body: "Every spec, test, RFC, and reference implementation is MIT-licensed. The wire format is documented before it is shipped.",
+  },
+  {
+    n: "02",
+    title: "No paid placement",
+    body: "The registry has no concept of priority placement, sponsored slots, or featured tiers. Conformance freshness is the only sort signal allowed.",
+  },
+  {
+    n: "03",
+    title: "No vendor lock-in",
+    body: "No backend, no SDK, no framework, no LLM is privileged. Anything that talks the 8 verbs over HTTPS is a first-class peer.",
+  },
+  {
+    n: "04",
+    title: "Reversible decisions",
+    body: "Major spec changes ship as a parallel package version with an 18-month deprecation window. Nothing breaks silently.",
+  },
+  {
+    n: "05",
+    title: "Public processes",
+    body: "RFCs, conformance changes, and registry policy edits all happen in public GitHub issues with the rfc / governance labels.",
+  },
+  {
+    n: "06",
+    title: "Conflict of interest",
+    body: "Working group members disclose merchant or LLM-vendor affiliations. Stewardship rotates yearly.",
+  },
 ];
 ---
 <BaseLayout title="Governance — OpenKarta" activeNav={null}>

@@ -1,27 +1,27 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const tiers = [
   {
-    name: 'Lite',
-    sub: 'No code',
-    body: 'Hand us a markdown or CSV catalogue. We host the brand agent on neutral OpenKarta infra; you receive orders by email or webhook.',
-    targets: 'Independent merchants, small D2C, marketplace sellers.',
-    next: 'Submit a catalogue file at registry.openkarta.org.',
+    name: "Lite",
+    sub: "No code",
+    body: "Hand us a markdown or CSV catalogue. We host the brand agent on neutral OpenKarta infra; you receive orders by email or webhook.",
+    targets: "Independent merchants, small D2C, marketplace sellers.",
+    next: "Submit a catalogue file at registry.openkarta.org.",
   },
   {
-    name: 'HTTP',
-    sub: 'Wrap your existing API',
-    body: 'Implement 8 verbs over plain HTTPS using @openkarta/sdk-node. Quote signing, error envelopes, lifecycle handled by the SDK.',
-    targets: 'Brands with an existing order system and an engineering team.',
-    next: 'Read the integrator quickstart and run the conformance suite.',
+    name: "HTTP",
+    sub: "Wrap your existing API",
+    body: "Implement 8 verbs over plain HTTPS using @openkarta/sdk-node. Quote signing, error envelopes, lifecycle handled by the SDK.",
+    targets: "Brands with an existing order system and an engineering team.",
+    next: "Read the integrator quickstart and run the conformance suite.",
   },
   {
-    name: 'Agentic',
-    sub: 'LLM-fronted',
-    body: 'Wrap an LLM-driven assistant behind the same 8 verbs. The orchestrator never knows it\'s talking to an LLM — it sees typed responses.',
-    targets: 'Concierge / personal-shopper experiences with broad inventory.',
-    next: 'See the reference agentic implementation in the monorepo.',
+    name: "Agentic",
+    sub: "LLM-fronted",
+    body: "Wrap an LLM-driven assistant behind the same 8 verbs. The orchestrator never knows it's talking to an LLM — it sees typed responses.",
+    targets: "Concierge / personal-shopper experiences with broad inventory.",
+    next: "See the reference agentic implementation in the monorepo.",
   },
 ];
 ---

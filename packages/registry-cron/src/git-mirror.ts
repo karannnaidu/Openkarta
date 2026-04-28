@@ -1,4 +1,4 @@
-import type { Bindings } from './index.js';
+import type { Bindings } from "./index.js";
 
 type AgentRow = {
   id: string;
@@ -34,8 +34,8 @@ export interface MirrorAgent {
 }
 
 export interface MirrorPayload {
-  $schema: './schema.json';
-  version: '0.1';
+  $schema: "./schema.json";
+  version: "0.1";
   updated: string;
   agents: MirrorAgent[];
 }
@@ -72,33 +72,31 @@ function rowToMirrorAgent(row: AgentRow, publicBaseUrl: string): MirrorAgent {
 }
 
 export async function buildMirrorPayload(env: Bindings, today: string): Promise<MirrorPayload> {
-  const { results } = await env.DB
-    .prepare(
-      `SELECT id, display_name, description, base_url, manifest_url, tier, supported_item_types,
+  const { results } = await env.DB.prepare(
+    `SELECT id, display_name, description, base_url, manifest_url, tier, supported_item_types,
               regions, tags, health_status, last_verified_at, created_at
          FROM agents
         WHERE verification_status = 'verified' AND health_status != 'delisted'
         ORDER BY id ASC`,
-    )
-    .all<AgentRow>();
+  ).all<AgentRow>();
   return {
-    $schema: './schema.json',
-    version: '0.1',
+    $schema: "./schema.json",
+    version: "0.1",
     updated: today,
     agents: results.map((r) => rowToMirrorAgent(r, env.PUBLIC_BASE_URL)),
   };
 }
 
-const GH = 'https://api.github.com';
+const GH = "https://api.github.com";
 
 async function gh<T>(env: Bindings, method: string, path: string, body?: unknown): Promise<T> {
   const r = await fetch(`${GH}${path}`, {
     method,
     headers: {
       Authorization: `token ${env.GITHUB_BOT_PAT}`,
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'openkarta-registry-cron',
-      ...(body ? { 'Content-Type': 'application/json' } : {}),
+      Accept: "application/vnd.github+json",
+      "User-Agent": "openkarta-registry-cron",
+      ...(body ? { "Content-Type": "application/json" } : {}),
     },
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
@@ -117,7 +115,7 @@ export interface MirrorResult {
 export async function gitMirrorSnapshot(env: Bindings): Promise<MirrorResult> {
   const today = new Date().toISOString().slice(0, 10);
   const payload = await buildMirrorPayload(env, today);
-  const content = JSON.stringify(payload, null, 2) + '\n';
+  const content = `${JSON.stringify(payload, null, 2)}\n`;
 
   const branch = env.GIT_MIRROR_BRANCH;
   const repo = env.GITHUB_REPO;
@@ -125,13 +123,21 @@ export async function gitMirrorSnapshot(env: Bindings): Promise<MirrorResult> {
   // 1. Get the ref (mirror branch if exists, else fall back to main).
   let parentSha: string;
   try {
-    const ref = await gh<{ object: { sha: string } }>(env, 'GET', `/repos/${repo}/git/refs/heads/${branch}`);
+    const ref = await gh<{ object: { sha: string } }>(
+      env,
+      "GET",
+      `/repos/${repo}/git/refs/heads/${branch}`,
+    );
     parentSha = ref.object.sha;
   } catch {
-    const main = await gh<{ object: { sha: string } }>(env, 'GET', `/repos/${repo}/git/refs/heads/main`);
+    const main = await gh<{ object: { sha: string } }>(
+      env,
+      "GET",
+      `/repos/${repo}/git/refs/heads/main`,
+    );
     parentSha = main.object.sha;
     // Create the branch from main.
-    await gh(env, 'POST', `/repos/${repo}/git/refs`, {
+    await gh(env, "POST", `/repos/${repo}/git/refs`, {
       ref: `refs/heads/${branch}`,
       sha: parentSha,
     });
@@ -140,40 +146,40 @@ export async function gitMirrorSnapshot(env: Bindings): Promise<MirrorResult> {
   // 2. Get the parent commit's tree sha.
   const parentCommit = await gh<{ tree: { sha: string } }>(
     env,
-    'GET',
+    "GET",
     `/repos/${repo}/git/commits/${parentSha}`,
   );
   const baseTreeSha = parentCommit.tree.sha;
 
   // 3. Create a blob for the new file content.
-  const blob = await gh<{ sha: string }>(env, 'POST', `/repos/${repo}/git/blobs`, {
+  const blob = await gh<{ sha: string }>(env, "POST", `/repos/${repo}/git/blobs`, {
     content,
-    encoding: 'utf-8',
+    encoding: "utf-8",
   });
 
   // 4. Create a new tree with the blob at registry/agents.json.
-  const tree = await gh<{ sha: string }>(env, 'POST', `/repos/${repo}/git/trees`, {
+  const tree = await gh<{ sha: string }>(env, "POST", `/repos/${repo}/git/trees`, {
     base_tree: baseTreeSha,
     tree: [
       {
-        path: 'registry/agents.json',
-        mode: '100644',
-        type: 'blob',
+        path: "registry/agents.json",
+        mode: "100644",
+        type: "blob",
         sha: blob.sha,
       },
     ],
   });
 
   // 5. Create a commit pointing to the new tree.
-  const commit = await gh<{ sha: string }>(env, 'POST', `/repos/${repo}/git/commits`, {
+  const commit = await gh<{ sha: string }>(env, "POST", `/repos/${repo}/git/commits`, {
     message: `chore(registry): mirror snapshot ${today}`,
     tree: tree.sha,
     parents: [parentSha],
-    author: { name: 'openkarta-bot', email: 'bot@openkarta.org', date: new Date().toISOString() },
+    author: { name: "openkarta-bot", email: "bot@openkarta.org", date: new Date().toISOString() },
   });
 
   // 6. Update the branch ref to the new commit.
-  await gh(env, 'PATCH', `/repos/${repo}/git/refs/heads/${branch}`, {
+  await gh(env, "PATCH", `/repos/${repo}/git/refs/heads/${branch}`, {
     sha: commit.sha,
     force: false,
   });

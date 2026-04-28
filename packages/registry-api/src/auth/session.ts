@@ -1,4 +1,4 @@
-import { sessionId as newSessionId } from '@openkarta/registry-shared';
+import { sessionId as newSessionId } from "@openkarta/registry-shared";
 
 const TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
 
@@ -9,15 +9,10 @@ export interface SessionAccount {
   githubLogin: string | null;
 }
 
-export async function createSession(
-  env: { DB: D1Database },
-  accountId: string,
-): Promise<string> {
+export async function createSession(env: { DB: D1Database }, accountId: string): Promise<string> {
   const id = newSessionId();
   const expiresAt = Math.floor(Date.now() / 1000) + TTL_SECONDS;
-  await env.DB.prepare(
-    'INSERT INTO sessions (id, account_id, expires_at) VALUES (?,?,?)',
-  )
+  await env.DB.prepare("INSERT INTO sessions (id, account_id, expires_at) VALUES (?,?,?)")
     .bind(id, accountId, expiresAt)
     .run();
   return id;
@@ -51,19 +46,13 @@ export async function readSession(
   };
 }
 
-export async function clearSession(
-  env: { DB: D1Database },
-  id: string,
-): Promise<void> {
-  await env.DB.prepare('DELETE FROM sessions WHERE id = ?').bind(id).run();
+export async function clearSession(env: { DB: D1Database }, id: string): Promise<void> {
+  await env.DB.prepare("DELETE FROM sessions WHERE id = ?").bind(id).run();
 }
 
-export const SESSION_COOKIE = 'okr_sess';
+export const SESSION_COOKIE = "okr_sess";
 
-export function sessionCookieValue(
-  id: string,
-  expiresInSeconds: number = TTL_SECONDS,
-): string {
+export function sessionCookieValue(id: string, expiresInSeconds: number = TTL_SECONDS): string {
   return `${SESSION_COOKIE}=${id}; Path=/; Secure; HttpOnly; SameSite=None; Max-Age=${expiresInSeconds}`;
 }
 

@@ -1,12 +1,12 @@
-import type { CapabilitiesManifest, ItemBase, ItemType } from '@openkarta/spec';
+import type { CapabilitiesManifest, ItemBase, ItemType } from "@openkarta/spec";
 
 export interface OrchestratorOptions {
-  registryUrl?: string;            // default: bundled fallback
-  registry?: RegistrySnapshot;     // pre-loaded; bypasses fetch
-  cacheTtlMs?: number;             // manifest cache TTL, default 5 min
-  perAgentTimeoutMs?: number;      // default 8s
-  searchConcurrency?: number;      // default 5
-  ordersFile?: string;             // default ~/.openkarta/orders.json
+  registryUrl?: string; // default: bundled fallback
+  registry?: RegistrySnapshot; // pre-loaded; bypasses fetch
+  cacheTtlMs?: number; // manifest cache TTL, default 5 min
+  perAgentTimeoutMs?: number; // default 8s
+  searchConcurrency?: number; // default 5
+  ordersFile?: string; // default ~/.openkarta/orders.json
   fetchImpl?: typeof fetch;
 }
 
@@ -22,7 +22,7 @@ export interface RegistryAgent {
   description?: string;
   baseUrl: string;
   manifestUrl?: string;
-  tier: 'lite' | 'http' | 'agentic';
+  tier: "lite" | "http" | "agentic";
   supportedItemTypes: ItemType[];
   regions?: { country: string; city?: string; pincodes?: string[] }[];
   publicKey?: string | null;

@@ -1,45 +1,83 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const releases = [
   {
-    version: '0.3.0',
-    date: '2026-04-25',
-    tag: 'breaking',
-    title: 'Vendor-neutral chat loop',
-    summary: 'The orchestrator and CLI no longer depend on any one LLM vendor. Point at any chat-completions endpoint — hosted or local.',
+    version: "0.3.0",
+    date: "2026-04-25",
+    tag: "breaking",
+    title: "Vendor-neutral chat loop",
+    summary:
+      "The orchestrator and CLI no longer depend on any one LLM vendor. Point at any chat-completions endpoint — hosted or local.",
     changes: [
-      { kind: 'BREAKING', text: '@openkarta/orchestrator: chatOnce now uses the standard chat/completions wire format. Options: { baseURL, model, apiKey? }. Dropped @anthropic-ai/sdk dependency.' },
-      { kind: 'BREAKING', text: '@openkarta/orchestrator: tool definitions renamed AnthropicToolDef → ToolDef; field input_schema → parameters.' },
-      { kind: 'BREAKING', text: '@openkarta/cli: openkarta chat now takes --base-url, --model, --api-key. Defaults point at OpenRouter.' },
-      { kind: 'WHY', text: 'Bring your own provider, key, and model — Ollama, llama.cpp, vLLM, or any hosted endpoint.' },
+      {
+        kind: "BREAKING",
+        text: "@openkarta/orchestrator: chatOnce now uses the standard chat/completions wire format. Options: { baseURL, model, apiKey? }. Dropped @anthropic-ai/sdk dependency.",
+      },
+      {
+        kind: "BREAKING",
+        text: "@openkarta/orchestrator: tool definitions renamed AnthropicToolDef → ToolDef; field input_schema → parameters.",
+      },
+      {
+        kind: "BREAKING",
+        text: "@openkarta/cli: openkarta chat now takes --base-url, --model, --api-key. Defaults point at OpenRouter.",
+      },
+      {
+        kind: "WHY",
+        text: "Bring your own provider, key, and model — Ollama, llama.cpp, vLLM, or any hosted endpoint.",
+      },
     ],
   },
   {
-    version: '0.2.0',
-    date: '2026-04-25',
-    tag: 'minor',
-    title: 'Orchestrator + CLI go public',
-    summary: 'First consumer-side library: registry → fan-out search → homogeneous cart → signed-quote checkout → order tracking.',
+    version: "0.2.0",
+    date: "2026-04-25",
+    tag: "minor",
+    title: "Orchestrator + CLI go public",
+    summary:
+      "First consumer-side library: registry → fan-out search → homogeneous cart → signed-quote checkout → order tracking.",
     changes: [
-      { kind: 'ADDED', text: '@openkarta/sdk-node: createClient(opts) — typed client wrapping all 8 verbs.' },
-      { kind: 'ADDED', text: '@openkarta/orchestrator: consumer-side library with registry, fan-out search, homogeneous cart, signed-quote checkout, order tracking.' },
-      { kind: 'ADDED', text: '@openkarta/cli: openkarta with search / cart / checkout / orders / chat subcommands.' },
-      { kind: 'DOCS', text: 'docs/orchestrator.md and docs/cli.md.' },
+      {
+        kind: "ADDED",
+        text: "@openkarta/sdk-node: createClient(opts) — typed client wrapping all 8 verbs.",
+      },
+      {
+        kind: "ADDED",
+        text: "@openkarta/orchestrator: consumer-side library with registry, fan-out search, homogeneous cart, signed-quote checkout, order tracking.",
+      },
+      {
+        kind: "ADDED",
+        text: "@openkarta/cli: openkarta with search / cart / checkout / orders / chat subcommands.",
+      },
+      { kind: "DOCS", text: "docs/orchestrator.md and docs/cli.md." },
     ],
   },
   {
-    version: '0.1.0',
-    date: '2026-04-15',
-    tag: 'minor',
-    title: 'Initial public release',
-    summary: 'The protocol, the SDK, three reference agents, and the conformance suite.',
+    version: "0.1.0",
+    date: "2026-04-15",
+    tag: "minor",
+    title: "Initial public release",
+    summary: "The protocol, the SDK, three reference agents, and the conformance suite.",
     changes: [
-      { kind: 'ADDED', text: '@openkarta/spec: five item types, discriminated unions, homogeneous cart, CapabilitiesManifest v0.2, closed-enum errors, user-token delegation.' },
-      { kind: 'ADDED', text: '@openkarta/sdk-node: Fastify server, typed client, HMAC-signed quote tokens, error helpers.' },
-      { kind: 'ADDED', text: 'Reference agents — Halcyon Shop (product + quick-commerce), Halcyon Stays (stay + service), Halcyon Travel (flight + bus).' },
-      { kind: 'ADDED', text: '@openkarta/conformance-tests: core pack (8) + five per-type packs (22 total). Auto-detects supportedItemTypes; emits a signed badge.' },
-      { kind: 'ADDED', text: '@openkarta/demo-cli: end-to-end flows for product, stay, and flight.' },
+      {
+        kind: "ADDED",
+        text: "@openkarta/spec: five item types, discriminated unions, homogeneous cart, CapabilitiesManifest v0.2, closed-enum errors, user-token delegation.",
+      },
+      {
+        kind: "ADDED",
+        text: "@openkarta/sdk-node: Fastify server, typed client, HMAC-signed quote tokens, error helpers.",
+      },
+      {
+        kind: "ADDED",
+        text: "Reference agents — Halcyon Shop (product + quick-commerce), Halcyon Stays (stay + service), Halcyon Travel (flight + bus).",
+      },
+      {
+        kind: "ADDED",
+        text: "@openkarta/conformance-tests: core pack (8) + five per-type packs (22 total). Auto-detects supportedItemTypes; emits a signed badge.",
+      },
+      {
+        kind: "ADDED",
+        text: "@openkarta/demo-cli: end-to-end flows for product, stay, and flight.",
+      },
     ],
   },
 ];

@@ -12,59 +12,59 @@
 
 :root {
   /* Brand accent — Teal Lagoon (Tailwind teal-600) */
-  --color-primary: #0D9488;
-  --color-on-primary: #FFFFFF;
-  --color-primary-container: #115E59;
-  --color-on-primary-container: #CCFBF1;
-  --color-inverse-primary: #5EEAD4;
-  --color-primary-fixed: #CCFBF1;
-  --color-primary-fixed-dim: #5EEAD4;
-  --color-on-primary-fixed: #042F2E;
-  --color-on-primary-fixed-variant: #115E59;
-  --color-surface-tint: #0D9488;
+  --color-primary: #0d9488;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #115e59;
+  --color-on-primary-container: #ccfbf1;
+  --color-inverse-primary: #5eead4;
+  --color-primary-fixed: #ccfbf1;
+  --color-primary-fixed-dim: #5eead4;
+  --color-on-primary-fixed: #042f2e;
+  --color-on-primary-fixed-variant: #115e59;
+  --color-surface-tint: #0d9488;
 
   /* Secondary — neutral */
-  --color-secondary: #5F5E5E;
-  --color-on-secondary: #FFFFFF;
-  --color-secondary-container: #E5E2E1;
+  --color-secondary: #5f5e5e;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #e5e2e1;
   --color-on-secondary-container: #656464;
-  --color-secondary-fixed: #E5E2E1;
-  --color-secondary-fixed-dim: #C9C6C5;
-  --color-on-secondary-fixed: #1C1B1B;
+  --color-secondary-fixed: #e5e2e1;
+  --color-secondary-fixed-dim: #c9c6c5;
+  --color-on-secondary-fixed: #1c1b1b;
   --color-on-secondary-fixed-variant: #474646;
 
   /* Tertiary — warm coral (Tailwind orange-500) */
-  --color-tertiary: #F97316;
-  --color-on-tertiary: #FFFFFF;
-  --color-tertiary-container: #FFEDD5;
-  --color-on-tertiary-container: #7C2D12;
-  --color-tertiary-fixed: #FFEDD5;
-  --color-tertiary-fixed-dim: #FDBA74;
+  --color-tertiary: #f97316;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #ffedd5;
+  --color-on-tertiary-container: #7c2d12;
+  --color-tertiary-fixed: #ffedd5;
+  --color-tertiary-fixed-dim: #fdba74;
   --color-on-tertiary-fixed: #431407;
-  --color-on-tertiary-fixed-variant: #9A3412;
+  --color-on-tertiary-fixed-variant: #9a3412;
 
   /* Error */
-  --color-error: #BA1A1A;
-  --color-on-error: #FFFFFF;
-  --color-error-container: #FFDAD6;
-  --color-on-error-container: #93000A;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
 
   /* Surface ladder — teal-tinted */
-  --color-background: #D0DEE0;
-  --color-on-background: #0F2326;
-  --color-surface: #D0DEE0;
-  --color-on-surface: #0F2326;
-  --color-surface-bright: #FFFFFF;
-  --color-surface-dim: #88AAB0;
-  --color-surface-container-lowest: #FFFFFF;
-  --color-surface-container-low: #88BFC2;
-  --color-surface-container: #BDD0D2;
-  --color-surface-container-high: #88AAB0;
-  --color-surface-container-highest: #5F8D93;
-  --color-surface-variant: #BDD0D2;
-  --color-on-surface-variant: #2F4045;
-  --color-inverse-surface: #0A0A0A;
-  --color-inverse-on-surface: #F4F4F5;
-  --color-outline: #5A7479;
-  --color-outline-variant: #A8C5C8;
+  --color-background: #d0dee0;
+  --color-on-background: #0f2326;
+  --color-surface: #d0dee0;
+  --color-on-surface: #0f2326;
+  --color-surface-bright: #ffffff;
+  --color-surface-dim: #88aab0;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #88bfc2;
+  --color-surface-container: #bdd0d2;
+  --color-surface-container-high: #88aab0;
+  --color-surface-container-highest: #5f8d93;
+  --color-surface-variant: #bdd0d2;
+  --color-on-surface-variant: #2f4045;
+  --color-inverse-surface: #0a0a0a;
+  --color-inverse-on-surface: #f4f4f5;
+  --color-outline: #5a7479;
+  --color-outline-variant: #a8c5c8;
 }

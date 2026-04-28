@@ -1,18 +1,48 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CodeBlock from '../components/CodeBlock.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const packages = [
-  { name: '@openkarta/spec',                desc: 'Zod-typed schemas: manifests, items, search, cart, quotes, orders, errors.' },
-  { name: '@openkarta/sdk-node',            desc: 'Typed Fastify server helpers + HTTP client wrapping all 8 verbs. Sign and verify quotes.' },
-  { name: '@openkarta/orchestrator',        desc: 'Consumer-side library: registry → search → cart → quote → checkout → orders.' },
-  { name: '@openkarta/cli',                 desc: 'Vendor-neutral chat REPL — runs against any chat-completions endpoint (OpenAI, OpenRouter, Together, Groq, local).' },
-  { name: '@openkarta/conformance-tests',   desc: 'Auto-detects supported item types, runs core + per-type packs, emits a signed badge.' },
-  { name: '@openkarta/registry-shared',     desc: 'Shared types and helpers used by the registry-api + verifier + cron workers.' },
-  { name: '@openkarta/reference-agent-shop',  desc: 'Reference brand agent for products. Fastify, in-memory fixtures, full lifecycle.' },
-  { name: '@openkarta/reference-agent-stays', desc: 'Reference brand agent for stays — check-in / check-out, occupancy.' },
-  { name: '@openkarta/reference-agent-travel',desc: 'Reference brand agent for flight + bus — IATA codes, seat classes.' },
-  { name: '@openkarta/demo-cli',            desc: 'Scripted end-to-end flows against any conformant agent for demos.' },
+  {
+    name: "@openkarta/spec",
+    desc: "Zod-typed schemas: manifests, items, search, cart, quotes, orders, errors.",
+  },
+  {
+    name: "@openkarta/sdk-node",
+    desc: "Typed Fastify server helpers + HTTP client wrapping all 8 verbs. Sign and verify quotes.",
+  },
+  {
+    name: "@openkarta/orchestrator",
+    desc: "Consumer-side library: registry → search → cart → quote → checkout → orders.",
+  },
+  {
+    name: "@openkarta/cli",
+    desc: "Vendor-neutral chat REPL — runs against any chat-completions endpoint (OpenAI, OpenRouter, Together, Groq, local).",
+  },
+  {
+    name: "@openkarta/conformance-tests",
+    desc: "Auto-detects supported item types, runs core + per-type packs, emits a signed badge.",
+  },
+  {
+    name: "@openkarta/registry-shared",
+    desc: "Shared types and helpers used by the registry-api + verifier + cron workers.",
+  },
+  {
+    name: "@openkarta/reference-agent-shop",
+    desc: "Reference brand agent for products. Fastify, in-memory fixtures, full lifecycle.",
+  },
+  {
+    name: "@openkarta/reference-agent-stays",
+    desc: "Reference brand agent for stays — check-in / check-out, occupancy.",
+  },
+  {
+    name: "@openkarta/reference-agent-travel",
+    desc: "Reference brand agent for flight + bus — IATA codes, seat classes.",
+  },
+  {
+    name: "@openkarta/demo-cli",
+    desc: "Scripted end-to-end flows against any conformant agent for demos.",
+  },
 ];
 ---
 <BaseLayout title="Developers — OpenKarta" activeNav="developers">

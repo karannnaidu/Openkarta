@@ -1,21 +1,21 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/tokens.css';
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import "../styles/tokens.css";
 
 interface Props {
   title: string;
   description?: string;
-  activeNav?: 'browse' | 'submit' | 'me' | 'sign-in' | null;
+  activeNav?: "browse" | "submit" | "me" | "sign-in" | null;
 }
 
 const {
   title,
-  description = 'OpenKarta Registry — discover conformant agents for transactable AI commerce.',
+  description = "OpenKarta Registry — discover conformant agents for transactable AI commerce.",
   activeNav = null,
 } = Astro.props;
 
-const apiBase = import.meta.env.PUBLIC_API_BASE ?? 'https://api.openkarta.org';
+const apiBase = import.meta.env.PUBLIC_API_BASE ?? "https://api.openkarta.org";
 ---
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">

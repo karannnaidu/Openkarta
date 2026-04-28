@@ -1,14 +1,32 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CodeBlock from '../components/CodeBlock.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const packs = [
-  { name: 'core', desc: 'Required for every agent. Verifies discover, search, get, quote, checkout, status, cancel — including signature checks, error envelope shape, and TTL enforcement.' },
-  { name: 'product', desc: 'Physical goods specifics: address validation, delivery modes, return-window correctness, return verb lifecycle.' },
-  { name: 'stay', desc: 'check_in / check_out coherence, occupancy validation, multi-night quotes, no-overlap on inventory.' },
-  { name: 'flight', desc: 'IATA code validation, fare class enums, passenger manifest required at checkout, refund / cancellation windows.' },
-  { name: 'bus', desc: 'Operator + region pairing, seat-class enums, intercity route coherence, lifecycle through boarding.' },
-  { name: 'service', desc: 'Slot-based availability, location mode (at-customer / at-provider / online / venue), reschedule via cancel + new quote.' },
+  {
+    name: "core",
+    desc: "Required for every agent. Verifies discover, search, get, quote, checkout, status, cancel — including signature checks, error envelope shape, and TTL enforcement.",
+  },
+  {
+    name: "product",
+    desc: "Physical goods specifics: address validation, delivery modes, return-window correctness, return verb lifecycle.",
+  },
+  {
+    name: "stay",
+    desc: "check_in / check_out coherence, occupancy validation, multi-night quotes, no-overlap on inventory.",
+  },
+  {
+    name: "flight",
+    desc: "IATA code validation, fare class enums, passenger manifest required at checkout, refund / cancellation windows.",
+  },
+  {
+    name: "bus",
+    desc: "Operator + region pairing, seat-class enums, intercity route coherence, lifecycle through boarding.",
+  },
+  {
+    name: "service",
+    desc: "Slot-based availability, location mode (at-customer / at-provider / online / venue), reschedule via cancel + new quote.",
+  },
 ];
 ---
 <BaseLayout title="Conformance — Signed badges — OpenKarta" activeNav={null}>

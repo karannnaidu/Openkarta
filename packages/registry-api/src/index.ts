@@ -1,17 +1,17 @@
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { magicLinkRouter } from './auth/magic-link.js';
-import { meRouter } from './auth/me.js';
-import { githubRouter } from './auth/github.js';
-import type { SessionAccount } from './auth/session.js';
-import { agentsCreateRouter } from './routes/agents-create.js';
-import { agentsVerifyRouter } from './routes/agents-verify.js';
-import { agentsPublicRouter } from './routes/agents-public.js';
-import { agentsUpdateRouter } from './routes/agents-update.js';
-import { agentsDeleteRouter } from './routes/agents-delete.js';
-import { agentsReverifyRouter } from './routes/agents-reverify.js';
-import { agentsTransferRouter } from './routes/agents-transfer.js';
-import { makeResendClient, type EmailClient } from '@openkarta/registry-shared';
+import { type EmailClient, makeResendClient } from "@openkarta/registry-shared";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { githubRouter } from "./auth/github.js";
+import { magicLinkRouter } from "./auth/magic-link.js";
+import { meRouter } from "./auth/me.js";
+import type { SessionAccount } from "./auth/session.js";
+import { agentsCreateRouter } from "./routes/agents-create.js";
+import { agentsDeleteRouter } from "./routes/agents-delete.js";
+import { agentsPublicRouter } from "./routes/agents-public.js";
+import { agentsReverifyRouter } from "./routes/agents-reverify.js";
+import { agentsTransferRouter } from "./routes/agents-transfer.js";
+import { agentsUpdateRouter } from "./routes/agents-update.js";
+import { agentsVerifyRouter } from "./routes/agents-verify.js";
 
 export type Bindings = {
   DB: D1Database;
@@ -39,7 +39,7 @@ export function setEmailClientFactory(f: (env: Bindings) => EmailClient): void {
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 
 app.use(
-  '*',
+  "*",
   cors({
     origin: (origin) => {
       if (!origin) return origin;
@@ -49,29 +49,38 @@ app.use(
       return null;
     },
     credentials: true,
-    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
     maxAge: 600,
   }),
 );
 
-app.get('/health', (c) => c.json({ ok: true }));
+app.get("/health", (c) => c.json({ ok: true }));
 
-app.route('/auth', magicLinkRouter((env) => emailClientFactory(env)));
-app.route('/auth', meRouter());
-app.route('/auth', githubRouter());
+app.route(
+  "/auth",
+  magicLinkRouter((env) => emailClientFactory(env)),
+);
+app.route("/auth", meRouter());
+app.route("/auth", githubRouter());
 
-app.route('/v1', agentsCreateRouter());
-app.route('/v1', agentsVerifyRouter());
-app.route('/v1', agentsPublicRouter());
-app.route('/v1', agentsUpdateRouter());
-app.route('/v1', agentsDeleteRouter());
-app.route('/v1', agentsReverifyRouter());
-app.route('/v1', agentsTransferRouter((env) => emailClientFactory(env)));
+app.route("/v1", agentsCreateRouter());
+app.route("/v1", agentsVerifyRouter());
+app.route("/v1", agentsPublicRouter());
+app.route("/v1", agentsUpdateRouter());
+app.route("/v1", agentsDeleteRouter());
+app.route("/v1", agentsReverifyRouter());
+app.route(
+  "/v1",
+  agentsTransferRouter((env) => emailClientFactory(env)),
+);
 
 app.onError((err, c) => {
-  console.error('registry-api error', err);
-  return c.json({ error: { code: 'internal_error', message: 'an unexpected error occurred' } }, 500);
+  console.error("registry-api error", err);
+  return c.json(
+    { error: { code: "internal_error", message: "an unexpected error occurred" } },
+    500,
+  );
 });
 
 export default app;

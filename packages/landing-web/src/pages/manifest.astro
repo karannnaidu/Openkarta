@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CodeBlock from '../components/CodeBlock.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const manifestJson = `{
   "agentId":         "halcyon-shop",
@@ -25,16 +25,46 @@ const manifestJson = `{
 }`;
 
 const fields = [
-  { name: 'agentId', desc: 'Stable identifier. Lower-kebab-case, namespaced by the merchant. Used everywhere — registry rows, signed quotes, conformance badges.' },
-  { name: 'protocolVersion', desc: 'The OpenKarta wire-format version this agent implements. Currently `0.1`. The orchestrator refuses unknown majors.' },
-  { name: 'tier', desc: 'One of `lite` (hosted), `http` (custom server), or `agentic` (LLM-fronted). Determines how the registry routes traffic.' },
-  { name: 'baseUrl', desc: 'HTTPS root for verb endpoints. The registry probes `/.well-known/openkarta-manifest` here during verification.' },
-  { name: 'actions', desc: 'Which of the 8 verbs this agent implements. `return` is optional and only meaningful for product orders.' },
-  { name: 'supportedItemTypes', desc: 'Closed enum: `product`, `stay`, `flight`, `bus`, `service`. Drives auto-detection in the conformance suite.' },
-  { name: 'paymentRails', desc: 'Closed enum of rails the agent can settle on. The orchestrator filters by user-allowed rails before quoting.' },
-  { name: 'regions', desc: 'ISO-3166 country codes plus optional pincodes / cities. Registry filters listings by region for region-aware search.' },
-  { name: 'priceRange', desc: 'Hint for orchestrators. Integer minor-units only — no floats. Helps consumer agents triage agents before fanning out.' },
-  { name: 'productCapabilities', desc: 'Type-specific block. `stay`, `flight`, `bus`, `service` each have their own analogous block with closed-enum fields.' },
+  {
+    name: "agentId",
+    desc: "Stable identifier. Lower-kebab-case, namespaced by the merchant. Used everywhere — registry rows, signed quotes, conformance badges.",
+  },
+  {
+    name: "protocolVersion",
+    desc: "The OpenKarta wire-format version this agent implements. Currently `0.1`. The orchestrator refuses unknown majors.",
+  },
+  {
+    name: "tier",
+    desc: "One of `lite` (hosted), `http` (custom server), or `agentic` (LLM-fronted). Determines how the registry routes traffic.",
+  },
+  {
+    name: "baseUrl",
+    desc: "HTTPS root for verb endpoints. The registry probes `/.well-known/openkarta-manifest` here during verification.",
+  },
+  {
+    name: "actions",
+    desc: "Which of the 8 verbs this agent implements. `return` is optional and only meaningful for product orders.",
+  },
+  {
+    name: "supportedItemTypes",
+    desc: "Closed enum: `product`, `stay`, `flight`, `bus`, `service`. Drives auto-detection in the conformance suite.",
+  },
+  {
+    name: "paymentRails",
+    desc: "Closed enum of rails the agent can settle on. The orchestrator filters by user-allowed rails before quoting.",
+  },
+  {
+    name: "regions",
+    desc: "ISO-3166 country codes plus optional pincodes / cities. Registry filters listings by region for region-aware search.",
+  },
+  {
+    name: "priceRange",
+    desc: "Hint for orchestrators. Integer minor-units only — no floats. Helps consumer agents triage agents before fanning out.",
+  },
+  {
+    name: "productCapabilities",
+    desc: "Type-specific block. `stay`, `flight`, `bus`, `service` each have their own analogous block with closed-enum fields.",
+  },
 ];
 ---
 <BaseLayout title="Example agent manifest — OpenKarta" activeNav={null}>

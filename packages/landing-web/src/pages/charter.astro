@@ -1,41 +1,41 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const articles = [
   {
-    n: 'I',
-    title: 'On the protocol',
-    body: 'The OpenKarta protocol is a public good. The wire format, the Zod schemas, the conformance tests, and the reference agents are MIT-licensed and will remain so. No relicensing. No closed extensions in the canonical packages.',
+    n: "I",
+    title: "On the protocol",
+    body: "The OpenKarta protocol is a public good. The wire format, the Zod schemas, the conformance tests, and the reference agents are MIT-licensed and will remain so. No relicensing. No closed extensions in the canonical packages.",
   },
   {
-    n: 'II',
-    title: 'On the registry',
-    body: 'The hosted registry exists to serve agents and consumers. It accepts no money for placement, no money for ranking, no money for visibility. The only ordering signal permitted in the public listing API is conformance freshness.',
+    n: "II",
+    title: "On the registry",
+    body: "The hosted registry exists to serve agents and consumers. It accepts no money for placement, no money for ranking, no money for visibility. The only ordering signal permitted in the public listing API is conformance freshness.",
   },
   {
-    n: 'III',
-    title: 'On neutrality',
-    body: 'No LLM vendor, payment processor, or backend host is granted preference. The chat client treats every chat-completions endpoint as equal. The orchestrator treats every conformant agent as equal.',
+    n: "III",
+    title: "On neutrality",
+    body: "No LLM vendor, payment processor, or backend host is granted preference. The chat client treats every chat-completions endpoint as equal. The orchestrator treats every conformant agent as equal.",
   },
   {
-    n: 'IV',
-    title: 'On settlement',
-    body: 'OpenKarta is not a merchant of record. It does not sit on the payment path. It does not collect a percentage of GMV. Its sustainability comes from grants, infra subsidies, and optional paid SLAs for the badge service — never from buyers or sellers.',
+    n: "IV",
+    title: "On settlement",
+    body: "OpenKarta is not a merchant of record. It does not sit on the payment path. It does not collect a percentage of GMV. Its sustainability comes from grants, infra subsidies, and optional paid SLAs for the badge service — never from buyers or sellers.",
   },
   {
-    n: 'V',
-    title: 'On data',
-    body: 'The registry stores manifest documents and conformance run results — nothing else about end users. No buyer-side personal data passes through OpenKarta-operated infrastructure. The orchestrator runs in the consumer agent\'s own process.',
+    n: "V",
+    title: "On data",
+    body: "The registry stores manifest documents and conformance run results — nothing else about end users. No buyer-side personal data passes through OpenKarta-operated infrastructure. The orchestrator runs in the consumer agent's own process.",
   },
   {
-    n: 'VI',
-    title: 'On change',
-    body: 'Wire-format changes follow the RFC process documented at /governance. Major versions ship as parallel package versions with an 18-month deprecation window. No silent breakage; no version-skew traps.',
+    n: "VI",
+    title: "On change",
+    body: "Wire-format changes follow the RFC process documented at /governance. Major versions ship as parallel package versions with an 18-month deprecation window. No silent breakage; no version-skew traps.",
   },
   {
-    n: 'VII',
-    title: 'On succession',
-    body: 'If the foundation is dissolved, the trademarks transfer to a designated steward, the spec repositories continue under MIT, and the conformance signing key is rotated under public notice. The protocol survives any one operator.',
+    n: "VII",
+    title: "On succession",
+    body: "If the foundation is dissolved, the trademarks transfer to a designated steward, the spec repositories continue under MIT, and the conformance signing key is rotated under public notice. The protocol survives any one operator.",
   },
 ];
 ---

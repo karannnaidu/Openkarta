@@ -1,12 +1,17 @@
 [
   {
-    "id": "f_blr_bom_6e123", "brandId": "halcyon", "title": "IndiGo BLR → BOM 6E-123",
-    "priceMinor": 580000, "currency": "INR",
+    "id": "f_blr_bom_6e123",
+    "brandId": "halcyon",
+    "title": "IndiGo BLR → BOM 6E-123",
+    "priceMinor": 580000,
+    "currency": "INR",
     "type": "flight",
-    "carrier": "6E", "flightNumber": "6E-123",
-    "origin": "BLR", "destination": "BOM",
+    "carrier": "6E",
+    "flightNumber": "6E-123",
+    "origin": "BLR",
+    "destination": "BOM",
     "departure": "2026-05-10T06:30:00.000+05:30",
-    "arrival":   "2026-05-10T08:15:00.000+05:30",
+    "arrival": "2026-05-10T08:15:00.000+05:30",
     "durationMinutes": 105,
     "fareClass": "economy",
     "stops": 0,
@@ -14,13 +19,18 @@
     "refundable": false
   },
   {
-    "id": "f_del_blr_ai501", "brandId": "halcyon", "title": "Air India DEL → BLR AI-501",
-    "priceMinor": 1450000, "currency": "INR",
+    "id": "f_del_blr_ai501",
+    "brandId": "halcyon",
+    "title": "Air India DEL → BLR AI-501",
+    "priceMinor": 1450000,
+    "currency": "INR",
     "type": "flight",
-    "carrier": "AI", "flightNumber": "AI-501",
-    "origin": "DEL", "destination": "BLR",
+    "carrier": "AI",
+    "flightNumber": "AI-501",
+    "origin": "DEL",
+    "destination": "BLR",
     "departure": "2026-05-12T09:00:00.000+05:30",
-    "arrival":   "2026-05-12T11:45:00.000+05:30",
+    "arrival": "2026-05-12T11:45:00.000+05:30",
     "durationMinutes": 165,
     "fareClass": "business",
     "stops": 0,
@@ -28,43 +38,59 @@
     "refundable": true
   },
   {
-    "id": "b_blr_pune_vrl", "brandId": "halcyon", "title": "VRL Travels BLR → Pune (AC Sleeper)",
-    "priceMinor": 250000, "currency": "INR",
+    "id": "b_blr_pune_vrl",
+    "brandId": "halcyon",
+    "title": "VRL Travels BLR → Pune (AC Sleeper)",
+    "priceMinor": 250000,
+    "currency": "INR",
     "type": "bus",
     "operator": "VRL Travels",
-    "origin": "Bengaluru", "destination": "Pune",
+    "origin": "Bengaluru",
+    "destination": "Pune",
     "departure": "2026-05-15T20:00:00.000+05:30",
-    "arrival":   "2026-05-16T08:30:00.000+05:30",
+    "arrival": "2026-05-16T08:30:00.000+05:30",
     "durationMinutes": 750,
     "seatClass": "ac-sleeper",
-    "amenities": ["wifi","blanket","charging-port"],
+    "amenities": ["wifi", "blanket", "charging-port"],
     "boardingPoints": [
-      { "id": "bp_blr_majestic", "name": "Majestic Bus Stand", "time": "2026-05-15T20:00:00.000+05:30" },
-      { "id": "bp_blr_madiwala", "name": "Madiwala Junction",  "time": "2026-05-15T20:45:00.000+05:30" }
+      {
+        "id": "bp_blr_majestic",
+        "name": "Majestic Bus Stand",
+        "time": "2026-05-15T20:00:00.000+05:30"
+      },
+      {
+        "id": "bp_blr_madiwala",
+        "name": "Madiwala Junction",
+        "time": "2026-05-15T20:45:00.000+05:30"
+      }
     ],
     "droppingPoints": [
       { "id": "dp_pune_swargate", "name": "Swargate", "time": "2026-05-16T08:00:00.000+05:30" },
-      { "id": "dp_pune_shivaji",  "name": "Shivaji Nagar", "time": "2026-05-16T08:30:00.000+05:30" }
+      { "id": "dp_pune_shivaji", "name": "Shivaji Nagar", "time": "2026-05-16T08:30:00.000+05:30" }
     ],
     "cancellationPolicy": "moderate"
   },
   {
-    "id": "b_hyd_blr_srs", "brandId": "halcyon", "title": "SRS Travels HYD → BLR (Volvo)",
-    "priceMinor": 195000, "currency": "INR",
+    "id": "b_hyd_blr_srs",
+    "brandId": "halcyon",
+    "title": "SRS Travels HYD → BLR (Volvo)",
+    "priceMinor": 195000,
+    "currency": "INR",
     "type": "bus",
     "operator": "SRS Travels",
-    "origin": "Hyderabad", "destination": "Bengaluru",
+    "origin": "Hyderabad",
+    "destination": "Bengaluru",
     "departure": "2026-05-18T22:30:00.000+05:30",
-    "arrival":   "2026-05-19T08:00:00.000+05:30",
+    "arrival": "2026-05-19T08:00:00.000+05:30",
     "durationMinutes": 570,
     "seatClass": "volvo",
-    "amenities": ["ac","reading-light"],
+    "amenities": ["ac", "reading-light"],
     "boardingPoints": [
       { "id": "bp_hyd_lakdikapul", "name": "Lakdikapul", "time": "2026-05-18T22:30:00.000+05:30" }
     ],
     "droppingPoints": [
       { "id": "dp_blr_silkboard", "name": "Silk Board", "time": "2026-05-19T07:30:00.000+05:30" },
-      { "id": "dp_blr_majestic",  "name": "Majestic", "time": "2026-05-19T08:00:00.000+05:30" }
+      { "id": "dp_blr_majestic", "name": "Majestic", "time": "2026-05-19T08:00:00.000+05:30" }
     ],
     "cancellationPolicy": "strict"
   }

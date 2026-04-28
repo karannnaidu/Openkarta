@@ -1,11 +1,11 @@
 export const REGISTRY_ERROR_CODES = [
-  'account_required',
-  'agent_not_found',
-  'agent_id_taken',
-  'domain_verification_pending',
-  'rate_limited',
-  'validation_failed',
-  'forbidden',
+  "account_required",
+  "agent_not_found",
+  "agent_id_taken",
+  "domain_verification_pending",
+  "rate_limited",
+  "validation_failed",
+  "forbidden",
 ] as const;
 
 export type RegistryErrorCode = (typeof REGISTRY_ERROR_CODES)[number];
@@ -30,7 +30,7 @@ export class RegistryError extends Error {
     message: string,
   ) {
     super(message);
-    this.name = 'RegistryError';
+    this.name = "RegistryError";
   }
 
   toJSON(): { error: { code: RegistryErrorCode; message: string } } {

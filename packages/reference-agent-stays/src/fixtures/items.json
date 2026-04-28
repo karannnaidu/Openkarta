@@ -1,49 +1,104 @@
 [
   {
-    "id": "s_beach_villa", "brandId": "halcyon", "title": "Beachfront 3BHK Villa, Anjuna",
-    "priceMinor": 2500000, "currency": "INR",
-    "type": "stay", "propertyId": "prop_001", "propertyType": "villa",
-    "maxGuests": 6, "minStayNights": 2, "checkInTime": "15:00", "checkOutTime": "11:00",
-    "amenities": ["wifi","pool","private-beach"],
+    "id": "s_beach_villa",
+    "brandId": "halcyon",
+    "title": "Beachfront 3BHK Villa, Anjuna",
+    "priceMinor": 2500000,
+    "currency": "INR",
+    "type": "stay",
+    "propertyId": "prop_001",
+    "propertyType": "villa",
+    "maxGuests": 6,
+    "minStayNights": 2,
+    "checkInTime": "15:00",
+    "checkOutTime": "11:00",
+    "amenities": ["wifi", "pool", "private-beach"],
     "cancellationPolicy": "moderate",
-    "location": { "lat": 15.58, "lng": 73.74, "address": {
-      "line1": "Anjuna Beach Rd", "city": "Anjuna", "state": "GA", "country": "IN"
-    }}
+    "location": {
+      "lat": 15.58,
+      "lng": 73.74,
+      "address": {
+        "line1": "Anjuna Beach Rd",
+        "city": "Anjuna",
+        "state": "GA",
+        "country": "IN"
+      }
+    }
   },
   {
-    "id": "s_garden_homestay", "brandId": "halcyon", "title": "Garden Homestay near Vagator",
-    "priceMinor": 750000, "currency": "INR",
-    "type": "stay", "propertyId": "prop_002", "propertyType": "homestay",
-    "maxGuests": 4, "minStayNights": 1, "checkInTime": "14:00", "checkOutTime": "10:00",
-    "amenities": ["wifi","breakfast","garden"],
+    "id": "s_garden_homestay",
+    "brandId": "halcyon",
+    "title": "Garden Homestay near Vagator",
+    "priceMinor": 750000,
+    "currency": "INR",
+    "type": "stay",
+    "propertyId": "prop_002",
+    "propertyType": "homestay",
+    "maxGuests": 4,
+    "minStayNights": 1,
+    "checkInTime": "14:00",
+    "checkOutTime": "10:00",
+    "amenities": ["wifi", "breakfast", "garden"],
     "cancellationPolicy": "flexible",
-    "location": { "lat": 15.6, "lng": 73.75, "address": {
-      "line1": "Vagator Hill 12", "city": "Anjuna", "state": "GA", "country": "IN"
-    }}
+    "location": {
+      "lat": 15.6,
+      "lng": 73.75,
+      "address": {
+        "line1": "Vagator Hill 12",
+        "city": "Anjuna",
+        "state": "GA",
+        "country": "IN"
+      }
+    }
   },
   {
-    "id": "sv_60min_massage", "brandId": "halcyon", "title": "Deep-tissue Massage 60 min",
-    "priceMinor": 149900, "currency": "INR",
-    "type": "service", "serviceCategory": "wellness.massage",
-    "durationMinutes": 60, "cancellationPolicy": "moderate",
-    "location": { "mode": "at_provider", "address": {
-      "line1": "Spa Rd 3", "city": "Anjuna", "country": "IN"
-    }}
+    "id": "sv_60min_massage",
+    "brandId": "halcyon",
+    "title": "Deep-tissue Massage 60 min",
+    "priceMinor": 149900,
+    "currency": "INR",
+    "type": "service",
+    "serviceCategory": "wellness.massage",
+    "durationMinutes": 60,
+    "cancellationPolicy": "moderate",
+    "location": {
+      "mode": "at_provider",
+      "address": {
+        "line1": "Spa Rd 3",
+        "city": "Anjuna",
+        "country": "IN"
+      }
+    }
   },
   {
-    "id": "sv_yoga_class", "brandId": "halcyon", "title": "Sunrise Yoga Class 75 min",
-    "priceMinor": 79900, "currency": "INR",
-    "type": "service", "serviceCategory": "wellness.yoga",
-    "durationMinutes": 75, "cancellationPolicy": "flexible",
-    "location": { "mode": "at_provider", "address": {
-      "line1": "Yoga Shala 1", "city": "Anjuna", "country": "IN"
-    }}
+    "id": "sv_yoga_class",
+    "brandId": "halcyon",
+    "title": "Sunrise Yoga Class 75 min",
+    "priceMinor": 79900,
+    "currency": "INR",
+    "type": "service",
+    "serviceCategory": "wellness.yoga",
+    "durationMinutes": 75,
+    "cancellationPolicy": "flexible",
+    "location": {
+      "mode": "at_provider",
+      "address": {
+        "line1": "Yoga Shala 1",
+        "city": "Anjuna",
+        "country": "IN"
+      }
+    }
   },
   {
-    "id": "sv_facial", "brandId": "halcyon", "title": "Hydrating Facial 45 min",
-    "priceMinor": 99900, "currency": "INR",
-    "type": "service", "serviceCategory": "spa.facial",
-    "durationMinutes": 45, "cancellationPolicy": "moderate",
+    "id": "sv_facial",
+    "brandId": "halcyon",
+    "title": "Hydrating Facial 45 min",
+    "priceMinor": 99900,
+    "currency": "INR",
+    "type": "service",
+    "serviceCategory": "spa.facial",
+    "durationMinutes": 45,
+    "cancellationPolicy": "moderate",
     "location": { "mode": "at_customer", "serviceRadius": 5 }
   }
 ]

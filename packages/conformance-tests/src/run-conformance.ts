@@ -1,8 +1,8 @@
-import { signBadge } from './badge.js';
-import { runAll } from './runner.js';
-import type { Badge, PackName } from './types.js';
+import { signBadge } from "./badge.js";
+import { runAll } from "./runner.js";
+import type { Badge, PackName } from "./types.js";
 
-const BADGE_SECRET_DEFAULT = process.env.OPENKARTA_BADGE_SECRET ?? 'unsigned-dev';
+const BADGE_SECRET_DEFAULT = process.env.OPENKARTA_BADGE_SECRET ?? "unsigned-dev";
 
 export interface RunConformanceOptions {
   baseUrl: string;
@@ -27,14 +27,14 @@ export async function runConformance(opts: RunConformanceOptions): Promise<Confo
   const passed = testsFailed === 0;
 
   const failures = packReports.flatMap((r) =>
-    r.tests.filter((t) => !t.passed).map((t) => `${r.pack}/${t.name}: ${t.message ?? 'failed'}`),
+    r.tests.filter((t) => !t.passed).map((t) => `${r.pack}/${t.name}: ${t.message ?? "failed"}`),
   );
-  const errorSummary = failures.length > 0 ? failures.slice(0, 5).join('; ') : undefined;
+  const errorSummary = failures.length > 0 ? failures.slice(0, 5).join("; ") : undefined;
 
   const signedBadge = signBadge(
     {
       agentId: manifest.agentId,
-      protocolVersion: '0.1',
+      protocolVersion: "0.1",
       tierDetected: manifest.tier,
       packsPassed,
       testsPassed,

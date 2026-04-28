@@ -1,11 +1,31 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const services = [
-  { id: 'registry-api', name: 'Registry API', host: 'api.openkarta.org', endpoint: 'https://api.openkarta.org/healthz' },
-  { id: 'registry-web', name: 'Registry web app', host: 'registry.openkarta.org', endpoint: 'https://registry.openkarta.org/' },
-  { id: 'landing', name: 'Marketing site', host: 'openkarta.org', endpoint: 'https://openkarta.org/' },
-  { id: 'reference-shop', name: 'Reference agent · halcyon-shop', host: 'halcyon-shop.fly.dev', endpoint: 'https://halcyon-shop.fly.dev/.well-known/openkarta-manifest' },
+  {
+    id: "registry-api",
+    name: "Registry API",
+    host: "api.openkarta.org",
+    endpoint: "https://api.openkarta.org/healthz",
+  },
+  {
+    id: "registry-web",
+    name: "Registry web app",
+    host: "registry.openkarta.org",
+    endpoint: "https://registry.openkarta.org/",
+  },
+  {
+    id: "landing",
+    name: "Marketing site",
+    host: "openkarta.org",
+    endpoint: "https://openkarta.org/",
+  },
+  {
+    id: "reference-shop",
+    name: "Reference agent · halcyon-shop",
+    host: "halcyon-shop.fly.dev",
+    endpoint: "https://halcyon-shop.fly.dev/.well-known/openkarta-manifest",
+  },
 ];
 ---
 <BaseLayout title="Status — OpenKarta" activeNav={null}>

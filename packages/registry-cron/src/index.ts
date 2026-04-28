@@ -1,4 +1,4 @@
-import { gitMirrorSnapshot } from './git-mirror.js';
+import { gitMirrorSnapshot } from "./git-mirror.js";
 
 export type Bindings = {
   DB: D1Database;
@@ -9,17 +9,15 @@ export type Bindings = {
   PUBLIC_BASE_URL: string;
 };
 
-export const REVERIFY_CRON = '0 2 * * *';
-export const MIRROR_CRON = '0 3 * * *';
+export const REVERIFY_CRON = "0 2 * * *";
+export const MIRROR_CRON = "0 3 * * *";
 
 type AgentToReverify = { id: string; base_url: string };
 
 export async function enqueueReverify(env: Bindings): Promise<number> {
-  const { results } = await env.DB
-    .prepare(
-      "SELECT id, base_url FROM agents WHERE verification_status = 'verified' AND health_status != 'delisted'",
-    )
-    .all<AgentToReverify>();
+  const { results } = await env.DB.prepare(
+    "SELECT id, base_url FROM agents WHERE verification_status = 'verified' AND health_status != 'delisted'",
+  ).all<AgentToReverify>();
   for (const row of results) {
     await env.VERIFY_QUEUE.send({ agentId: row.id, baseUrl: row.base_url });
   }
@@ -43,6 +41,6 @@ export default {
       ctx.waitUntil(gitMirrorSnapshot(env).then(() => {}));
       return;
     }
-    console.warn('unknown cron', controller.cron);
+    console.warn("unknown cron", controller.cron);
   },
 };

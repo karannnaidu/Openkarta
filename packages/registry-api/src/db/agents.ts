@@ -1,4 +1,10 @@
-import type { AgentListing, Health, Tier, Verification, ItemType } from '@openkarta/registry-shared';
+import type {
+  AgentListing,
+  Health,
+  ItemType,
+  Tier,
+  Verification,
+} from "@openkarta/registry-shared";
 
 export interface AgentRow {
   id: string;
@@ -32,7 +38,7 @@ export function rowToListing(row: AgentRow): AgentListing {
     regions: JSON.parse(row.regions),
     tags: JSON.parse(row.tags),
     publicKey: row.public_key,
-    verified: row.verification_status === 'verified',
+    verified: row.verification_status === "verified",
     health: row.health_status,
     lastVerifiedAt: row.last_verified_at
       ? new Date(row.last_verified_at * 1000).toISOString()

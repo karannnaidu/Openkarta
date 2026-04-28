@@ -1,17 +1,17 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/tokens.css';
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import "../styles/tokens.css";
 
 interface Props {
   title: string;
   description?: string;
-  activeNav?: 'protocol' | 'merchant' | 'governance' | 'developers' | 'manifesto' | null;
+  activeNav?: "protocol" | "merchant" | "governance" | "developers" | "manifesto" | null;
 }
 
 const {
   title,
-  description = 'OpenKarta — The open contract for agentic commerce.',
+  description = "OpenKarta — The open contract for agentic commerce.",
   activeNav = null,
 } = Astro.props;
 ---

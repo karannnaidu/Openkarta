@@ -1,36 +1,41 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CodeBlock from '../components/CodeBlock.astro';
+import CodeBlock from "../components/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const reasons = [
   {
-    chip: '01',
-    title: 'Transport ≠ trust framework.',
-    plain: 'Building on MCP means rebuilding every safety guarantee OpenKarta cares about — on top of someone else’s tool-calling format.',
+    chip: "01",
+    title: "Transport ≠ trust framework.",
+    plain:
+      "Building on MCP means rebuilding every safety guarantee OpenKarta cares about — on top of someone else’s tool-calling format.",
     body: 'OpenKarta is not "another way to call a tool." It is eight behavioural commitments — signed quote tokens, idempotent checkout, closed-enum errors, conformance badges, a registry of verified merchants. MCP gives you none of those. Building on MCP means re-implementing every primitive on top of its tool-calling format — coupled to a still-moving protocol surface owned by someone else.',
   },
   {
-    chip: '02',
-    title: 'MCP is LLM-client-bound. Your audience isn\u2019t.',
-    plain: 'MCP only works inside AI assistants. Most of the internet — websites, mobile apps, server jobs — speaks HTTP.',
-    body: 'OpenKarta v1 serves four consumer surfaces: web app, mobile, server-side automation, and LLM agents. MCP only reaches the last one. HTTP is the universal layer every other surface speaks natively. Forcing a website to talk MCP just to fetch a product list would be absurd; HTTP-first means every surface is a first-class citizen.',
+    chip: "02",
+    title: "MCP is LLM-client-bound. Your audience isn\u2019t.",
+    plain:
+      "MCP only works inside AI assistants. Most of the internet — websites, mobile apps, server jobs — speaks HTTP.",
+    body: "OpenKarta v1 serves four consumer surfaces: web app, mobile, server-side automation, and LLM agents. MCP only reaches the last one. HTTP is the universal layer every other surface speaks natively. Forcing a website to talk MCP just to fetch a product list would be absurd; HTTP-first means every surface is a first-class citizen.",
   },
   {
-    chip: '03',
-    title: 'Server-per-merchant. Commerce needs a many-merchant registry.',
-    plain: 'MCP has no shared address book. Every shopper would have to manually configure every shop they want to buy from.',
+    chip: "03",
+    title: "Server-per-merchant. Commerce needs a many-merchant registry.",
+    plain:
+      "MCP has no shared address book. Every shopper would have to manually configure every shop they want to buy from.",
     body: 'MCP discovery is "the user already configured this server." There is no neutral registry, no fan-out search, no signed badge re-verified weekly. A pure-MCP world means every Claude Desktop user pasting a separate JSON config for each brand they want to shop from. That is not a protocol — that is a directory problem.',
   },
   {
-    chip: '04',
-    title: 'AI is a moving target. We refuse to bet on one vendor.',
-    plain: 'OpenKarta is deliberately model-agnostic — works with OpenAI, Anthropic, Mistral, local models. Building on MCP would lock us back into one ecosystem.',
-    body: 'OpenKarta keeps its core decoupled from any single AI vendor — bring your own model. Adopting MCP as the foundation would re-couple us to a roadmap and governance owned by one company. We would rather ship an adapter for that ecosystem than make it the load-bearing layer of agent commerce.',
+    chip: "04",
+    title: "AI is a moving target. We refuse to bet on one vendor.",
+    plain:
+      "OpenKarta is deliberately model-agnostic — works with OpenAI, Anthropic, Mistral, local models. Building on MCP would lock us back into one ecosystem.",
+    body: "OpenKarta keeps its core decoupled from any single AI vendor — bring your own model. Adopting MCP as the foundation would re-couple us to a roadmap and governance owned by one company. We would rather ship an adapter for that ecosystem than make it the load-bearing layer of agent commerce.",
   },
   {
-    chip: '05',
-    title: 'Merchant adoption math doesn\u2019t favor MCP.',
-    plain: 'Merchants already run HTTP servers. Asking them to stand up an MCP server is asking them to do new ops work for a small audience.',
+    chip: "05",
+    title: "Merchant adoption math doesn\u2019t favor MCP.",
+    plain:
+      "Merchants already run HTTP servers. Asking them to stand up an MCP server is asking them to do new ops work for a small audience.",
     body: '"Add a few HTTPS routes to your existing API" is something every hotel chain, airline, or D2C brand can already do — their ops team runs HTTP services for breakfast. "Stand up an MCP server" is a foreign deployment shape with a smaller payoff. MCP is easier for LLM tool authors. HTTP is easier for the people we actually need to ship: the merchants.',
   },
 ];

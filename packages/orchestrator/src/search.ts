@@ -1,7 +1,7 @@
-import { createClient } from '@openkarta/sdk-node';
-import type { SearchQuery } from '@openkarta/spec';
-import type { ManifestCache } from './discover.js';
-import type { RegistryAgent, SearchPlan, RankedResult } from './types.js';
+import { createClient } from "@openkarta/sdk-node";
+import type { SearchQuery } from "@openkarta/spec";
+import type { ManifestCache } from "./discover.js";
+import type { RankedResult, RegistryAgent, SearchPlan } from "./types.js";
 
 export interface SearchInput {
   agents: RegistryAgent[];
