@@ -93,12 +93,18 @@ describe("POST /v1/agents", () => {
     );
     expect(res.status).toBe(201);
     const body = (await res.json()) as {
-      agent: { agentId: string; verified: boolean; health: string };
+      agent: {
+        agentId: string;
+        verificationStatus: string;
+        healthStatus: string;
+        createdAt: string;
+      };
       verificationInstructions: { token: string; path: string };
     };
     expect(body.agent.agentId).toBe("agent-create-1");
-    expect(body.agent.verified).toBe(false);
-    expect(body.agent.health).toBe("unknown");
+    expect(body.agent.verificationStatus).toBe("pending");
+    expect(body.agent.healthStatus).toBe("unknown");
+    expect(body.agent.createdAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     expect(body.verificationInstructions.token).toMatch(/^okv-/);
     expect(body.verificationInstructions.path).toBe("/.well-known/openkarta-owner.txt");
     const v = await env.DB.prepare("SELECT status FROM verifications WHERE agent_id = ?")

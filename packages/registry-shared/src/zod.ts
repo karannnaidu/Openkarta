@@ -38,9 +38,10 @@ export type AgentSubmission = z.infer<typeof AgentSubmissionSchema>;
 export const AgentListingSchema = AgentSubmissionSchema.extend({
   manifestUrl: z.string().url(),
   publicKey: z.string().nullable(),
-  verified: z.boolean(),
-  health: z.enum(HEALTH),
-  lastVerifiedAt: z.string().nullable(),
+  verificationStatus: z.enum(VERIFICATION),
+  healthStatus: z.enum(HEALTH),
+  lastVerifiedAt: z.string().optional(),
+  createdAt: z.string(),
 });
 export type AgentListing = z.infer<typeof AgentListingSchema>;
 

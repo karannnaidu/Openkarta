@@ -65,9 +65,29 @@ describe("AgentListingSchema", () => {
       regions: [{ country: "IN" }],
       tags: [],
       publicKey: null,
-      verified: true,
-      health: "healthy",
+      verificationStatus: "verified",
+      healthStatus: "healthy",
       lastVerifiedAt: "2026-04-25T00:00:00Z",
+      createdAt: "2026-04-25T00:00:00Z",
+    });
+    expect(r.success).toBe(true);
+  });
+
+  it("accepts a listing without lastVerifiedAt (unverified agent)", () => {
+    const r = AgentListingSchema.safeParse({
+      agentId: "halcyon-shop",
+      displayName: "Halcyon",
+      description: "",
+      baseUrl: "https://x.com",
+      manifestUrl: "https://x.com/v0/discover",
+      tier: "http",
+      supportedItemTypes: ["product"],
+      regions: [{ country: "IN" }],
+      tags: [],
+      publicKey: null,
+      verificationStatus: "pending",
+      healthStatus: "unknown",
+      createdAt: "2026-04-25T00:00:00Z",
     });
     expect(r.success).toBe(true);
   });

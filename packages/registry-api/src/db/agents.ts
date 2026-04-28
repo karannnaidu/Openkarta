@@ -27,7 +27,7 @@ export interface AgentRow {
 }
 
 export function rowToListing(row: AgentRow): AgentListing {
-  return {
+  const out: AgentListing = {
     agentId: row.id,
     displayName: row.display_name,
     description: row.description,
@@ -38,10 +38,12 @@ export function rowToListing(row: AgentRow): AgentListing {
     regions: JSON.parse(row.regions),
     tags: JSON.parse(row.tags),
     publicKey: row.public_key,
-    verified: row.verification_status === "verified",
-    health: row.health_status,
-    lastVerifiedAt: row.last_verified_at
-      ? new Date(row.last_verified_at * 1000).toISOString()
-      : null,
+    verificationStatus: row.verification_status,
+    healthStatus: row.health_status,
+    createdAt: new Date(row.created_at * 1000).toISOString(),
   };
+  if (row.last_verified_at != null) {
+    out.lastVerifiedAt = new Date(row.last_verified_at * 1000).toISOString();
+  }
+  return out;
 }
