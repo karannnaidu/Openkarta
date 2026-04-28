@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.0 — 2026-04-26
+
+### Added
+- **Hosted registry** at `api.openkarta.org` (Cloudflare Worker + D1 + Queues + cron). Self-serve agent submission, magic-link + GitHub OAuth auth, agents CRUD, verification, reverification, ownership transfer, public listing with cursor pagination.
+- **Conformance verifier** (`@openkarta/registry-verifier`) — Cloudflare Queue consumer that runs the conformance harness against listed agents and updates health + signed badges.
+- **Daily reverify cron** (`@openkarta/registry-cron`) — enqueues all listed agents for re-verification and snapshots a JSON mirror to the `registry-mirror` branch on every run.
+- **Public dashboard** at `registry.openkarta.org` — Astro static site to browse, submit, and manage listings.
+- `@openkarta/conformance-tests`: exposes `runConformance()` as a library API so the verifier worker can call it directly.
+
+### Changed (BREAKING)
+- `@openkarta/orchestrator` → `0.4.0`: `DEFAULT_REGISTRY_URL` now points at the hosted registry (`https://registry.openkarta.org/v1/agents`). The legacy static URL is mirrored daily and remains a valid override via the `OPENKARTA_REGISTRY_URL` env var or `loadRegistry({ url })`. `loadRegistry` sniffs the response shape and paginates hosted listings transparently — caller-visible types unchanged.
+- `@openkarta/cli` → `0.4.0`: inherits the hosted-registry default. No CLI surface change.
+
+### Why
+The static `registry/` JSON file in git was browseable but not queryable, gated submissions behind a PR, and never re-verified badges. Track A and Track B of the v1.0 roadmap both required a hosted, queryable, self-serve registry with continuous conformance — this ships it.
+
 ## 0.3.0 — 2026-04-25
 
 ### Changed (BREAKING)

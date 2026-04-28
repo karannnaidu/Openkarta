@@ -24,14 +24,14 @@ The full acceptance checklist is in Section 6.
 
 ## 2. Current state — what's already shipped
 
-Two plans have shipped end-to-end. In capability terms (not package names — those will evolve):
+Three plans have shipped end-to-end. In capability terms (not package names — those will evolve):
 
 - **The protocol.** Eight verbs over five item types (product, stay, flight, bus, service), Zod-typed schemas, HMAC-signed quote tokens, closed-enum errors, user-token delegation. MIT-licensed at protocol version 0.1.
 - **A Node SDK.** Typed Fastify server helpers + typed HTTP client wrapping all 8 verbs. Published as `@openkarta/sdk-node@0.2.0`.
 - **Three reference reception agents** running every item type, with seeded fixtures and per-vertical state machines. Halcyon Shop is deployed at `halcyon-shop.fly.dev`.
-- **A conformance harness** that auto-detects supported types, runs a core pack + per-type packs, and emits a signed badge. Self-serve for any merchant.
-- **A consumer-side library and CLI.** `@openkarta/orchestrator` (registry → search → cart → quote → checkout → orders) and `@openkarta/cli` with a vendor-neutral chat REPL. Published at v0.3.0; works against any chat-completions endpoint (OpenRouter, OpenAI, Together, Groq, local Ollama / llama.cpp / vLLM).
-- **A static registry.** PR-submitted JSON in `registry/` of the repo. Browseable but not queryable; no badge re-verification on listing.
+- **A conformance harness** that auto-detects supported types, runs a core pack + per-type packs, and emits a signed badge. Self-serve for any merchant. Now also exposed as a `runConformance()` library API consumed by the verifier worker.
+- **A consumer-side library and CLI.** `@openkarta/orchestrator@0.4.0` (registry → search → cart → quote → checkout → orders, hosted-registry default with cursor pagination) and `@openkarta/cli@0.4.0` with a vendor-neutral chat REPL. Works against any chat-completions endpoint (OpenRouter, OpenAI, Together, Groq, local Ollama / llama.cpp / vLLM).
+- **A hosted registry.** `api.openkarta.org` (Cloudflare Worker + D1 + Queues), `registry.openkarta.org` (Astro dashboard for browse / submit / manage). Magic-link + GitHub OAuth auth. Daily cron re-enqueues every listed agent for conformance re-verification; verifier worker consumes the queue and updates health + signed badges. Daily JSON mirror snapshot to the `registry-mirror` branch.
 - **A landing page** at `openkarta.org` (Cloudflare Pages, no build step).
 - **Governance scaffolding.** Foundation, registry-operator, and neutrality-covenant docs plus a security threat model. Not yet a legal entity.
 
@@ -50,7 +50,7 @@ What we don't have yet is in Section 3 (per track) and Section 4 (cross-cutting)
 - Self-serve registry submission flow (no email-Karan-to-list-me).
 - Every listing carries a freshly-verified, signed conformance badge (re-verified within 7 days).
 
-**Bottlenecks now.** No Lite tier exists. Registry submission is via PR, which gates non-developers. No automated badge re-verification.
+**Bottlenecks now.** No Lite tier exists — every conformant merchant still has to operate a reception agent. Self-serve registry submission and automated daily re-verification are now live; the gap is the no-code path *into* having a reception agent.
 
 ### Track B — Consumer-agent developers
 **Who.** Anyone shipping a consumer agent that talks to OpenKarta — Claude/ChatGPT plugin authors, custom MCP server authors, mobile devs, our own iOS/web team.
@@ -62,18 +62,18 @@ What we don't have yet is in Section 3 (per track) and Section 4 (cross-cutting)
 - Public conformance dashboard at `conformance.openkarta.org` showing every listed agent's last badge result.
 - Three docs site sections live: protocol reference, integrator quickstart, developer quickstart — at `docs.openkarta.org`.
 
-**Bottlenecks now.** Registry is static JSON; SDK is at 0.x with no compat freeze; no Python SDK; no public dashboard; docs are README files in the repo.
+**Bottlenecks now.** SDKs are at 0.x with no compat freeze; no Python SDK; no MCP bridge for LLM-client distribution (Claude Desktop / Cursor / ChatGPT); the dashboard at `registry.openkarta.org` is a submit-and-manage console, not yet positioned as a developer-facing conformance dashboard at `conformance.openkarta.org`; docs are README files in the repo.
 
 ### Track C — End users
 **Who.** Humans buying stuff via voice or chat.
 
 **v1.0 bar.**
 - **Web app** at `app.openkarta.org` — search / cart / checkout / orders + chat tab (BYO LLM key), works for all 5 item types.
+- **MCP-host distribution.** `@openkarta/mcp-bridge` published, listed in MCP directories — one-click registry access from inside Claude Desktop / Cursor / ChatGPT MCP. The host's LLM drives the tools; the bridge is pure tool-execution.
 - **Real payments live.** Razorpay Routes for INR + Stripe Connect for USD. COD as a fallback path where the agent supports it.
 - **GST-compliant invoicing** for INR transactions.
-- **iOS prototype** in TestFlight (one e2e flow per vertical) — voice input and bundled multi-vertical intent demo. iOS GA is v1.1.
 
-**Bottlenecks now.** No consumer surface ships at all. Payments are mocked in the reference agents. No mobile engineer on payroll.
+**Bottlenecks now.** No consumer surface ships at all. Payments are mocked in the reference agents. No MCP bridge yet, so users in Claude Desktop / Cursor / ChatGPT MCP can't reach the registry without writing glue code.
 
 ---
 
@@ -90,7 +90,7 @@ These aren't single plans. They thread through several plans.
 | **Docs site** | Migrate from README files to `docs.openkarta.org` (Mintlify or Docusaurus). Versioned per protocol version. |
 | **Observability & SLOs** | Hosted registry SLOs published (99.9% uptime, p95 < 200ms). Status page at `status.openkarta.org`. Incident runbook. |
 | **SDKs in other languages** | Python (v1.0 must-have). Go is deferred to v1.1. |
-| **Hires** (per spec §10) | 1 protocol engineer (full-time on the rails), 1 mobile engineer (iOS), 1 BD lead (LOIs and platform integrations). At minimum 2 of the 3 on payroll by v1.0. |
+| **Hires** (per spec §10) | 1 protocol engineer (full-time on the rails), 1 BD lead (LOIs and platform integrations). Both on payroll by v1.0. (Mobile engineer dropped — no native app on the roadmap.) |
 
 ### 4a. Foundation handover model
 The neutrality story (spec §2) requires the registry, protocol spec, and conformance suite to eventually live with a neutral entity. **Until v1.0, the OpenKarta project's core maintainers run the registry as interim operators** — we host, we publish, we sign badges, accountable to the project's governance docs. **By v1.1, OpenKarta Foundation either incorporates** as a Section 8 non-profit in India with a Delaware C-corp parent, **or transfers stewardship to an existing neutral host** — candidates: Linux Foundation, OpenJS Foundation, ONDC. The handover contract is part of v1.0 — we do not ship v1.0 without a written succession path.
@@ -105,16 +105,17 @@ Plans are sized for ~2-4 weeks each. They are sequenced by dependency, not by au
 |---|---|---|---|---|---|
 | 01 | Protocol & Node SDK | Spec, sdk-node, 3 reference agents, conformance harness, demo CLI | A, B | — | ✅ Shipped |
 | 02 | Orchestrator & CLI | Consumer-side library, CLI, vendor-neutral chat | B | 01 | ✅ Shipped |
-| **03** | **Hosted registry & badge service** | Registry API, self-serve submission flow, automated badge re-verification, public conformance dashboard | A, B | 02 | 🟢 Next |
-| 04 | Lite tier ingestor | Markdown/CSV catalogue → hosted reception agent for non-eng merchants | A | 03 | Planned |
-| 05 | Payments live | Razorpay Routes + Stripe Connect + GST invoicing + settlement webhooks | A, C | 02 | Planned |
-| 06 | Web consumer app | `app.openkarta.org` — search / cart / checkout / orders + BYO-key chat | C | 03, 05 | Planned |
-| 07 | Python SDK | Parity with Node SDK — server + client + signing primitives | A, B | 01 | Planned |
-| 08 | Foundation & docs site | Foundation incorporated, neutrality covenant signed, `docs.openkarta.org` live | All | — | Planned |
-| 09 | Hardening | Third-party security audit, observability, SLOs, status page, npm SDKs frozen at 1.0.0 | All | 03, 05, 06 | Planned |
-| 10 | iOS TestFlight (v1.1 stretch) | Voice-first iOS prototype, one e2e flow per vertical | C | 06 | Stretch |
+| 03 | Hosted registry & badge service | Registry API, self-serve submission flow, automated badge re-verification, public dashboard | A, B | 02 | ✅ Shipped |
+| **04** | **MCP bridge** | `@openkarta/mcp-bridge` — exposes the 8 orchestrator verbs as MCP tools over a thin protocol shell. The LLM lives in the MCP host (Claude Desktop / Cursor / ChatGPT MCP); the bridge is pure tool-execution, no LLM key on our side. One-click distribution into any MCP host. | B | 02, 03 | 🟢 Next |
+| 05 | Lite tier ingestor | Markdown/CSV catalogue → hosted reception agent for non-eng merchants | A | 03 | Planned |
+| 06 | Payments live | Razorpay Routes + Stripe Connect + GST invoicing + settlement webhooks | A, C | 02 | Planned |
+| 07 | Web consumer app | `app.openkarta.org` — search / cart / checkout / orders + BYO-key chat | C | 03, 06 | Planned |
+| 08 | Python SDK | Parity with Node SDK — server + client + signing primitives | A, B | 01 | Planned |
+| 09 | Foundation & docs site | Foundation incorporated, neutrality covenant signed, `docs.openkarta.org` live | All | — | Planned |
+| 10 | Hardening | Third-party security audit, observability, SLOs, status page, npm SDKs frozen at 1.0.0 | All | 03, 06, 07 | Planned |
+| ⊥ | Protocol v0.4 (parallel track) | Three-block checkout envelope (`user` / `fulfilment` / `payment`), per-item-type fulfilment shapes, `/v0.4/...` URL prefix, consumer-agent identity (Ed25519 + JWT). Three sub-plans: spec, orchestrator wiring, identity RFC. | A, B | 02 | 🟡 Spec landed (sub-plan 1 of 3); implementation plan TBD |
 
-Plans 03-09 are mandatory for v1.0. Plan 10 is a v1.1 stretch — we ship v1.0 with web only, plus an iOS prototype if a mobile hire lands by then.
+Plans 03-10 are mandatory for v1.0. v1.0 ships with web + MCP host distribution only — no native mobile app on the roadmap. The Protocol v0.4 parallel track is a hard breaking protocol bump that runs alongside the numbered sequence; whether it lands inside v1.0 or v1.1 depends on when sub-plans 2 and 3 are written and shipped.
 
 ---
 
@@ -138,16 +139,16 @@ Tick this checklist when every box is true. Until then we are pre-v1.0 and shoul
 
 **Track C — End users**
 - [ ] `app.openkarta.org` live; end-to-end checkout against listed agents working for all 5 item types
+- [ ] `@openkarta/mcp-bridge` published, listed in at least one public MCP directory, end-to-end checkout demoed inside Claude Desktop or Cursor
 - [ ] Razorpay Routes live for INR transactions (settlement working)
 - [ ] Stripe Connect live for USD transactions
 - [ ] GST-compliant invoicing for INR
-- [ ] iOS prototype in TestFlight with at least one vertical (stretch — required for v1.1, not v1.0)
 
 **Cross-cutting**
 - [ ] OpenKarta Foundation incorporated, OR a written stewardship-transfer agreement signed with a neutral host
 - [ ] Independent third-party security audit complete; findings remediated
 - [ ] Status page live at `status.openkarta.org`
-- [ ] At least 2 of the 3 spec §10 hires on payroll (protocol eng / mobile / BD)
+- [ ] Both spec §10 hires on payroll (protocol eng + BD)
 
 ---
 
@@ -157,10 +158,10 @@ Deliberately deferred. v1.0 ships without these.
 
 - **Heterogeneous carts / cross-merchant atomic checkout.** "Dinner + movie + cab" stays orchestrator-side until v1.1 protocol revision.
 - **Merchant of Record licence (RBI Payment Aggregator).** Year 2+ per spec §5. v1.0 stays in payment-orchestration mode.
-- **iOS GA.** v1.0 ships TestFlight only; GA in v1.1.
+- **Native mobile apps (iOS / Android).** Not on the roadmap. End users reach OpenKarta via the web app and via MCP-host distribution (Claude Desktop, Cursor, ChatGPT MCP). Will revisit only if a mobile-native distribution gap turns up that the web + MCP surfaces can't close.
+- **Voice input.** No first-party voice surface. If voice happens, it's via whatever LLM client the user is in (which already handles voice).
 - **Go SDK.** v1.1.
 - **Series-A scale work** — registry-as-a-service rebuild for 1K+ brands (spec §4.8 Plan 08-class work). Deferred until traction warrants.
-- **Voice input on web app.** Text-first; future iOS owns voice.
 - **Multi-region hosting.** v1.0 is single-region (Mumbai or Singapore). Multi-region is post-v1.0.
 - **Feed tier** (signed JSON/CSV dump for 100-100K SKU merchants). Deferred until a real Feed-tier merchant signs an LOI; until then Lite + HTTP cover the spectrum.
 
