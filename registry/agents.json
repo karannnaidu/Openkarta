@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "version": "0.1",
-  "updated": "2026-07-30",
+  "updated": "2026-07-31",
   "agents": [
     {
       "agentId": "halcyon-shop",
@@ -17,7 +17,7 @@
       "addedAt": "2026-04-25",
       "verified": true,
       "health": "healthy",
-      "lastVerifiedAt": "2026-07-30T02:01:24.000Z",
+      "lastVerifiedAt": "2026-07-31T02:01:23.000Z",
       "description": "Reference shop agent (Bengaluru). Demo only — orders reset on restart"
     }
   ]
